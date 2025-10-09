@@ -1,0 +1,70 @@
+@import "@scss/colors.scss";
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  height: 100%;
+  background-color: #111;
+  color: #fff;
+  padding: 1rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1;
+  }
+
+  &__btn {
+    width: 100%;
+    justify-content: flex-start;
+    color: $color-secondary-text;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding-left: 0.8rem;
+
+    svg,
+    .iconify {
+      width: 18px;
+      height: 18px;
+      color: $color-secondary-text;
+      flex-shrink: 0;
+      transition: color 0.2s ease;
+    }
+
+    &:hover {
+      background-color: $color-sidebar-hover-btn;
+      color: #fff;
+
+      svg,
+      .iconify {
+        color: #fff;
+      }
+    }
+
+    &.active {
+      background-color: $color-sidebar-active-btn;
+      color: $color-primary-text;
+      font-weight: 500;
+
+      svg,
+      .iconify {
+        color: $color-primary-text;
+      }
+    }
+  }
+
+  &__separator {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #888;
+    margin: 1rem 0 0.3rem;
+    padding-left: 0.5rem;
+    user-select: none;
+  }
+}

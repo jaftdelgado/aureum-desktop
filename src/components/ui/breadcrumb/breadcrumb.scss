@@ -1,0 +1,38 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+
+  .breadcrumb-item {
+    display: flex;
+    align-items: center;
+
+    .breadcrumb-separator {
+      margin: 0 6px;
+      display: flex;
+      align-items: center;
+      color: #aaa;
+    }
+  }
+
+  .breadcrumb-item-link {
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #888;
+    }
+  }
+
+  .breadcrumb-current {
+    font-weight: 600;
+    color: #fff;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+    user-select: none;
+  }
+}

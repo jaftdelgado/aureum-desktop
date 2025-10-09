@@ -1,0 +1,88 @@
+$primary: #2563eb;
+$secondary: #64748b;
+$destructive: #dc2626;
+$accent: #f1f5f9;
+$text-light: #ffffff;
+$text-dark: #0f172a;
+$transition: all 0.2s ease-in-out;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 12px;
+  font-family: Inter;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  outline: none;
+  padding: 0.5rem 1rem;
+
+  &:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .btn-label {
+    display: inline-block;
+  }
+
+  svg {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  &--default {
+    background-color: $primary;
+    color: $text-light;
+    &:hover {
+      background-color: darken($primary, 7%);
+    }
+  }
+
+  &--destructive {
+    background-color: $destructive;
+    color: $text-light;
+    &:hover {
+      background-color: darken($destructive, 10%);
+    }
+  }
+
+  &--outline {
+    background-color: transparent;
+    border: 1px solid $accent;
+    color: $text-dark;
+    &:hover {
+      background-color: $accent;
+    }
+  }
+
+  &--secondary {
+    background-color: $secondary;
+    color: $text-light;
+    &:hover {
+      background-color: darken($secondary, 10%);
+    }
+  }
+
+  &--ghost {
+    background-color: transparent;
+    color: $text-dark;
+    &:hover {
+      background-color: $accent;
+    }
+  }
+
+  &--link {
+    background: none;
+    border: none;
+    color: $primary;
+    text-decoration: underline;
+    padding: 0;
+    &:hover {
+      color: darken($primary, 10%);
+    }
+  }
+}
