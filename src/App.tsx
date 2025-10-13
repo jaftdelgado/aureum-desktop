@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { DashboardLayout } from "@layouts/Dashboard";
 import { Principal } from "@pages/principal/Principal";
-import { Courses } from "@pages/courses/Courses";
+import { Teams } from "@pages/teams/Teams";
 
 export const App: React.FC = () => {
   return (
@@ -13,7 +13,7 @@ export const App: React.FC = () => {
       {/* Dashboard */}
       <Route path="/dashboard/*" element={<DashboardLayout />}>
         <Route index element={<Principal />} /> {/* /dashboard */}
-        <Route path="courses" element={<Courses />} /> {/* /dashboard/courses */}
+        <Route path="teams" element={<Teams />} /> {/* /dashboard/teams */}
       </Route>
     </Routes>
   );

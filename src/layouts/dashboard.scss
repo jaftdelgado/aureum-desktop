@@ -1,40 +1,45 @@
+@import "@scss/colors.scss";
+
 .principal-page {
   height: 100vh;
   width: 100%;
   display: flex;
-  background-color: #1a1a1a;
+  background-color: $color-bg;
   color: #fff;
+  overflow: hidden;
 
   .app-layout {
     display: flex;
+    flex: 1;
     height: 100%;
     width: 100%;
 
-    /* Contenido principal */
     .layout-content {
-      flex: 1; /* ocupa el resto del espacio al lado del sidebar */
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto; // ✅ ahora el scroll abarca breadcrumb + contenido
+      overflow-x: hidden;
 
       .breadcrumb-container {
         display: flex;
-        justify-content: flex-end;
         align-items: center;
-        padding: 1rem 2rem 0;
+        padding: 1rem 2rem;
         font-size: 14px;
         color: #aaa;
+        flex-shrink: 0;
+        background-color: $color-bg;
+        position: sticky;
+        top: 0;
+        z-index: 10;
       }
 
       .page-content {
         flex: 1;
-        padding: 2rem;
-        overflow-y: auto;
-        background-color: #1a1a1a; /* mismo color que el layout */
+        width: 100%;
+        box-sizing: border-box;
         color: #fff;
-
-        border-radius: 0;
-        box-shadow: none;
       }
     }
   }

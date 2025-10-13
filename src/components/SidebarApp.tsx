@@ -9,7 +9,7 @@ export const AppSidebar: React.FC = () => {
   const items: SidebarItem[] = [
     { type: "separator", label: "Principal" },
     { type: "button", icon: "gravity-ui:compass", label: "Explorar", route: "/dashboard" },
-    { type: "button", icon: "gravity-ui:rectangles-4", label: "Cursos", route: "/dashboard/courses" },
+    { type: "button", icon: "gravity-ui:rectangles-4", label: "Equipos", route: "/dashboard/teams" },
   ];
 
   const handleNavigate = (route: string) => {

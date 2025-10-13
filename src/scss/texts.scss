@@ -1,0 +1,25 @@
+@import "./colors.scss";
+
+$size-h1: 1.75rem;
+$size-subtitle: 1rem;
+$size-body: 0.9rem;
+$size-small: 0.875rem;
+
+h1 {
+  color: $color-primary-text;
+  font-size: $size-h1;
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0;
+  white-space: nowrap;
+}
+
+p {
+  color: $color-secondary-text;
+  font-size: $size-body;
+  line-height: 1.2;
+  margin: 0;
+}
+small {
+  font-size: $size-small;
+}

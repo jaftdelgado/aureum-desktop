@@ -1,4 +1,6 @@
-$primary: #2563eb;
+@import "@scss/colors.scss";
+@import "@scss/texts.scss";
+
 $secondary: #64748b;
 $destructive: #dc2626;
 $accent: #f1f5f9;
@@ -7,18 +9,20 @@ $text-dark: #0f172a;
 $transition: all 0.2s ease-in-out;
 
 .btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 12px;
-  font-family: Inter;
+  justify-content: flex-start;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border-radius: 14px;
+  font-size: $size-body;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: $transition;
   border: none;
   outline: none;
-  padding: 0.5rem 1rem;
+  text-align: left; /* Igual que sidebar */
 
   &:disabled {
     opacity: 0.6;
@@ -30,15 +34,16 @@ $transition: all 0.2s ease-in-out;
   }
 
   svg {
-    display: inline-flex;
+    width: 18px; /* Igual que sidebar */
+    height: 18px; /* Igual que sidebar */
     flex-shrink: 0;
   }
 
   &--default {
-    background-color: $primary;
-    color: $text-light;
+    background-color: $color-primary-text;
+    color: $color-bg;
     &:hover {
-      background-color: darken($primary, 7%);
+      background-color: darken($color-primary-text, 7%);
     }
   }
 
@@ -78,11 +83,11 @@ $transition: all 0.2s ease-in-out;
   &--link {
     background: none;
     border: none;
-    color: $primary;
+    color: $color-primary-text;
     text-decoration: underline;
     padding: 0;
     &:hover {
-      color: darken($primary, 10%);
+      color: darken($color-primary-text, 10%);
     }
   }
 }

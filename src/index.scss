@@ -1,15 +1,27 @@
 @font-face {
-  font-family: "Inter";
-  src: url("./assets/typefaces/Inter.ttf") format("truetype");
+  font-family: "Geist";
+  src: url("./assets/typefaces/Geist.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
+html,
 body {
   margin: 0;
-  font-family: "Inter", sans-serif;
+  padding: 0;
+  height: 100%;
+  font-family: "Geist", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  overscroll-behavior: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #1a1a1a;
+}
+
+* {
+  font-family: "Geist", sans-serif;
 }
 
 code {
