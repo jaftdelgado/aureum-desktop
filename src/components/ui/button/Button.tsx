@@ -4,9 +4,8 @@ import { Icon } from "@iconify/react";
 type ButtonVariant =
   | "default"
   | "destructive"
-  | "outline"
   | "secondary"
-  | "ghost"
+  | "thirdy"
   | "link";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -33,10 +32,9 @@ export const Button: React.FC<ButtonProps> = ({
   const variantClasses: Record<ButtonVariant, string> = {
     default: "w-full px-4 py-2 bg-primaryBtn text-bg hover:bg-primaryHoverBtn",
     destructive: "w-full px-4 py-2 bg-destructive text-white hover:bg-destructive/90",
-    outline: "w-full px-4 py-2 bg-transparent border border-accent text-text-dark hover:bg-accent",
-    secondary: "w-full px-4 py-2 bg-secondaryBtn text-white hover:bg-secondaryHoverBtn",
-    ghost: "w-full px-4 py-2 bg-transparent text-text-dark hover:bg-accent",
-    link: "w-auto p-0 bg-none border-none text-primaryText underline hover:text-primaryText/90",
+    secondary: "w-full px-4 py-2 bg-secondaryBtn text-primaryText hover:bg-secondaryHoverBtn",
+    thirdy: "w-full px-4 py-2 bg-transparent text-primaryText hover:bg-secondaryHoverBtn",
+    link: "w-auto p-0 bg-none border-none text-primaryText hover:underline",
   };
 
   const classes = [baseClasses, variantClasses[variant], className]
