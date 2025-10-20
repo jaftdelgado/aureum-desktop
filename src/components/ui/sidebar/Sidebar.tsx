@@ -52,7 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ) : (
             <Button
               key={item.route}
-              variant={activeRoute === item.route ? "secondary" : "ghost"}
+              variant={activeRoute === item.route ? "secondary" : "thirdy"}
               icon={item.icon}
               className={`sidebar__btn ${
                 activeRoute === item.route ? "active" : ""

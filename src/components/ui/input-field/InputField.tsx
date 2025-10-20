@@ -34,7 +34,7 @@ export const InputGroupAddon: React.FC<InputGroupAddonProps> = ({
 export const InputGroupButton: React.FC<InputGroupButtonProps> = ({
   className,
   size = "xs",
-  variant = "ghost",
+  variant = "thirdy",
   ...props
 }) => (
   <Button
@@ -44,10 +44,11 @@ export const InputGroupButton: React.FC<InputGroupButtonProps> = ({
   />
 );
 
-export const InputGroupText: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({
-  className,
-  ...props
-}) => <span className={`input-group-text ${className ?? ""}`} {...props} />;
+export const InputGroupText: React.FC<
+  React.HTMLAttributes<HTMLSpanElement>
+> = ({ className, ...props }) => (
+  <span className={`input-group-text ${className ?? ""}`} {...props} />
+);
 
 export const InputGroupInput: React.FC<
   React.InputHTMLAttributes<HTMLInputElement>
