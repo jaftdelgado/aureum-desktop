@@ -1,36 +1,32 @@
 import React from "react";
 import { Button } from "@components/ui/button/Button";
-import {
-  InputGroup,
-  InputGroupInput,
-} from "@components/ui/input-field/InputField";
-import "./Auth.scss";
-import "@scss/texts.scss";
+import { Label } from "@components/ui/Label";
+import { Separator } from "@components/ui/Separator";
+import { Input } from "@components/ui/Input";
 
 const Auth: React.FC = () => {
   return (
-    <div className="auth-page">
-      <div className="auth-container">
-        <h1 className="auth-title">Iniciar sesión</h1>
+    <div className="min-h-screen flex items-center justify-center bg-bg">
+      <div className="bg-[#121212] border border-sidebarHoverBtn p-8 rounded-xl w-full max-w-xs text-center">
+        <Label variant="subtitle" color="primary">
+          Bienvenido a Aureum
+        </Label>
 
-        <form className="auth-form">
-          {/* Usuario */}
-          <InputGroup>
-            <InputGroupInput type="text" placeholder="Usuario" />
-          </InputGroup>
+        <form className="flex flex-col gap-4 mt-6">
+          <Input type="email" placeholder="Usuario o correo" />
+          <Input type="password" placeholder="Contraseña" />
 
-          {/* Contraseña */}
-          <InputGroup>
-            <InputGroupInput type="password" placeholder="Contraseña" />
-          </InputGroup>
+          <Button variant="default" className="mt-2" type="submit"> Iniciar sesión </Button>
 
-          <Button variant="default" className="auth-button">
-            Iniciar sesión
+          <Separator variant="line" className="my-1" />
+
+          <Button variant="secondary" type="button">
+            Continuar con Google
           </Button>
 
-          <div className="auth-links">
-            <a href="#">¿Olvidaste tu contraseña?</a>
-            <a href="#">Crear cuenta</a>
+          <div className="flex justify-center items-center gap-1 text-sm mt-4">
+            <Label variant="body" color="secondary"> ¿No tienes una cuenta? </Label>
+            <Button variant="link" type="button"> Crear cuenta </Button>
           </div>
         </form>
       </div>

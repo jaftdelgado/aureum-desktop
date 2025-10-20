@@ -28,11 +28,12 @@
     "baseUrl": "src",
     "paths": {
       "@layouts/*": ["layouts/*"],
+      "@lib/*": ["lib/*"],
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@ui/*": ["components/ui/*"],
       "@scss/*": ["scss/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "tailwind.config.js"]
 }

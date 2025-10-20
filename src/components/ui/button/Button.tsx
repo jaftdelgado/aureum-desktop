@@ -1,6 +1,5 @@
 import React, { type ButtonHTMLAttributes, type ReactNode } from "react";
 import { Icon } from "@iconify/react";
-import "@ui/button/button.scss";
 
 type ButtonVariant =
   | "default"
@@ -28,14 +27,26 @@ export const Button: React.FC<ButtonProps> = ({
   className = "",
   ...props
 }) => {
-  const classes = ["btn", `btn--${variant}`, className]
+  const baseClasses =
+    "flex items-center justify-center gap-2 rounded-xl font-medium text-body transition-all disabled:opacity-60 disabled:pointer-events-none";
+
+  const variantClasses: Record<ButtonVariant, string> = {
+    default: "w-full px-4 py-2 bg-primaryBtn text-bg hover:bg-primaryHoverBtn",
+    destructive: "w-full px-4 py-2 bg-destructive text-white hover:bg-destructive/90",
+    outline: "w-full px-4 py-2 bg-transparent border border-accent text-text-dark hover:bg-accent",
+    secondary: "w-full px-4 py-2 bg-secondaryBtn text-white hover:bg-secondaryHoverBtn",
+    ghost: "w-full px-4 py-2 bg-transparent text-text-dark hover:bg-accent",
+    link: "w-auto p-0 bg-none border-none text-primaryText underline hover:text-primaryText/90",
+  };
+
+  const classes = [baseClasses, variantClasses[variant], className]
     .filter(Boolean)
     .join(" ");
 
   return (
     <button className={classes} {...props}>
       {icon && <Icon icon={icon} width={iconWidth} height={iconHeight} />}
-      <span className="btn-label">{children}</span>
+      <span>{children}</span>
     </button>
   );
 };
