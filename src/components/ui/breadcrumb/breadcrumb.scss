@@ -1,7 +1,11 @@
+@import "@scss/colors.scss";
+@import "@scss/texts.scss";
+
 .breadcrumb {
   display: flex;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: $size-small;
+  font-weight: 400;
 
   .breadcrumb-item {
     display: flex;
@@ -26,8 +30,8 @@
   }
 
   .breadcrumb-current {
-    font-weight: 600;
-    color: #fff;
+    font-weight: 500;
+    color: $color-primary-text;
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
