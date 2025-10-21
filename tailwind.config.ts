@@ -1,24 +1,20 @@
 import type { Config } from "tailwindcss";
-import { colors } from "./src/styles/theme";
 
 const config: Config = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        bg: colors.bg,
-        separator: colors.separator,
-        primaryText: colors.primaryText,
-        secondaryText: colors.secondaryText,
-        primaryBtn: colors.primaryBtn,
-        primaryHoverBtn: colors.primaryHoverBtn,
-        secondaryBtn: colors.secondaryBtn,
-        secondaryHoverBtn: colors.secondaryHoverBtn,
-        sidebarHoverBtn: colors.sidebarHoverBtn,
-        sidebarActiveBtn: colors.sidebarActiveBtn,
+        bg: "var(--bg)",
+        outline: "var(--outline)",
+        primaryText: "var(--primary-text)",
+        secondaryText: "var(--secondary-text)",
+        primaryBtn: "var(--primary-btn)",
+        primaryHoverBtn: "var(--primary-hover-btn)",
+        secondaryBtn: "var(--secondary-btn)",
+        secondaryHoverBtn: "var(--secondary-hover-btn)",
+        sidebarHoverBtn: "var(--sidebar-hover-btn)",
+        sidebarActiveBtn: "var(--sidebar-active-btn)",
       },
       fontFamily: {
         geist: ["Geist", "sans-serif"],
@@ -36,6 +32,7 @@ const config: Config = {
     },
   },
   plugins: [],
+  darkMode: "class", // importante para poder alternar tema con .dark
 };
 
 export default config;

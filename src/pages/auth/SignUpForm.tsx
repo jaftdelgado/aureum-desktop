@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@components/ui/button/Button";
+import { Button } from "@components/ui/Button";
 import { Label } from "@components/ui/Label";
 import { Input } from "@components/ui/Input";
 import Stepper, { Step } from "@components/ui/stepper/Stepper";

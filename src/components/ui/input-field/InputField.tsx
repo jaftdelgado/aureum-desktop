@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@components/ui/button/Button";
+import { Button } from "@components/ui/Button";
 import { Input } from "@components/ui/input/Input";
 import { Textarea } from "@components/ui/textarea/TextArea";
 import "./input-field.scss";

@@ -4,7 +4,7 @@ import {
   InputGroupInput,
   InputGroupAddon,
 } from "@components/ui/input-field/InputField";
-import { Button } from "@ui/button/Button";
+import { Button } from "@components/ui/Button";
 import "./teams.scss";
 import "@scss/texts.scss";
 

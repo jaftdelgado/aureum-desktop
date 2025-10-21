@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "@components/ui/button/Button";
+import { Button } from "@components/ui/Button";
 import "@ui/sidebar/sidebar.scss";
 
 export type SidebarItem =

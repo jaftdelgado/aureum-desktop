@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@components/ui/button/Button";
+import { Button } from "@components/ui/Button";
 import { Label } from "@components/ui/Label";
 import { Separator } from "@components/ui/Separator";
 import { Input } from "@components/ui/Input";
@@ -10,7 +10,7 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
   return (
-    <div className="bg-[#121212] border border-sidebarHoverBtn p-8 rounded-xl w-full max-w-xs text-center">
+    <div className="bg-bg border border-sidebarHoverBtn p-8 rounded-xl w-full max-w-xs text-center">
       <Label variant="subtitle" color="primary">
         Bienvenido a Aureum
       </Label>

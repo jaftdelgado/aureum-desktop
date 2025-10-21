@@ -1,0 +1,29 @@
+:root {
+  --bg: #ffffff;
+  --outline: #e2e2e2;
+
+  --primary-text: #101010;
+  --secondary-text: #86868a;
+
+  --primary-btn: #101010;
+  --primary-hover-btn: #343434;
+  --secondary-btn: #ebebf0;
+  --secondary-hover-btn: #e0e0e3;
+  --sidebar-hover-btn: #ebebf0;
+  --sidebar-active-btn: #e0e0e3;
+}
+
+.dark {
+  --bg: #101010;
+  --outline: #2d2d2d;
+
+  --primary-text: #ededed;
+  --secondary-text: #a1a1a1;
+
+  --primary-btn: #ededed;
+  --primary-hover-btn: #cccccc;
+  --secondary-btn: #262626;
+  --secondary-hover-btn: #3c3c3c;
+  --sidebar-hover-btn: #242424;
+  --sidebar-active-btn: #323232;
+}
