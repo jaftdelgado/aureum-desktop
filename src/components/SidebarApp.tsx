@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Sidebar, type SidebarItem } from "@components/ui/sidebar/Sidebar"; // Alias
+import { Sidebar, type SidebarItem } from "@ui/Sidebar";
 
 export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -8,8 +8,18 @@ export const AppSidebar: React.FC = () => {
 
   const items: SidebarItem[] = [
     { type: "separator", label: "Principal" },
-    { type: "button", icon: "gravity-ui:compass", label: "Explorar", route: "/dashboard" },
-    { type: "button", icon: "gravity-ui:rectangles-4", label: "Equipos", route: "/dashboard/teams" },
+    {
+      type: "button",
+      icon: "gravity-ui:compass",
+      label: "Explorar",
+      route: "/dashboard",
+    },
+    {
+      type: "button",
+      icon: "gravity-ui:rectangles-4",
+      label: "Equipos",
+      route: "/dashboard/teams",
+    },
   ];
 
   const handleNavigate = (route: string) => {

@@ -18,15 +18,21 @@ export const Label: React.FC<LabelProps> = ({
 }) => {
   const variantClasses: Record<LabelVariant, string> = {
     header: "text-h1 font-medium leading-h1 text-primaryText",
-    subtitle: "text-subtitle font-normal leading-5 text-primaryText font-semibold",
+    subtitle:
+      "text-subtitle font-normal leading-5 text-primaryText font-semibold",
     body:
       color === "primary"
         ? "text-body font-normal leading-body text-primaryText"
         : "text-body font-normal leading-body text-secondaryText",
-    small: "text-small font-normal leading-4 text-secondaryText",
+    small:
+      color === "primary"
+        ? "text-small font-normal leading-4 text-primaryText"
+        : "text-small font-normal leading-4 text-secondaryText",
   };
 
-  const classes = [variantClasses[variant], className].filter(Boolean).join(" ");
+  const classes = [variantClasses[variant], className]
+    .filter(Boolean)
+    .join(" ");
 
   return <span className={classes}>{children}</span>;
 };

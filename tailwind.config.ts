@@ -6,6 +6,7 @@ const config: Config = {
     extend: {
       colors: {
         bg: "var(--bg)",
+        panel: "var(--panel)",
         outline: "var(--outline)",
         primaryText: "var(--primary-text)",
         secondaryText: "var(--secondary-text)",
@@ -23,7 +24,7 @@ const config: Config = {
         h1: "1.75rem",
         subtitle: "1.25rem",
         body: "0.9rem",
-        small: "0.8rem",
+        small: "0.82rem",
       },
       lineHeight: {
         h1: "1.1",
@@ -32,7 +33,7 @@ const config: Config = {
     },
   },
   plugins: [],
-  darkMode: "class", // importante para poder alternar tema con .dark
+  darkMode: "class",
 };
 
 export default config;

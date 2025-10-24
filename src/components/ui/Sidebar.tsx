@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "@components/ui/Button";
-import "@ui/sidebar/sidebar.scss";
+import { Button } from "@ui/Button";
 
 export type SidebarItem =
   | {
@@ -34,18 +33,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const handleClick = (route: string) => {
     setActiveRoute(route);
-    if (onNavigate) onNavigate(route);
+    onNavigate?.(route);
   };
 
   const renderSeparator = (label: string, key: string | number) => (
-    <div key={key} className="sidebar__separator">
+    <div
+      key={key}
+      className="text-secondaryText text-[0.7rem] font-medium uppercase mt-4 mb-1 pl-2 select-none"
+    >
       {label}
     </div>
   );
 
   return (
-    <aside className={`sidebar ${className}`}>
-      <nav className="sidebar__nav">
+    <aside
+      className={`flex flex-col w-60 h-full bg-panel text-white p-4 border-r border-outline ${className}`}
+    >
+      <nav className="flex flex-col gap-1 flex-1">
         {items.map((item, index) =>
           item.type === "separator" ? (
             renderSeparator(item.label, `sep-${index}`)
@@ -54,9 +58,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
               key={item.route}
               variant={activeRoute === item.route ? "secondary" : "thirdy"}
               icon={item.icon}
-              className={`sidebar__btn ${
-                activeRoute === item.route ? "active" : ""
-              }`}
+              className={`w-full justify-start flex items-center gap-2 pl-3 transition-colors duration-200
+                ${
+                  activeRoute === item.route
+                    ? "bg-secondaryBtn text-blue-400 font-medium"
+                    : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                }
+              `}
               onClick={() => handleClick(item.route)}
             >
               {item.label}

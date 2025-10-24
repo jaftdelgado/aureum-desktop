@@ -27,6 +27,7 @@
     /* Alias */
     "baseUrl": "src",
     "paths": {
+      "@assets/*": ["assets/*"],
       "@layouts/*": ["layouts/*"],
       "@lib/*": ["lib/*"],
       "@pages/*": ["pages/*"],

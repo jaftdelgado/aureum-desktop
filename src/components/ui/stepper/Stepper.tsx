@@ -112,7 +112,6 @@ export default function Stepper({
           {children}
         </StepCounter>
 
-        {/* Contenido del paso */}
         <StepContentWrapper
           isCompleted={isCompleted}
           currentStep={currentStep}
@@ -122,7 +121,6 @@ export default function Stepper({
           {stepsArray[currentStep - 1]}
         </StepContentWrapper>
 
-        {/* Navegación de botones */}
         {!isCompleted && (
           <StepNavigation
             currentStep={currentStep}
@@ -142,7 +140,6 @@ export default function Stepper({
   );
 }
 
-// --- Step Content Wrapper ---
 interface StepContentWrapperProps {
   isCompleted: boolean;
   currentStep: number;
@@ -182,7 +179,6 @@ function StepContentWrapper({
   );
 }
 
-// --- Slide Transition ---
 interface SlideTransitionProps {
   children: ReactNode;
   direction: number;
@@ -218,7 +214,6 @@ function SlideTransition({
   );
 }
 
-// --- Motion Variants ---
 const stepVariants: Variants = {
   enter: (dir: number) => ({
     x: dir >= 0 ? "-100%" : "100%",
@@ -234,7 +229,6 @@ const stepVariants: Variants = {
   }),
 };
 
-// --- Step wrapper ---
 export function Step({ children }: { children: ReactNode }) {
   return <div className="px-8">{children}</div>;
 }

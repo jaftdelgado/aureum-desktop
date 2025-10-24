@@ -15,13 +15,10 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin }) => {
         initialStep={1}
         disableStepClickNavigation={true}
         headerContent={
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-2">
             <Label variant="subtitle" color="primary">
               Crear cuenta
             </Label>
-            <Button variant="link" type="button" onClick={onShowLogin}>
-              Iniciar sesión
-            </Button>
           </div>
         }
         onStepChange={(step) => console.log("Step:", step)}
@@ -31,11 +28,19 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin }) => {
       >
         <Step>
           <div className="flex flex-col gap-4 text-left">
+            {/* Label arriba */}
             <Label variant="body" color="secondary">
               Información personal
             </Label>
-            <Input placeholder="Nombre" />
-            <Input placeholder="Apellido" />
+            <div className="flex gap-4">
+              <Input label="Nombre(s)" placeholder="Ej: Juan" />
+              <Input label="Apellido(s)" placeholder="Ej: Hernández" />
+            </div>
+
+            {/* Fila con input completo */}
+            <div>
+              <Input placeholder="Correo electrónico" />
+            </div>
           </div>
         </Step>
 

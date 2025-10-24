@@ -1,0 +1,11 @@
+{
+  "signin": {
+    "welcome": "Bienvenido a Aureum",
+    "usernameOrEmail": "Usuario o correo",
+    "password": "Contraseña",
+    "login": "Iniciar sesión",
+    "continueWithGoogle": "Continuar con Google",
+    "noAccount": "¿No tienes una cuenta?",
+    "createAccount": "Crear cuenta"
+  }
+}

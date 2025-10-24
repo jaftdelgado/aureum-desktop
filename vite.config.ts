@@ -4,6 +4,7 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/",
   plugins: [
     react({
       babel: {
@@ -13,6 +14,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      "@assets": path.resolve(__dirname, "src/assets"),
       "@layouts": path.resolve(__dirname, "src/layouts"),
       "@lib": path.resolve(__dirname, "src/lib"),
       "@pages": path.resolve(__dirname, "src/pages"),

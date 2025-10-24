@@ -1,40 +1,42 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@components/ui/Button";
 import { Label } from "@components/ui/Label";
 import { Separator } from "@components/ui/Separator";
 import { Input } from "@components/ui/Input";
+import GoogleSignIn from "@components/GoogleSignIn";
 
 interface LoginFormProps {
   onShowRegister: () => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
+  const { t } = useTranslation();
+
   return (
-    <div className="bg-bg border border-sidebarHoverBtn p-8 rounded-xl w-full max-w-xs text-center">
+    <div className="bg-panel border border-sidebarHoverBtn p-8 rounded-xl w-full max-w-xs text-center">
       <Label variant="subtitle" color="primary">
-        Bienvenido a Aureum
+        {t("signin.welcome")}
       </Label>
 
       <form className="flex flex-col gap-4 mt-6">
-        <Input type="email" placeholder="Usuario o correo" />
-        <Input type="password" placeholder="Contraseña" />
+        <Input type="email" placeholder={t("signin.usernameOrEmail")} />
+        <Input type="password" placeholder={t("signin.password")} />
 
         <Button variant="default" className="mt-2" type="submit">
-          Iniciar sesión
+          {t("signin.login")}
         </Button>
 
         <Separator variant="line" className="my-1" />
 
-        <Button variant="secondary" type="button">
-          Continuar con Google
-        </Button>
+        <GoogleSignIn />
 
         <div className="flex justify-center items-center gap-1 text-sm mt-4">
           <Label variant="body" color="secondary">
-            ¿No tienes una cuenta?
+            {t("signin.noAccount")}
           </Label>
           <Button variant="link" type="button" onClick={onShowRegister}>
-            Crear cuenta
+            {t("signin.createAccount")}
           </Button>
         </div>
       </form>

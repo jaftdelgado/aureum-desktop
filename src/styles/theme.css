@@ -1,5 +1,6 @@
 :root {
   --bg: #ffffff;
+  --panel: #f7f7f9;
   --outline: #e2e2e2;
 
   --primary-text: #101010;
@@ -15,10 +16,11 @@
 
 .dark {
   --bg: #101010;
+  --panel: #141415E6;
   --outline: #2d2d2d;
 
   --primary-text: #ededed;
-  --secondary-text: #a1a1a1;
+  --secondary-text: #626265;
 
   --primary-btn: #ededed;
   --primary-hover-btn: #cccccc;
