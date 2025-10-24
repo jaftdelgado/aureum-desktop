@@ -26,9 +26,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin }) => {
         backButtonText="Atrás"
         nextButtonText="Siguiente"
       >
+        {/* Paso 1: Información personal */}
         <Step>
           <div className="flex flex-col gap-4 text-left">
-            {/* Label arriba */}
             <Label variant="body" color="secondary">
               Información personal
             </Label>
@@ -36,10 +36,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin }) => {
               <Input label="Nombre(s)" placeholder="Ej: Juan" />
               <Input label="Apellido(s)" placeholder="Ej: Hernández" />
             </div>
-
-            {/* Fila con input completo */}
             <div>
-              <Input placeholder="Correo electrónico" />
+              <Input
+                label="Correo electrónico"
+                placeholder="correo@ejemplo.com"
+              />
             </div>
           </div>
         </Step>
@@ -49,8 +50,16 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin }) => {
             <Label variant="body" color="secondary">
               Credenciales
             </Label>
-            <Input type="email" placeholder="Correo electrónico" />
-            <Input type="password" placeholder="Contraseña" />
+            <Input
+              type="email"
+              label="Correo electrónico"
+              placeholder="correo@ejemplo.com"
+            />
+            <Input
+              type="password"
+              label="Contraseña"
+              placeholder="Contraseña"
+            />
           </div>
         </Step>
 
@@ -62,7 +71,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin }) => {
             <p className="text-body text-sm">
               Tu cuenta ha sido creada con éxito.
             </p>
-            <Button variant="default" type="button">
+            <Button variant="default" type="button" onClick={onShowLogin}>
               Finalizar
             </Button>
           </div>
