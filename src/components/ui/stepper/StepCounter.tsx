@@ -105,7 +105,7 @@ function StepIndicator({
           complete: {
             scale: 0.8,
             backgroundColor: "var(--primary-btn)",
-            color: "var(--secondary-text)",
+            color: "var(--panel)",
           },
         }}
         transition={{ duration: 0.3 }}

@@ -10,6 +10,7 @@ const config: Config = {
         outline: "var(--outline)",
         primaryText: "var(--primary-text)",
         secondaryText: "var(--secondary-text)",
+        destructive: "var(--destructive)",
         primaryBtn: "var(--primary-btn)",
         primaryHoverBtn: "var(--primary-hover-btn)",
         secondaryBtn: "var(--secondary-btn)",

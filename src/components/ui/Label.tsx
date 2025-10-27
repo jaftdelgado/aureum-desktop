@@ -1,7 +1,7 @@
 import React, { type ReactNode } from "react";
 
 type LabelVariant = "header" | "subtitle" | "body" | "small";
-type LabelColor = "primary" | "secondary";
+type LabelColor = "primary" | "secondary" | "destructive";
 
 interface LabelProps {
   children: ReactNode;
@@ -16,21 +16,20 @@ export const Label: React.FC<LabelProps> = ({
   color = "primary",
   className = "",
 }) => {
-  const variantClasses: Record<LabelVariant, string> = {
-    header: "text-h1 font-medium leading-h1 text-primaryText",
-    subtitle:
-      "text-subtitle font-normal leading-5 text-primaryText font-semibold",
-    body:
-      color === "primary"
-        ? "text-body font-normal leading-body text-primaryText"
-        : "text-body font-normal leading-body text-secondaryText",
-    small:
-      color === "primary"
-        ? "text-small font-normal leading-4 text-primaryText"
-        : "text-small font-normal leading-4 text-secondaryText",
+  const colorClasses: Record<LabelColor, string> = {
+    primary: "text-primaryText",
+    secondary: "text-secondaryText",
+    destructive: "text-destructive",
   };
 
-  const classes = [variantClasses[variant], className]
+  const variantClasses: Record<LabelVariant, string> = {
+    header: "text-h1 font-medium leading-h1",
+    subtitle: "text-subtitle font-semibold leading-5",
+    body: "text-body font-normal leading-body",
+    small: "text-small font-normal leading-4",
+  };
+
+  const classes = [variantClasses[variant], colorClasses[color], className]
     .filter(Boolean)
     .join(" ");
 

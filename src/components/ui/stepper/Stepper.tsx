@@ -1,6 +1,12 @@
-import React, { useState, Children, useRef, useLayoutEffect } from "react";
+import React, {
+  useState,
+  Children,
+  useRef,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import { motion, AnimatePresence } from "motion/react";
-import type { HTMLAttributes, ReactNode } from "react";
+import type { ReactNode, HTMLAttributes } from "react";
 import type { Variants } from "motion/react";
 import { StepCounter } from "./StepCounter";
 import { StepNavigation } from "./StepNavigation";
@@ -8,6 +14,7 @@ import { StepNavigation } from "./StepNavigation";
 interface StepperProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   initialStep?: number;
+  controlledStep?: number; // <--- paso controlado opcional
   onStepChange?: (step: number) => void;
   onFinalStepCompleted?: () => void;
   headerContent?: ReactNode;
@@ -26,11 +33,14 @@ interface StepperProps extends HTMLAttributes<HTMLDivElement> {
     currentStep: number;
     onStepClick: (clicked: number) => void;
   }) => ReactNode;
+  onNextStep?: () => void; // <--- se llama antes de avanzar
+  onBackStep?: () => void; // <--- se llama antes de retroceder
 }
 
 export default function Stepper({
   children,
   initialStep = 1,
+  controlledStep,
   headerContent,
   onStepChange = () => {},
   onFinalStepCompleted = () => {},
@@ -45,41 +55,52 @@ export default function Stepper({
   disableStepIndicators = false,
   disableStepClickNavigation = false,
   renderStepIndicator,
+  onNextStep,
+  onBackStep,
   ...rest
 }: StepperProps) {
-  const [currentStep, setCurrentStep] = useState<number>(initialStep);
+  const [internalStep, setInternalStep] = useState<number>(initialStep);
   const [direction, setDirection] = useState<number>(0);
 
   const stepsArray = Children.toArray(children);
   const totalSteps = stepsArray.length;
+  const currentStep = controlledStep ?? internalStep; // usa control externo si existe
   const isCompleted = currentStep > totalSteps;
 
-  const updateStep = (newStep: number) => {
-    setCurrentStep(newStep);
-    if (newStep > totalSteps) {
-      onFinalStepCompleted();
-    } else {
-      onStepChange(newStep);
-    }
-  };
+  const updateStep = useCallback(
+    (newStep: number) => {
+      if (!controlledStep) setInternalStep(newStep);
+      if (newStep > totalSteps) onFinalStepCompleted();
+      else onStepChange(newStep);
+    },
+    [controlledStep, onFinalStepCompleted, onStepChange, totalSteps]
+  );
 
-  const handleBack = () => {
-    if (currentStep > 1) {
-      setDirection(-1);
-      updateStep(currentStep - 1);
-    }
-  };
-
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentStep < totalSteps) {
       setDirection(1);
       updateStep(currentStep + 1);
     }
+  }, [currentStep, totalSteps, updateStep]);
+
+  const handleBack = useCallback(() => {
+    if (currentStep > 1) {
+      setDirection(-1);
+      updateStep(currentStep - 1);
+    }
+  }, [currentStep, updateStep]);
+
+  const handleNextClick = () => {
+    if (onNextStep) {
+      onNextStep(); // solo avanza si la función externa lo permite (ej: validación)
+    } else {
+      handleNext();
+    }
   };
 
-  const handleComplete = () => {
-    setDirection(1);
-    updateStep(totalSteps + 1);
+  const handleBackClick = () => {
+    if (onBackStep) onBackStep();
+    handleBack();
   };
 
   return (
@@ -88,8 +109,7 @@ export default function Stepper({
       {...rest}
     >
       <div
-        className={`mx-auto w-full max-w-md rounded-3xl shadow-xl ${stepCircleContainerClassName}`}
-        style={{ border: "1px solid #222" }}
+        className={`bg-panel border border-sidebarHoverBtn mx-auto w-full max-w-md rounded-xl ${stepCircleContainerClassName}`}
       >
         {headerContent && (
           <div className="flex items-center justify-between p-8 pb-0">
@@ -125,9 +145,9 @@ export default function Stepper({
           <StepNavigation
             currentStep={currentStep}
             totalSteps={totalSteps}
-            handleBack={handleBack}
-            handleNext={handleNext}
-            handleComplete={handleComplete}
+            handleBack={handleBackClick}
+            handleNext={handleNextClick}
+            handleComplete={handleNext}
             backButtonText={backButtonText}
             nextButtonText={nextButtonText}
             backButtonProps={backButtonProps}
@@ -193,9 +213,7 @@ function SlideTransition({
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useLayoutEffect(() => {
-    if (containerRef.current) {
-      onHeightReady(containerRef.current.offsetHeight);
-    }
+    if (containerRef.current) onHeightReady(containerRef.current.offsetHeight);
   }, [children, onHeightReady]);
 
   return (
@@ -215,18 +233,9 @@ function SlideTransition({
 }
 
 const stepVariants: Variants = {
-  enter: (dir: number) => ({
-    x: dir >= 0 ? "-100%" : "100%",
-    opacity: 0,
-  }),
-  center: {
-    x: "0%",
-    opacity: 1,
-  },
-  exit: (dir: number) => ({
-    x: dir >= 0 ? "50%" : "-50%",
-    opacity: 0,
-  }),
+  enter: (dir: number) => ({ x: dir >= 0 ? "-100%" : "100%", opacity: 0 }),
+  center: { x: "0%", opacity: 1 },
+  exit: (dir: number) => ({ x: dir >= 0 ? "50%" : "-50%", opacity: 0 }),
 };
 
 export function Step({ children }: { children: ReactNode }) {

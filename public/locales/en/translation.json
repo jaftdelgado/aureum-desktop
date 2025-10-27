@@ -7,5 +7,31 @@
     "continueWithGoogle": "Continue with Google",
     "noAccount": "Don't have an account?",
     "createAccount": "Register"
+  },
+  "signup": {
+    "createAccount": "Register",
+    "personalInfo": "Personal Information",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Ex: John",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Ex: Smith",
+    "email": "Email",
+    "emailPlaceholder": "example@email.com",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "user.example16",
+    "password": "Password",
+    "credentials": "Credentials",
+    "allSet": "All set!",
+    "accountCreated": "Your account has been successfully created.",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "accountType": "Account type",
+    "student": "Student",
+    "teacher": "Teacher"
+  },
+  "validation": {
+    "required": "Required field",
+    "emailInvalid": "Must be a valid email"
   }
 }
