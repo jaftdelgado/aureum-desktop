@@ -4,9 +4,13 @@
     "usernameOrEmail": "Usuario o correo",
     "password": "Contraseña",
     "login": "Iniciar sesión",
-    "continueWithGoogle": "Continuar con Google",
     "noAccount": "¿No tienes una cuenta?",
-    "createAccount": "Crear cuenta"
+    "createAccount": "Crear cuenta",
+    "errors": {
+      "identifierRequired": "Ingresa tu correo o usuario.",
+      "passwordRequired": "Ingresa tu contraseña.",
+      "invalidCredentials": "Correo/usuario o contraseña incorrectos."
+    }
   },
   "signup": {
     "createAccount": "Crear cuenta",

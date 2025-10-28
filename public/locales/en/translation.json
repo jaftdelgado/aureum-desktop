@@ -6,7 +6,12 @@
     "login": "Login",
     "continueWithGoogle": "Continue with Google",
     "noAccount": "Don't have an account?",
-    "createAccount": "Register"
+    "createAccount": "Register",
+    "errors": {
+      "identifierRequired": "Enter your email or username.",
+      "passwordRequired": "Enter your password.",
+      "invalidCredentials": "Incorrect email/username or password."
+    }
   },
   "signup": {
     "createAccount": "Register",
