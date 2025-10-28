@@ -11,7 +11,8 @@
       "identifierRequired": "Enter your email or username.",
       "passwordRequired": "Enter your password.",
       "passwordPlaceholder": "Enter your password",
-      "invalidCredentials": "Incorrect email/username or password."
+      "invalidCredentials": "Incorrect credentials.",
+      "networkError": "Connection error, please check your network."
     }
   },
   "signup": {

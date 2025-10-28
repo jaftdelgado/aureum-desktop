@@ -5,8 +5,8 @@ import { Label } from "@components/ui/Label";
 import { Separator } from "@components/ui/Separator";
 import { Input } from "@components/ui/Input";
 import GoogleSignIn from "@components/GoogleSignIn";
-import { login } from "@lib/auth";
 import { useNavigate } from "react-router-dom";
+import { login, isNetworkError, isApiError, ApiError } from "@lib/auth";
 
 interface LoginFormProps {
   onShowRegister: () => void;
@@ -34,8 +34,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
       const password = String(fd.get("password") || "");
 
       const newErrors: FieldErrors = {};
-      if (!identifier) newErrors.identifier = t("signin.errors.identifierRequired");
-      if (!password)   newErrors.password   = t("signin.errors.passwordRequired");
+      if (!identifier) {
+        newErrors.identifier = t("signin.errors.identifierRequired", {
+          defaultValue: "Ingresa tu correo o usuario.",
+        });
+      }
+      if (!password) {
+        newErrors.password = t("signin.errors.passwordRequired", {
+          defaultValue: "Ingresa tu contraseña.",
+        });
+      }
 
       if (newErrors.identifier || newErrors.password) {
         setErrors(newErrors);
@@ -43,21 +51,35 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
       }
 
       const { access_token } = await login(identifier, password);
-
-      // Si usas Bearer en el resto de llamadas:
+      
       localStorage.setItem("aureum_token", access_token);
-      // Si migras a cookie httpOnly, elimina la línea de arriba y añade credentials: "include" en tus fetch.
 
       navigate("/dashboard", { replace: true });
-    } catch (err: any) {
-      // Muestra el error a nivel de contraseña (o distribúyelo como prefieras)
-      setErrors((prev) => ({
-        ...prev,
-        password:
-          err?.message ||
-          t("signin.invalidCredentials") ||
-          "Credenciales inválidas.",
-      }));
+    } catch (err: unknown) {
+      let uiMsg: string;
+
+      if (isNetworkError(err)) {
+        uiMsg = t("signin.errors.networkError", {
+          defaultValue: "Error de conexión, verifica tu red.",
+        });
+      } else if (isApiError(err)) {
+        const e = err as ApiError;
+        if (e.status === 401 || /incorrect|invalid/i.test(e.message)) {
+          uiMsg = t("signin.errors.invalidCredentials", {
+            defaultValue: "Correo/usuario o contraseña incorrectos.",
+          });
+        } else {
+          uiMsg = t("signup.error.generic", {
+            defaultValue: "Ocurrió un error. Inténtalo de nuevo.",
+          });
+        }
+      } else {
+        uiMsg = t("signup.error.generic", {
+          defaultValue: "Ocurrió un error. Inténtalo de nuevo.",
+        });
+      }
+
+      setErrors((prev) => ({ ...prev, password: uiMsg }));
     } finally {
       setLoading(false);
     }
@@ -91,7 +113,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
         />
 
         <Button variant="default" className="mt-2" type="submit" disabled={loading}>
-          {loading ? t("common.loading") : t("signin.login")}
+          {loading
+            ? t("common.loading", { defaultValue: "Cargando..." })
+            : t("signin.login")}
         </Button>
 
         <Separator variant="line" className="my-1" />
