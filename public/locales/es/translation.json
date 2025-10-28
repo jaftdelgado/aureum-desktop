@@ -8,6 +8,7 @@
     "createAccount": "Crear cuenta",
     "errors": {
       "identifierRequired": "Ingresa tu correo o usuario.",
+      "passwordPlaceholder": "Ingresa tu contraseña",
       "passwordRequired": "Ingresa tu contraseña.",
       "invalidCredentials": "Correo/usuario o contraseña incorrectos."
     }
@@ -21,21 +22,33 @@
     "lastNamePlaceholder": "Ej: Hernández",
     "email": "Correo electrónico",
     "emailPlaceholder": "correo@ejemplo.com",
+    "passwordPlaceholder": "Ingresa tu contraseña",
     "usernameLabel": "Nombre de usuario",
     "usernamePlaceholder": "usuario.ejemplo16",
     "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña", 
+    "confirmPasswordPlaceholder": "Repite tu contraseña", 
     "credentials": "Credenciales",
     "allSet": "¡Todo listo!",
     "accountCreated": "Tu cuenta ha sido creada con éxito.",
     "back": "Atrás",
     "next": "Siguiente",
+    "submitting": "Enviando...", 
     "finish": "Finalizar",
+    "goToLogin": "Ir a Iniciar Sesión", 
     "accountType": "Tipo de cuenta",
     "student": "Estudiante",
-    "teacher": "Profesor"
+    "teacher": "Profesor",
+    "error": { 
+      "generic": "Ocurrió un error. Inténtalo de nuevo.",
+      "network": "Error de conexión. Verifica tu red."
+    }
   },
   "validation": {
-    "required": "Campo obligatorio",
-    "emailInvalid": "Debe ser un correo electrónico válido"
+    "required": "{{field}} requerido.",
+    "email": "Debe ser un correo electrónico válido.", 
+    "minLength": "{{field}} debe tener al menos {{min}} caracteres.", 
+    "invalidSelection": "Selección inválida.", 
+    "passwordsMustMatch": "Las contraseñas deben coincidir." 
   }
 }

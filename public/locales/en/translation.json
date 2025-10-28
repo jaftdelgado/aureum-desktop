@@ -4,12 +4,13 @@
     "usernameOrEmail": "Username or email",
     "password": "Password",
     "login": "Login",
-    "continueWithGoogle": "Continue with Google",
+    "continueWithGoogle": "Continue with Google", 
     "noAccount": "Don't have an account?",
     "createAccount": "Register",
     "errors": {
       "identifierRequired": "Enter your email or username.",
       "passwordRequired": "Enter your password.",
+      "passwordPlaceholder": "Enter your password",
       "invalidCredentials": "Incorrect email/username or password."
     }
   },
@@ -24,19 +25,31 @@
     "emailPlaceholder": "example@email.com",
     "usernameLabel": "Username",
     "usernamePlaceholder": "user.example16",
+    "passwordPlaceholder": "Enter your password",
     "password": "Password",
+    "confirmPassword": "Confirm Password", 
+    "confirmPasswordPlaceholder": "Repeat your password", 
     "credentials": "Credentials",
     "allSet": "All set!",
     "accountCreated": "Your account has been successfully created.",
     "back": "Back",
     "next": "Next",
+    "submitting": "Submitting...", 
     "finish": "Finish",
+    "goToLogin": "Go to Login", 
     "accountType": "Account type",
     "student": "Student",
-    "teacher": "Teacher"
+    "teacher": "Teacher",
+    "error": { 
+      "generic": "An error occurred. Please try again.",
+      "network": "Connection error. Please check your network."
+    }
   },
   "validation": {
-    "required": "Required field",
-    "emailInvalid": "Must be a valid email"
+    "required": "{{field}} is required.", 
+    "email": "Must be a valid email.", 
+    "minLength": "{{field}} must be at least {{min}} characters.", 
+    "invalidSelection": "Invalid selection.", 
+    "passwordsMustMatch": "Passwords must match."
   }
 }
