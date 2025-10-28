@@ -10,7 +10,8 @@
       "identifierRequired": "Ingresa tu correo o usuario.",
       "passwordPlaceholder": "Ingresa tu contraseña",
       "passwordRequired": "Ingresa tu contraseña.",
-      "invalidCredentials": "Correo/usuario o contraseña incorrectos."
+      "invalidCredentials": "Credenciales incorrectas.",
+      "networkError": "Error de conexión, verifica tu red."
     }
   },
   "signup": {
