@@ -7,21 +7,42 @@ import { Input } from "@components/ui/Input";
 import GoogleSignIn from "@components/GoogleSignIn";
 import { useNavigate } from "react-router-dom";
 import { login, isNetworkError, isApiError, ApiError } from "@lib/auth";
+import { useFormValidation } from "@hooks/useFormValidation";
 
 interface LoginFormProps {
   onShowRegister: () => void;
 }
 
-type FieldErrors = {
-  identifier?: string;
-  password?: string;
-};
+interface LoginFields {
+  identifier: string;
+  password: string;
+}
 
 const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<FieldErrors>({});
+
+  const { errors, setErrors, validateFields } = useFormValidation<LoginFields>([
+    {
+      field: "identifier",
+      validate: (value) =>
+        !String(value).trim()
+          ? t("signin.errors.identifierRequired", {
+              defaultValue: "Ingresa tu correo o usuario.",
+            })
+          : null,
+    },
+    {
+      field: "password",
+      validate: (value) =>
+        !String(value).trim()
+          ? t("signin.errors.passwordRequired", {
+              defaultValue: "Ingresa tu contraseña.",
+            })
+          : null,
+    },
+  ]);
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -30,30 +51,22 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
 
     try {
       const fd = new FormData(e.currentTarget);
-      const identifier = String(fd.get("identifier") || "").trim();
-      const password = String(fd.get("password") || "");
+      const formData: LoginFields = {
+        identifier: String(fd.get("identifier") || "").trim(),
+        password: String(fd.get("password") || ""),
+      };
 
-      const newErrors: FieldErrors = {};
-      if (!identifier) {
-        newErrors.identifier = t("signin.errors.identifierRequired", {
-          defaultValue: "Ingresa tu correo o usuario.",
-        });
-      }
-      if (!password) {
-        newErrors.password = t("signin.errors.passwordRequired", {
-          defaultValue: "Ingresa tu contraseña.",
-        });
-      }
-
-      if (newErrors.identifier || newErrors.password) {
-        setErrors(newErrors);
+      const isValid = validateFields(formData);
+      if (!isValid) {
+        setLoading(false);
         return;
       }
 
-      const { access_token } = await login(identifier, password);
-      
+      const { access_token } = await login(
+        formData.identifier,
+        formData.password
+      );
       localStorage.setItem("aureum_token", access_token);
-
       navigate("/dashboard", { replace: true });
     } catch (err: unknown) {
       let uiMsg: string;
@@ -86,16 +99,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
   };
 
   return (
-    <div className="bg-panel border border-sidebarHoverBtn p-8 rounded-xl w-full max-w-xs text-center">
-      <Label variant="subtitle" color="primary">
-        {t("signin.welcome")}
+    <div className="bg-panel border border-sidebarHoverBtn p-8 rounded-xl w-full max-w-xs">
+      <Label
+        variant="subtitle"
+        color="primary"
+        className="text-left self-start"
+      >
+        {t("signin.title")}
       </Label>
 
       <form className="flex flex-col gap-4 mt-6" onSubmit={onSubmit} noValidate>
         <Input
           type="email"
           name="identifier"
-          label={t("signin.usernameOrEmail")}
           placeholder={t("signin.usernameOrEmail")}
           autoComplete="username"
           error={errors.identifier}
@@ -105,25 +121,32 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
         <Input
           type="password"
           name="password"
-          label={t("signin.password")}
           placeholder={t("signin.password")}
           autoComplete="current-password"
           error={errors.password}
           disabled={loading}
         />
 
-        <Button variant="default" className="mt-2" type="submit" disabled={loading}>
+        <Button
+          variant="default"
+          className="mt-2"
+          type="submit"
+          disabled={loading}
+        >
           {loading
             ? t("common.loading", { defaultValue: "Cargando..." })
             : t("signin.login")}
         </Button>
 
         <Separator variant="line" className="my-1" />
-
         <GoogleSignIn />
 
-        <div className="flex justify-center items-center gap-1 text-sm mt-4">
-          <Label variant="body" color="secondary">
+        <div className="flex justify-center items-center gap-1 mt-4 text-left self-start">
+          <Label
+            variant="body"
+            color="secondary"
+            className="align-middle mr-0.5"
+          >
             {t("signin.noAccount")}
           </Label>
           <Button variant="link" type="button" onClick={onShowRegister}>

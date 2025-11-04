@@ -23,9 +23,9 @@ const config: Config = {
       },
       fontSize: {
         h1: "1.75rem",
-        subtitle: "1.25rem",
-        body: "0.9rem",
-        small: "0.82rem",
+        subtitle: "1.3rem",
+        body: "0.825rem",
+        small: "0.75rem",
       },
       lineHeight: {
         h1: "1.1",

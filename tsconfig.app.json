@@ -30,6 +30,7 @@
       "@assets/*": ["assets/*"],
       "@layouts/*": ["layouts/*"],
       "@lib/*": ["lib/*"],
+      "@hooks/*": ["hooks/*"],
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@ui/*": ["components/ui/*"],

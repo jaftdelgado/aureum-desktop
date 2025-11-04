@@ -1,6 +1,6 @@
 {
   "signin": {
-    "welcome": "Bienvenido a Aureum",
+    "title": "Accede a tu cuenta",
     "usernameOrEmail": "Usuario o correo",
     "password": "Contraseña",
     "login": "Iniciar sesión",

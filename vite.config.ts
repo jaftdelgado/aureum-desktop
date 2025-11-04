@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => {
         "@assets": path.resolve(__dirname, "src/assets"),
         "@layouts": path.resolve(__dirname, "src/layouts"),
         "@lib": path.resolve(__dirname, "src/lib"),
+        "@hooks": path.resolve(__dirname, "src/hooks"),
         "@pages": path.resolve(__dirname, "src/pages"),
         "@ui": path.resolve(__dirname, "src/components/ui"),
         "@components": path.resolve(__dirname, "src/components"),
@@ -31,13 +32,12 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       proxy: {
-        // Llama desde el frontend a /auth/** → se reescribe a /** en el AuthService
-        "/auth": {
+        /*"/auth": {
           target: authTarget,
           changeOrigin: true,
           secure: false,
           rewrite: (p) => p.replace(/^\/auth/, ""),
-        },
+        },*/
       },
     },
   };

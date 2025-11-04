@@ -29,7 +29,7 @@ function Input({
           type={type}
           data-slot="input"
           className={cn(
-            "w-full rounded-xl px-4 py-2 font-medium outline-none transition-all",
+            "w-full rounded-xl px-4 py-2 outline-none transition-all",
             "bg-sidebarHoverBtn text-primaryText placeholder:text-secondaryText",
             "border border-sidebarHoverBtn focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn",
             "disabled:pointer-events-none disabled:opacity-60",

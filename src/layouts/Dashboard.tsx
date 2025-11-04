@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { AppSidebar } from "@components/SidebarApp";
-import { Breadcrumb } from "@ui/breadcrumb/Breadcrumb";
+import { Breadcrumb } from "@ui/Breadcrumb";
 
 export const DashboardLayout: React.FC = () => {
   return (

@@ -24,7 +24,7 @@ export const Label: React.FC<LabelProps> = ({
 
   const variantClasses: Record<LabelVariant, string> = {
     header: "text-h1 font-medium leading-h1",
-    subtitle: "text-subtitle font-semibold leading-5",
+    subtitle: "text-subtitle font-medium leading-5",
     body: "text-body font-normal leading-body",
     small: "text-small font-normal leading-4",
   };
