@@ -32,12 +32,12 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       proxy: {
-        /*"/auth": {
+        "/auth": {
           target: authTarget,
           changeOrigin: true,
           secure: false,
           rewrite: (p) => p.replace(/^\/auth/, ""),
-        },*/
+        },
       },
     },
   };
