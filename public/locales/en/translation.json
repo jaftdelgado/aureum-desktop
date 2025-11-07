@@ -52,5 +52,10 @@
     "minLength": "{{field}} must be at least {{min}} characters.", 
     "invalidSelection": "Invalid selection.", 
     "passwordsMustMatch": "Passwords must match."
+  },
+  "assets": {
+    "title": "Financial Assets",
+    "description": "Manage your simulated market: add your own assets and explore everything available.",
+    "newAssetButton": "New Asset"
   }
 }

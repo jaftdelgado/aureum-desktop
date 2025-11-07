@@ -51,5 +51,10 @@
     "minLength": "{{field}} debe tener al menos {{min}} caracteres.", 
     "invalidSelection": "Selección inválida.", 
     "passwordsMustMatch": "Las contraseñas deben coincidir." 
+  },
+  "assets": {
+    "title": "Activos Financieros",
+    "description": "Gestiona tu mercado simulado: añade activos personalizados y explora todos los activos disponibles.",
+    "newAssetButton": "Nuevo Activo"
   }
 }

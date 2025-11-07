@@ -22,9 +22,9 @@ const config: Config = {
         geist: ["Geist", "sans-serif"],
       },
       fontSize: {
-        h1: "1.75rem",
+        h1: "1.4rem",
         subtitle: "1.3rem",
-        body: "0.825rem",
+        body: "0.85rem",
         small: "0.75rem",
       },
       lineHeight: {

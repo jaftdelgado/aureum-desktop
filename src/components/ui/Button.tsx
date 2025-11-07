@@ -25,8 +25,8 @@ export const Button: React.FC<ButtonProps> = ({
   variant = "default",
   icon,
   iconNode,
-  iconWidth = 20,
-  iconHeight = 20,
+  iconWidth = 18,
+  iconHeight = 18,
   className = "",
   ...props
 }) => {

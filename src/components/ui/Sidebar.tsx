@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { Button } from "@ui/Button";
+import React, {
+  useState,
+  type ReactNode,
+  type ButtonHTMLAttributes,
+} from "react";
+import { Icon } from "@iconify/react";
 
 export type SidebarItem =
   | {
@@ -21,6 +25,38 @@ interface SidebarProps {
   className?: string;
 }
 
+interface SidebarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children?: ReactNode;
+  icon?: string;
+  state?: "selected" | "hover";
+}
+
+const SidebarButton: React.FC<SidebarButtonProps> = ({
+  children,
+  icon,
+  state = "hover",
+  className = "",
+  ...props
+}) => {
+  const baseClasses =
+    "flex items-center justify-start gap-2 rounded-xl text-body transition-all disabled:opacity-60 disabled:pointer-events-none px-4 py-2";
+
+  const stateClasses: Record<"selected" | "hover", string> = {
+    selected: "bg-secondaryBtn text-blue-400",
+    hover: "bg-transparent text-gray-400 hover:bg-gray-800 hover:text-white",
+  };
+
+  return (
+    <button
+      className={`${baseClasses} ${stateClasses[state]} ${className}`}
+      {...props}
+    >
+      {icon && <Icon icon={icon} width={17} height={17} />}
+      {children && <span className="flex-1 text-left">{children}</span>}
+    </button>
+  );
+};
+
 export const Sidebar: React.FC<SidebarProps> = ({
   items,
   onNavigate,
@@ -39,7 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const renderSeparator = (label: string, key: string | number) => (
     <div
       key={key}
-      className="text-secondaryText text-[0.7rem] font-medium uppercase mt-4 mb-1 pl-2 select-none"
+      className="text-secondaryText text-small font-medium uppercase mt-4 mb-1 pl-2 select-none"
     >
       {label}
     </div>
@@ -54,21 +90,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           item.type === "separator" ? (
             renderSeparator(item.label, `sep-${index}`)
           ) : (
-            <Button
+            <SidebarButton
               key={item.route}
-              variant={activeRoute === item.route ? "secondary" : "thirdy"}
               icon={item.icon}
-              className={`w-full justify-start flex items-center gap-2 pl-3 transition-colors duration-200
-                ${
-                  activeRoute === item.route
-                    ? "bg-secondaryBtn text-blue-400 font-medium"
-                    : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                }
-              `}
+              state={activeRoute === item.route ? "selected" : "hover"}
               onClick={() => handleClick(item.route)}
             >
               {item.label}
-            </Button>
+            </SidebarButton>
           )
         )}
       </nav>

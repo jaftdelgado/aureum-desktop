@@ -20,6 +20,13 @@ export const AppSidebar: React.FC = () => {
       label: "Equipos",
       route: "/dashboard/teams",
     },
+    { type: "separator", label: "Equipos" },
+    {
+      type: "button",
+      icon: "gravity-ui:rectangles-4",
+      label: "Activos",
+      route: "/dashboard/assets",
+    },
   ];
 
   const handleNavigate = (route: string) => {
