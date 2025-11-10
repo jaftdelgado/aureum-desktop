@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
     ],
     resolve: {
       alias: {
+        "@api": path.resolve(__dirname, "src/api"),
         "@assets": path.resolve(__dirname, "src/assets"),
         "@layouts": path.resolve(__dirname, "src/layouts"),
         "@lib": path.resolve(__dirname, "src/lib"),
@@ -27,6 +28,7 @@ export default defineConfig(({ mode }) => {
         "@components": path.resolve(__dirname, "src/components"),
         "@styles": path.resolve(__dirname, "src/styles"),
         "@schemas": path.resolve(__dirname, "src/schemas"),
+        "@types": path.resolve(__dirname, "src/types"),
         "@scss": path.resolve(__dirname, "src/scss"),
       },
     },
@@ -37,6 +39,12 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false,
           rewrite: (p) => p.replace(/^\/auth/, ""),
+        },
+        "/assets": {
+          target: env.VITE_ASSET_API_URL || "http://localhost:8002",
+          changeOrigin: true,
+          secure: false,
+          rewrite: (p) => p.replace(/^\/assets/, "/assets"),
         },
       },
     },

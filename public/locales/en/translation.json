@@ -56,6 +56,17 @@
   "assets": {
     "title": "Financial Assets",
     "description": "Manage your simulated market: add your own assets and explore everything available.",
-    "newAssetButton": "New Asset"
+    "newAssetButton": "New Asset",
+    "loadError": "Failed to load assets.",
+    "loading": "Loading assets...",
+    "table": {
+      "image": "Image",
+      "symbol": "Symbol",
+      "name": "Name",
+      "type": "Type",
+      "basePrice": "Base Price",
+      "status": "Status",
+      "category": "Category"
+    }
   }
 }

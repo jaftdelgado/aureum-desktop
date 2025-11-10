@@ -55,6 +55,17 @@
   "assets": {
     "title": "Activos Financieros",
     "description": "Gestiona tu mercado simulado: añade activos personalizados y explora todos los activos disponibles.",
-    "newAssetButton": "Nuevo Activo"
+    "newAssetButton": "Nuevo Activo",
+    "loadError": "No se pudieron cargar los activos.",
+    "loading": "Cargando activos...",
+    "table": {
+      "image": "Imagen",
+      "symbol": "Símbolo",
+      "name": "Nombre",
+      "type": "Tipo",
+      "basePrice": "Precio Base",
+      "status": "Estado",
+      "category": "Categoría"
+    }
   }
 }

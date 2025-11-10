@@ -24,7 +24,7 @@ function InputGroup({
   return (
     <div className={cn("flex flex-col flex-1 min-w-0", className)} {...props}>
       {label && (
-        <Label variant="small" className="font-medium mb-1 ml-2">
+        <Label variant="small" className="mb-1 ml-2">
           {label}
         </Label>
       )}
@@ -35,8 +35,7 @@ function InputGroup({
           className={cn(
             "relative flex w-full items-center rounded-xl border border-sidebarHoverBtn bg-sidebarHoverBtn text-primaryText shadow-xs transition-[color,box-shadow] outline-none",
             "focus-within:ring-1 focus-within:ring-primaryBtn",
-            "disabled:pointer-events-none disabled:opacity-60",
-            "h-10"
+            "disabled:pointer-events-none disabled:opacity-60"
           )}
         >
           {children}

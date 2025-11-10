@@ -27,6 +27,7 @@
     /* Alias */
     "baseUrl": "src",
     "paths": {
+      "@api/*": ["api/*"],
       "@assets/*": ["assets/*"],
       "@layouts/*": ["layouts/*"],
       "@lib/*": ["lib/*"],
@@ -36,6 +37,7 @@
       "@ui/*": ["components/ui/*"],
       "@styles/*": ["styles/*"],
       "@schemas/*": ["schemas/*"],
+      "@types/*": ["types/*"],
       "@scss/*": ["scss/*"]
     }
   },
