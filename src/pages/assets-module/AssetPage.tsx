@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@ui/PageHeader";
 import { useTranslation } from "react-i18next";
 import { Button } from "@ui/Button";
@@ -9,6 +10,7 @@ import { getAssets } from "@api/assetApi";
 
 export const AssetPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,8 +88,13 @@ export const AssetPage: React.FC = () => {
         title={t("assets.title")}
         description={t("assets.description")}
         actions={
-          <Button variant="default" icon="lucide:plus" className="px-4 py-2">
-            {t("assets.newAssetButton")}
+          <Button
+            variant="default"
+            icon="lucide:plus"
+            className="px-4 py-2"
+            onClick={() => navigate("/dashboard/assets/register")}
+          >
+            {t("assets.newAssetButton") || "New Asset"}
           </Button>
         }
       />

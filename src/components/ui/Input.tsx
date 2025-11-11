@@ -4,44 +4,62 @@ import { Label } from "./Label";
 import { Icon } from "@iconify/react";
 import "@styles/theme.css";
 
-interface InputProps extends React.ComponentProps<"input"> {
+export interface InputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   label?: string;
   error?: string;
+  size?: "sm" | "md" | "lg";
 }
 
-function Input({
+export const Input: React.FC<InputProps> = ({
   className,
   type = "text",
   label,
   error,
+  size = "md",
   ...props
-}: InputProps) {
+}) => {
+  const sizeClasses: Record<NonNullable<InputProps["size"]>, string> = {
+    sm: "px-3 py-1.5 text-sm",
+    md: "px-4 py-2 text-base",
+    lg: "px-5 py-3 text-lg",
+  };
+
   return (
     <div className="flex flex-col flex-1 min-w-0">
       {label && (
-        <Label variant="small" className="font-medium mb-1 ml-2">
+        <Label
+          variant="small"
+          className="font-medium mb-1 ml-2 text-primaryText"
+        >
           {label}
         </Label>
       )}
 
-      <div className={cn("relative", error && "mb-4")}>
+      <div className={cn("relative w-full", error && "mb-4")}>
         <input
           type={type}
           data-slot="input"
+          aria-invalid={!!error}
+          aria-describedby={error ? `${props.id}-error` : undefined}
           className={cn(
-            "w-full rounded-xl px-4 py-2 outline-none transition-all",
+            "w-full text-body rounded-xl outline-none transition-all duration-150",
             "bg-sidebarHoverBtn text-primaryText placeholder:text-secondaryText",
             "border border-sidebarHoverBtn focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn",
             "disabled:pointer-events-none disabled:opacity-60",
             error &&
               "border-destructive focus:border-destructive focus:ring-destructive",
+            sizeClasses[size],
             className
           )}
           {...props}
         />
 
         {error && (
-          <div className="absolute -bottom-5 left-1 flex items-center gap-1">
+          <div
+            id={`${props.id}-error`}
+            className="absolute -bottom-5 left-1 flex items-center gap-1"
+          >
             <Icon
               icon="lucide:circle-x"
               className="w-3.5 h-3.5 text-destructive"
@@ -54,6 +72,4 @@ function Input({
       </div>
     </div>
   );
-}
-
-export { Input };
+};

@@ -4,7 +4,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@lib/utils";
 import { Button } from "@components/ui/Button";
-import { Input } from "@components/ui/Input";
+import { Input, type InputProps } from "@components/ui/Input";
 import { Textarea } from "@components/ui/TextArea";
 import { Label } from "@components/ui/Label";
 import { Icon } from "@iconify/react";
@@ -12,15 +12,32 @@ import { Icon } from "@iconify/react";
 interface InputGroupProps extends React.ComponentProps<"div"> {
   label?: string;
   error?: string;
+  /** Tamaño general del grupo: chico, medio o grande */
+  size?: "sm" | "md" | "lg";
 }
 
 function InputGroup({
   className,
   label,
   error,
+  size = "md",
   children,
   ...props
 }: InputGroupProps) {
+  // Tipar explícitamente los hijos
+  const enhancedChildren = React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      // Tipar el elemento hijo como ReactElement con posible prop size
+      const element = child as React.ReactElement<{
+        size?: "sm" | "md" | "lg";
+      }>;
+      if (element.props.size === undefined) {
+        return React.cloneElement(element, { size });
+      }
+    }
+    return child;
+  });
+
   return (
     <div className={cn("flex flex-col flex-1 min-w-0", className)} {...props}>
       {label && (
@@ -28,6 +45,7 @@ function InputGroup({
           {label}
         </Label>
       )}
+
       <div className={cn("relative w-full", error && "mb-4")}>
         <div
           data-slot="input-group"
@@ -38,8 +56,9 @@ function InputGroup({
             "disabled:pointer-events-none disabled:opacity-60"
           )}
         >
-          {children}
+          {enhancedChildren}
         </div>
+
         {error && (
           <div className="absolute -bottom-5 left-1 flex items-center gap-1">
             <Icon
@@ -94,18 +113,19 @@ function InputGroupAddon({
 const inputGroupButtonVariants = cva("flex items-center gap-2 text-sm", {
   variants: {
     size: {
-      xs: "h-9 px-3 rounded-xl",
-      sm: "h-10 px-4 rounded-xl",
+      sm: "h-9 px-3 rounded-xl",
+      md: "h-10 px-4 rounded-xl",
+      lg: "h-11 px-5 rounded-xl",
     },
   },
-  defaultVariants: { size: "xs" },
+  defaultVariants: { size: "md" },
 });
 
 function InputGroupButton({
   className,
   type = "button",
   variant = "thirdy",
-  size = "xs",
+  size = "md",
   ...props
 }: Omit<React.ComponentProps<typeof Button>, "size"> &
   VariantProps<typeof inputGroupButtonVariants>) {
@@ -122,13 +142,15 @@ function InputGroupButton({
 
 function InputGroupInput({
   className,
+  size = "md",
   ...props
-}: React.ComponentProps<"input">) {
+}: Omit<InputProps, "label" | "error">) {
   return (
     <Input
       data-slot="input-group-control"
+      size={size}
       className={cn(
-        "flex-1 rounded-none border-0 bg-transparent pl-4 py-2 focus:ring-0",
+        "flex-1 rounded-none border-0 bg-transparent focus:ring-0",
         className
       )}
       {...props}
@@ -138,13 +160,21 @@ function InputGroupInput({
 
 function InputGroupTextarea({
   className,
+  size = "md",
   ...props
-}: React.ComponentProps<"textarea">) {
+}: React.ComponentProps<"textarea"> & { size?: "sm" | "md" | "lg" }) {
+  const sizeVariants: Record<"sm" | "md" | "lg", string> = {
+    sm: "px-3 py-1.5 text-sm",
+    md: "px-4 py-2 text-base",
+    lg: "px-5 py-3 text-lg",
+  };
+
   return (
     <Textarea
       data-slot="input-group-control"
       className={cn(
-        "flex-1 resize-none rounded-none border-0 bg-transparent px-4 py-2 shadow-none focus:ring-0",
+        "flex-1 resize-none rounded-none border-0 bg-transparent shadow-none focus:ring-0",
+        sizeVariants[size],
         className
       )}
       {...props}

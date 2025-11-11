@@ -1,11 +1,11 @@
-// App.tsx
 import React from "react";
 import "./i18n";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { DashboardLayout } from "@layouts/Dashboard";
 import { Principal } from "@pages/principal/Principal";
 import { Teams } from "@pages/teams/Teams";
-import { AssetPage } from "@pages/assets/AssetPage";
+import { AssetPage } from "@pages/assets-module/AssetPage";
+import { RegisterAsset } from "@pages/assets-module/RegisterAsset";
 import AuthLayout from "@layouts/AuthLayout";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -17,11 +17,14 @@ export const App: React.FC = () => {
     <GoogleOAuthProvider clientId={clientId}>
       <Routes>
         <Route path="/" element={<Navigate to="/auth" replace />} />
+
         <Route path="/auth" element={<AuthLayout />} />
+
         <Route path="/dashboard/*" element={<DashboardLayout />}>
           <Route index element={<Principal />} />
           <Route path="teams" element={<Teams />} />
           <Route path="assets" element={<AssetPage />} />
+          <Route path="assets/register" element={<RegisterAsset />} />
         </Route>
       </Routes>
     </GoogleOAuthProvider>

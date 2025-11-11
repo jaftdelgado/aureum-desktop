@@ -1,0 +1,63 @@
+import React, {
+  type ReactNode,
+  type ReactElement,
+  isValidElement,
+  cloneElement,
+} from "react";
+import clsx from "clsx";
+
+interface ButtonGroupProps {
+  children: ReactNode;
+  className?: string;
+  vertical?: boolean;
+}
+
+export const ButtonGroup: React.FC<ButtonGroupProps> = ({
+  children,
+  className = "",
+  vertical = false,
+}) => {
+  // Filtramos solo elementos válidos (ReactElements)
+  const items = React.Children.toArray(children).filter(
+    isValidElement
+  ) as ReactElement<{ className?: string }>[];
+
+  const modifiedChildren = items.map((child, index) => {
+    const isFirst = index === 0;
+    const isLast = index === items.length - 1;
+    const isMiddle = !isFirst && !isLast;
+
+    const childClass = clsx(
+      vertical
+        ? {
+            "rounded-t-xl": isFirst,
+            "rounded-b-xl": isLast,
+            "rounded-none": isMiddle,
+            "rounded-b-none": isFirst, // quitar redondeo inferior del primero
+            "rounded-t-none": isLast, // quitar redondeo superior del último
+          }
+        : {
+            "rounded-l-xl": isFirst,
+            "rounded-r-xl": isLast,
+            "rounded-none": isMiddle,
+            "rounded-r-none": isFirst, // quitar redondeo derecho del primero
+            "rounded-l-none": isLast, // quitar redondeo izquierdo del último
+          }
+    );
+
+    return cloneElement(child, {
+      className: clsx(child.props.className, childClass),
+    });
+  });
+
+  const classes = clsx(
+    "inline-flex",
+    vertical ? "flex-col" : "flex-row",
+    "rounded-xl overflow-hidden",
+    vertical ? "divide-y" : "divide-x",
+    "divide-outline bg-transparent",
+    className
+  );
+
+  return <div className={classes}>{modifiedChildren}</div>;
+};
