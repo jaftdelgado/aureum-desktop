@@ -4,6 +4,7 @@ import React, {
   type ButtonHTMLAttributes,
 } from "react";
 import { Icon } from "@iconify/react";
+import { SidebarFooter } from "./SidebarFooter";
 
 export type SidebarItem =
   | {
@@ -23,6 +24,12 @@ interface SidebarProps {
   items: SidebarItem[];
   onNavigate?: (route: string) => void;
   className?: string;
+  profile?: {
+    name: string;
+    role: string;
+    avatarUrl: string;
+    onClick?: () => void;
+  };
 }
 
 interface SidebarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -61,6 +68,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   items,
   onNavigate,
   className = "",
+  profile,
 }) => {
   const firstButton = items.find((i) => i.type === "button");
   const [activeRoute, setActiveRoute] = useState<string>(
@@ -101,6 +109,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )
         )}
       </nav>
+      {profile && (
+        <SidebarFooter
+          name={profile.name}
+          role={profile.role}
+          avatarUrl={profile.avatarUrl}
+          onClick={profile.onClick}
+        />
+      )}
     </aside>
   );
 };

@@ -29,6 +29,7 @@
     "paths": {
       "@api/*": ["api/*"],
       "@assets/*": ["assets/*"],
+      "@context/*": ["context/*"],
       "@layouts/*": ["layouts/*"],
       "@lib/*": ["lib/*"],
       "@hooks/*": ["hooks/*"],

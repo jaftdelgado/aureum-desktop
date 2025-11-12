@@ -5,7 +5,6 @@ import path from "path";
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const authTarget = env.VITE_AUTH_API_URL || "http://localhost:8001";
 
   return {
     base: "/",
@@ -20,6 +19,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@api": path.resolve(__dirname, "src/api"),
         "@assets": path.resolve(__dirname, "src/assets"),
+        "@context": path.resolve(__dirname, "src/context"),
         "@layouts": path.resolve(__dirname, "src/layouts"),
         "@lib": path.resolve(__dirname, "src/lib"),
         "@hooks": path.resolve(__dirname, "src/hooks"),
@@ -34,12 +34,6 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       proxy: {
-        "/auth": {
-          target: authTarget,
-          changeOrigin: true,
-          secure: false,
-          rewrite: (p) => p.replace(/^\/auth/, ""),
-        },
         "/assets": {
           target: env.VITE_ASSET_API_URL || "http://localhost:8002",
           changeOrigin: true,

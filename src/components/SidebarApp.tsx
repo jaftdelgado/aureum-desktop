@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Sidebar, type SidebarItem } from "@ui/Sidebar";
+import { Sidebar, type SidebarItem } from "@components/ui/sidebar/Sidebar";
 
 export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -40,5 +40,20 @@ export const AppSidebar: React.FC = () => {
     return { ...item, active: location.pathname === item.route };
   });
 
-  return <Sidebar items={itemsWithActive} onNavigate={handleNavigate} />;
+  const profile = {
+    name: "Jafeth Dlg",
+    role: "Administrador",
+    avatarUrl: "https://i.pravatar.cc/150?img=3",
+    onClick: () => {
+      navigate("/dashboard/profile");
+    },
+  };
+
+  return (
+    <Sidebar
+      items={itemsWithActive}
+      onNavigate={handleNavigate}
+      profile={profile}
+    />
+  );
 };

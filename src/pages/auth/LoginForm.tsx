@@ -1,3 +1,4 @@
+// src/pages/auth/LoginForm.tsx
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@components/ui/Button";
@@ -6,7 +7,7 @@ import { Separator } from "@components/ui/Separator";
 import { Input } from "@components/ui/Input";
 import GoogleSignIn from "@components/GoogleSignIn";
 import { useNavigate } from "react-router-dom";
-import { login, isNetworkError, isApiError, ApiError } from "@lib/auth";
+import { supabase } from "@lib/supabaseClient";
 import { useFormValidation } from "@hooks/useFormValidation";
 
 interface LoginFormProps {
@@ -14,7 +15,7 @@ interface LoginFormProps {
 }
 
 interface LoginFields {
-  identifier: string;
+  email: string;
   password: string;
 }
 
@@ -22,14 +23,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const { errors, setErrors, validateFields } = useFormValidation<LoginFields>([
     {
-      field: "identifier",
+      field: "email",
       validate: (value) =>
         !String(value).trim()
           ? t("signin.errors.identifierRequired", {
-              defaultValue: "Ingresa tu correo o usuario.",
+              defaultValue: "Ingresa tu correo.",
             })
           : null,
     },
@@ -47,12 +49,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setErrors({});
+    setErrorMsg(null);
     setLoading(true);
 
     try {
       const fd = new FormData(e.currentTarget);
       const formData: LoginFields = {
-        identifier: String(fd.get("identifier") || "").trim(),
+        email: String(fd.get("email") || "").trim(),
         password: String(fd.get("password") || ""),
       };
 
@@ -62,37 +65,27 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
         return;
       }
 
-      const { access_token } = await login(
-        formData.identifier,
-        formData.password
-      );
-      localStorage.setItem("aureum_token", access_token);
-      navigate("/dashboard", { replace: true });
-    } catch (err: unknown) {
-      let uiMsg: string;
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
 
-      if (isNetworkError(err)) {
-        uiMsg = t("signin.errors.networkError", {
-          defaultValue: "Error de conexión, verifica tu red.",
-        });
-      } else if (isApiError(err)) {
-        const e = err as ApiError;
-        if (e.status === 401 || /incorrect|invalid/i.test(e.message)) {
-          uiMsg = t("signin.errors.invalidCredentials", {
-            defaultValue: "Correo/usuario o contraseña incorrectos.",
-          });
-        } else {
-          uiMsg = t("signup.error.generic", {
-            defaultValue: "Ocurrió un error. Inténtalo de nuevo.",
-          });
-        }
+      if (error) {
+        setErrorMsg(
+          error.message ||
+            t("signin.errors.invalidCredentials", {
+              defaultValue: "Correo o contraseña incorrectos.",
+            })
+        );
       } else {
-        uiMsg = t("signup.error.generic", {
-          defaultValue: "Ocurrió un error. Inténtalo de nuevo.",
-        });
+        navigate("/dashboard", { replace: true });
       }
-
-      setErrors((prev) => ({ ...prev, password: uiMsg }));
+    } catch {
+      setErrorMsg(
+        t("signup.error.generic", {
+          defaultValue: "Ocurrió un error. Inténtalo de nuevo.",
+        })
+      );
     } finally {
       setLoading(false);
     }
@@ -111,10 +104,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
       <form className="flex flex-col gap-4 mt-6" onSubmit={onSubmit} noValidate>
         <Input
           type="email"
-          name="identifier"
+          name="email"
           placeholder={t("signin.usernameOrEmail")}
           autoComplete="username"
-          error={errors.identifier}
+          error={errors.email}
           disabled={loading}
         />
 
@@ -123,7 +116,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
           name="password"
           placeholder={t("signin.password")}
           autoComplete="current-password"
-          error={errors.password}
+          error={errorMsg || errors.password}
           disabled={loading}
         />
 
@@ -139,6 +132,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
         </Button>
 
         <Separator variant="line" className="my-1" />
+
+        {/* Botón de login con Google usando Supabase */}
         <GoogleSignIn />
 
         <div className="flex justify-center items-center gap-1 mt-4 text-left self-start">

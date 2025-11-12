@@ -17,7 +17,6 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
   className = "",
   vertical = false,
 }) => {
-  // Filtramos solo elementos válidos (ReactElements)
   const items = React.Children.toArray(children).filter(
     isValidElement
   ) as ReactElement<{ className?: string }>[];
@@ -40,8 +39,8 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
             "rounded-l-xl": isFirst,
             "rounded-r-xl": isLast,
             "rounded-none": isMiddle,
-            "rounded-r-none": isFirst, // quitar redondeo derecho del primero
-            "rounded-l-none": isLast, // quitar redondeo izquierdo del último
+            "rounded-r-none": isFirst,
+            "rounded-l-none": isLast,
           }
     );
 
