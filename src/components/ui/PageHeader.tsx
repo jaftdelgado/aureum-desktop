@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { Label } from "@ui/Label";
+import { useIsMobile } from "@hooks/useIsMobile";
 
 interface PageHeaderProps {
   title: ReactNode;
@@ -14,15 +15,17 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   actions,
   className = "",
 }) => {
+  const isMobile = useIsMobile();
+
   return (
     <div
-      className={`flex justify-between items-center w-full py-4 px-6 border-b border-outline ${className}`}
+      className={`flex justify-between items-end w-full py-4 px-6 border-b border-outline ${className}`}
     >
       <div className="flex flex-col gap-1">
         <Label variant="header" color="primary">
           {title}
         </Label>
-        {description && (
+        {!isMobile && description && (
           <Label variant="body" color="secondary">
             {description}
           </Label>

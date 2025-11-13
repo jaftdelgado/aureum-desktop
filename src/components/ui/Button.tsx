@@ -81,7 +81,13 @@ export const Button: React.FC<ButtonProps> = ({
       )}
       {iconNode && <span className="flex items-center">{iconNode}</span>}
       {children && (
-        <span className={showIcon ? "flex-1 text-center" : ""}>{children}</span>
+        <span
+          className={`${
+            showIcon ? "flex-1 text-center" : ""
+          } truncate overflow-hidden whitespace-nowrap`}
+        >
+          {children}
+        </span>
       )}
     </button>
   );
