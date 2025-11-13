@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Sidebar, type SidebarItem } from "@components/ui/sidebar/Sidebar";
+import { useAuthContext } from "@hooks/useAuthContext";
 
 export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuthContext();
 
   const items: SidebarItem[] = [
     { type: "separator", label: "Principal" },
@@ -33,17 +35,24 @@ export const AppSidebar: React.FC = () => {
     navigate(route);
   };
 
+  // Activa el item del sidebar según la ruta
   const itemsWithActive: SidebarItem[] = items.map((item) => {
-    if (item.type === "separator") {
-      return { ...item, active: false };
-    }
+    if (item.type === "separator") return { ...item, active: false };
     return { ...item, active: location.pathname === item.route };
   });
 
+  // 🔥 Datos reales del usuario de Supabase
   const profile = {
-    name: "Jafeth Dlg",
-    role: "Administrador",
-    avatarUrl: "https://i.pravatar.cc/150?img=3",
+    name:
+      user?.user_metadata?.full_name ||
+      user?.user_metadata?.name ||
+      user?.email ||
+      "Usuario",
+    role: "Miembro", // opcional — puedes personalizarlo o dejarlo vacío
+    avatarUrl:
+      user?.user_metadata?.avatar_url ||
+      user?.user_metadata?.picture ||
+      "https://ui-avatars.com/api/?name=User&background=random",
     onClick: () => {
       navigate("/dashboard/profile");
     },

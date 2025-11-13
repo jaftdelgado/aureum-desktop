@@ -34,53 +34,52 @@ export const AssetPage: React.FC = () => {
 
   const columns: Column<Asset>[] = [
     {
-      key: "assetPicUrl",
-      header: t("assets.table.image") || "Image",
-      render: (_, row) =>
-        row.assetPicUrl ? (
-          <img
-            src={row.assetPicUrl}
-            alt={row.assetName}
-            className="h-4 w-4 object-cover rounded"
-          />
-        ) : (
-          <div className="h-4 w-4 bg-gray-200 rounded" />
-        ),
-      width: "10%",
-    },
-    {
       key: "assetSymbol",
-      header: t("assets.table.symbol") || "Symbol",
+      header: t("assets.table.symbol") || "Símbolo",
       sortable: true,
       width: "15%",
     },
     {
       key: "assetName",
-      header: t("assets.table.name") || "Name",
+      header: t("assets.table.asset") || "Activo",
       sortable: true,
-      width: "25%",
+      width: "35%",
+      render: (_, row) => (
+        <div className="flex items-center gap-3">
+          {row.assetPicUrl ? (
+            <img
+              src={row.assetPicUrl}
+              alt={row.assetName}
+              className="h-4 w-4 object-cover rounded"
+            />
+          ) : (
+            <div className="h-4 w-4 bg-gray-200 rounded" />
+          )}
+          <span className="font-medium text-foreground">{row.assetName}</span>
+        </div>
+      ),
     },
     {
       key: "assetType",
-      header: t("assets.table.type") || "Type",
+      header: t("assets.table.type") || "Tipo",
       sortable: true,
       width: "15%",
     },
     {
       key: "basePrice",
-      header: t("assets.table.basePrice") || "Base Price",
+      header: t("assets.table.basePrice") || "Precio base",
       sortable: true,
       width: "15%",
     },
     {
       key: "category",
-      header: t("assets.table.category") || "Category",
+      header: t("assets.table.category") || "Categoría",
       render: (_, row) => row.category?.categoryKey ?? "N/A",
       width: "20%",
     },
   ];
 
-  if (loading) return <div>{t("assets.loading") || "Loading assets..."}</div>;
+  if (loading) return <div>{t("assets.loading") || "Cargando activos..."}</div>;
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -94,7 +93,7 @@ export const AssetPage: React.FC = () => {
             className="px-4 py-2"
             onClick={() => navigate("/dashboard/assets/register")}
           >
-            {t("assets.newAssetButton") || "New Asset"}
+            {t("assets.newAssetButton") || "Nuevo activo"}
           </Button>
         }
       />

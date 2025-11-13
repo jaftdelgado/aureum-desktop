@@ -61,9 +61,8 @@
     "registerTitle": "Registrar Activo",
     "registerDescription": "Registra un activo personalizado para tu simulador, será visible y usable únicamente en este equipo.",
     "table": {
-      "image": "Imagen",
+      "asset": "Activo",
       "symbol": "Símbolo",
-      "name": "Nombre",
       "type": "Tipo",
       "basePrice": "Precio Base",
       "status": "Estado",

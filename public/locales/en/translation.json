@@ -60,9 +60,8 @@
     "loadError": "Failed to load assets.",
     "loading": "Loading assets...",
     "table": {
-      "image": "Image",
+      "asset": "Asset",
       "symbol": "Symbol",
-      "name": "Name",
       "type": "Type",
       "basePrice": "Base Price",
       "status": "Status",
