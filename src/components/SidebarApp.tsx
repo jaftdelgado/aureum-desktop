@@ -22,7 +22,17 @@ export const AppSidebar: React.FC = () => {
       label: "Equipos",
       route: "/dashboard/teams",
     },
+
     { type: "separator", label: "Equipos" },
+
+    // 📌 Nuevo módulo Mercado (arriba de Activos)
+    {
+      type: "button",
+      icon: "hugeicons:shopping-bag-01",
+      label: "Mercado",
+      route: "/dashboard/market",
+    },
+
     {
       type: "button",
       icon: "gravity-ui:rectangles-4",
@@ -35,20 +45,18 @@ export const AppSidebar: React.FC = () => {
     navigate(route);
   };
 
-  // Activa el item del sidebar según la ruta
   const itemsWithActive: SidebarItem[] = items.map((item) => {
     if (item.type === "separator") return { ...item, active: false };
     return { ...item, active: location.pathname === item.route };
   });
 
-  // 🔥 Datos reales del usuario de Supabase
   const profile = {
     name:
       user?.user_metadata?.full_name ||
       user?.user_metadata?.name ||
       user?.email ||
       "Usuario",
-    role: "Miembro", // opcional — puedes personalizarlo o dejarlo vacío
+    role: "Miembro",
     avatarUrl:
       user?.user_metadata?.avatar_url ||
       user?.user_metadata?.picture ||

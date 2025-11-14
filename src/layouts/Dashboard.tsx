@@ -5,24 +5,26 @@ import { Breadcrumb } from "@ui/Breadcrumb";
 import { ThemeToggleButton } from "@ui/ThemeToggle";
 import { TopbarMenu } from "@components/ui/TopbarMenu";
 import { useIsMobile } from "@hooks/useIsMobile";
+import { LanguageCombobox } from "@components/LanguageCombobox";
 
 export const DashboardLayout: React.FC = () => {
   const isMobile = useIsMobile();
 
   return (
     <div className="flex h-screen w-full bg-bg overflow-hidden">
-      {/* Sidebar solo en pantallas grandes */}
       {!isMobile && <AppSidebar />}
 
       <div className="flex flex-col flex-1 h-full w-full overflow-y-auto overflow-x-hidden">
-        {/* Topbar solo en móviles */}
         {isMobile && <TopbarMenu />}
 
-        {/* Breadcrumb y ThemeToggle en pantallas grandes */}
         {!isMobile && (
           <div className="sticky top-0 z-10 flex items-center justify-between px-8 py-4 flex-shrink-0">
             <Breadcrumb />
-            <ThemeToggleButton />
+
+            <div className="flex items-center gap-3">
+              <LanguageCombobox />
+              <ThemeToggleButton />
+            </div>
           </div>
         )}
 

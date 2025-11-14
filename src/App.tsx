@@ -7,6 +7,7 @@ import { Principal } from "@pages/principal/Principal";
 import { Teams } from "@pages/teams/Teams";
 import { AssetPage } from "@pages/assets-module/AssetPage";
 import { RegisterAsset } from "@pages/assets-module/RegisterAsset";
+import { MarketPage } from "@pages/market-module/MarketPage"; // ✅ AGREGADO
 import AuthLayout from "@layouts/AuthLayout";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "@components/AuthProvider";
@@ -64,6 +65,7 @@ export const App: React.FC = () => {
             <Route path="teams" element={<Teams />} />
             <Route path="assets" element={<AssetPage />} />
             <Route path="assets/register" element={<RegisterAsset />} />
+            <Route path="market" element={<MarketPage />} />
           </Route>
         </Routes>
       </AuthProvider>

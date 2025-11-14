@@ -15,10 +15,8 @@ export const ThemeToggleButton: React.FC = () => {
     <Button
       variant="icon"
       onClick={toggleTheme}
-      icon={theme === "light" ? "hugeicons:moon-02" : "hugeicons:sun-03"}
-      iconWidth={20}
-      iconHeight={20}
-      className="p-2"
+      iconOnly={theme === "light" ? "hugeicons:moon-02" : "hugeicons:sun-03"}
+      size="md"
     />
   );
 };
