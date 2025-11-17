@@ -4,7 +4,7 @@ import * as React from "react";
 import { Icon } from "@iconify/react";
 
 import { cn } from "@lib/utils";
-import { Button } from "@components/ui/Button";
+import { Button } from "@core/base-design/Button";
 import {
   Command,
   CommandEmpty,

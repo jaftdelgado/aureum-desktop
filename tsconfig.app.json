@@ -28,18 +28,21 @@
     "baseUrl": "src",
     "paths": {
       "@api/*": ["api/*"],
-      "@assets/*": ["assets/*"],
+      "@resources/*": ["resources/*"],
       "@context/*": ["context/*"],
-      "@layouts/*": ["layouts/*"],
       "@lib/*": ["lib/*"],
       "@hooks/*": ["hooks/*"],
-      "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@ui/*": ["components/ui/*"],
       "@styles/*": ["styles/*"],
-      "@schemas/*": ["schemas/*"],
-      "@types/*": ["types/*"],
-      "@scss/*": ["scss/*"]
+      "@core/*": ["modules/core/*"],
+      "@auth/*": ["modules/auth/*"],
+      "@dashboard/*": ["modules/dashboard/*"],
+      "@explore/*": ["modules/explore/*"],
+      "@teams/*": ["modules/teams/*"],
+      "@assets/*": ["modules/assets/*"],
+      "@market/*": ["modules/market/*"],
+      "@settings/*": ["modules/settings/*"]      
     }
   },
   "include": ["src", "tailwind.config.js"]

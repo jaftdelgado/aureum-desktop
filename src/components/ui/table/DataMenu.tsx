@@ -1,7 +1,11 @@
 import React from "react";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@ui/InputGroup";
-import { Button } from "@ui/Button";
-import { ButtonGroup } from "@ui/ButtonGroup";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@core/components/InputGroup";
+import { Button } from "@core/base-design/Button";
+import { ButtonGroup } from "@core/components/ButtonGroup";
 import { Icon } from "@iconify/react";
 
 interface DataMenuProps {

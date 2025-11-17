@@ -2,9 +2,7 @@
 
 import * as React from "react";
 import { Icon } from "@iconify/react";
-
 import { cn } from "@lib/utils";
-import { Button } from "@components/ui/Button";
 import {
   Command,
   CommandEmpty,
@@ -24,12 +22,18 @@ export interface ComboboxItem {
   label: string;
 }
 
+type ComboboxVariant = "primary" | "secondary";
+type ComboboxSize = "sm" | "md" | "lg";
+
 interface ComboboxProps {
   items: ComboboxItem[];
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   width?: string;
+  searchable?: boolean;
+  variant?: ComboboxVariant;
+  size?: ComboboxSize;
 }
 
 export const Combobox: React.FC<ComboboxProps> = ({
@@ -38,32 +42,59 @@ export const Combobox: React.FC<ComboboxProps> = ({
   onChange,
   placeholder = "Select an option...",
   width = "200px",
+  searchable = false,
+  variant = "primary",
+  size = "md",
 }) => {
   const [open, setOpen] = React.useState(false);
-
   const selectedLabel = items.find((item) => item.value === value)?.label;
+
+  const sizeClasses: Record<ComboboxSize, string> = {
+    sm: "h-8 px-3 py-1.5 text-body",
+    md: "h-9 px-4 py-2 text-body",
+    lg: "h-10 px-5 py-3 text-body",
+  };
+
+  const iconSizes: Record<ComboboxSize, number> = {
+    sm: 14,
+    md: 18,
+    lg: 22,
+  };
+
+  const buttonClasses = cn(
+    "inline-flex justify-between items-center rounded-xl transition-all duration-150 disabled:opacity-60 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primaryBtn text-body",
+    sizeClasses[size],
+    variant === "primary"
+      ? "bg-secondaryBtn text-primaryText hover:bg-secondaryHoverBtn"
+      : "bg-transparent text-primaryText hover:bg-secondaryHoverBtn"
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="thirdy"
-          role="combobox"
+        <button
+          className={cn(buttonClasses, `w-[${width}]`)}
           aria-expanded={open}
-          className={cn("justify-between", `w-[${width}]`)}
         >
-          {selectedLabel || placeholder}
+          <span className="text-body truncate">
+            {selectedLabel || placeholder}
+          </span>
           <Icon
             icon="lucide:chevrons-down"
-            className="ml-2 h-4 w-4 shrink-0 opacity-50"
+            className="ml-2 shrink-0 opacity-50"
+            width={iconSizes[size]}
+            height={iconSizes[size]}
           />
-        </Button>
+        </button>
       </PopoverTrigger>
+
       <PopoverContent className={cn("p-0", `w-[${width}]`)}>
-        <Command>
-          <CommandInput placeholder={placeholder} />
-          <CommandList>
-            <CommandEmpty>No options found.</CommandEmpty>
+        <Command className="text-body">
+          {searchable && (
+            <CommandInput placeholder={placeholder} className="text-body" />
+          )}
+          <CommandList className="text-body">
+            <CommandEmpty className="text-body">No options found.</CommandEmpty>
             <CommandGroup>
               {items.map((item) => (
                 <CommandItem
@@ -73,13 +104,16 @@ export const Combobox: React.FC<ComboboxProps> = ({
                     onChange(currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
+                  className="text-body"
                 >
                   <Icon
                     icon="lucide:check"
                     className={cn(
-                      "mr-2 h-4 w-4",
+                      "mr-2",
                       value === item.value ? "opacity-100" : "opacity-0"
                     )}
+                    width={iconSizes[size]}
+                    height={iconSizes[size]}
                   />
                   {item.label}
                 </CommandItem>

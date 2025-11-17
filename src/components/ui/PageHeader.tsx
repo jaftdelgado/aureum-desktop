@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { Label } from "@ui/Label";
+import { Label } from "@core/base-design/Label";
 import { useIsMobile } from "@hooks/useIsMobile";
 
 interface PageHeaderProps {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@components/ui/Button";
+import { Button } from "@core/base-design/Button";
 export const ThemeToggleButton: React.FC = () => {
   const [theme, setTheme] = useState<"light" | "dark">(
     () => (localStorage.getItem("theme") as "light" | "dark") || "light"

@@ -4,7 +4,7 @@
     "usernameOrEmail": "Username or email",
     "password": "Password",
     "login": "Login",
-    "continueWithGoogle": "Continue with Google", 
+    "continueWithGoogle": "Continue with Google",
     "noAccount": "Don't have an account?",
     "createAccount": "Register",
     "errors": {
@@ -28,29 +28,29 @@
     "usernamePlaceholder": "user.example16",
     "passwordPlaceholder": "Enter your password",
     "password": "Password",
-    "confirmPassword": "Confirm Password", 
-    "confirmPasswordPlaceholder": "Repeat your password", 
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Repeat your password",
     "credentials": "Credentials",
     "allSet": "All set!",
     "accountCreated": "Your account has been successfully created.",
     "back": "Back",
     "next": "Next",
-    "submitting": "Submitting...", 
+    "submitting": "Submitting...",
     "finish": "Finish",
-    "goToLogin": "Go to Login", 
+    "goToLogin": "Go to Login",
     "accountType": "Account type",
     "student": "Student",
     "teacher": "Teacher",
-    "error": { 
+    "error": {
       "generic": "An error occurred. Please try again.",
       "network": "Connection error. Please check your network."
     }
   },
   "validation": {
-    "required": "{{field}} is required.", 
-    "email": "Must be a valid email.", 
-    "minLength": "{{field}} must be at least {{min}} characters.", 
-    "invalidSelection": "Invalid selection.", 
+    "required": "{{field}} is required.",
+    "email": "Must be a valid email.",
+    "minLength": "{{field}} must be at least {{min}} characters.",
+    "invalidSelection": "Invalid selection.",
     "passwordsMustMatch": "Passwords must match."
   },
   "assets": {
@@ -67,5 +67,9 @@
       "status": "Status",
       "category": "Category"
     }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage the selected team's preferences, update its information, manage participants, and configure the simulator."
   }
 }

@@ -1,5 +1,5 @@
 import type { Column } from "./DataTable";
-import Checkbox from "@components/ui/Checkbox";
+import Checkbox from "@core/base-design/Checkbox";
 
 interface DataRowProps<T> {
   id: string;

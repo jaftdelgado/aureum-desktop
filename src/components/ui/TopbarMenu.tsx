@@ -1,7 +1,7 @@
 import React from "react";
 import { useAuthContext } from "@hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
-import LogoImg from "@assets/svg/aureum-icon.svg"; // SVG como imagen estática
+import LogoImg from "@resources/svg/aureum-icon.svg";
 
 interface TopbarMenuProps {
   className?: string;
@@ -11,7 +11,6 @@ export const TopbarMenu: React.FC<TopbarMenuProps> = ({ className = "" }) => {
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
-  // Foto de perfil del usuario
   const profileImageUrl =
     user?.user_metadata?.avatar_url ||
     user?.user_metadata?.picture ||

@@ -1,74 +1,22 @@
-// src/App.tsx
 import React from "react";
 import "./i18n";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { DashboardLayout } from "@layouts/Dashboard";
-import { Principal } from "@pages/principal/Principal";
-import { Teams } from "@pages/teams/Teams";
-import { AssetPage } from "@pages/assets-module/AssetPage";
-import { RegisterAsset } from "@pages/assets-module/RegisterAsset";
-import { MarketPage } from "@pages/market-module/MarketPage"; // ✅ AGREGADO
-import AuthLayout from "@layouts/AuthLayout";
+import { useRoutes } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "@components/AuthProvider";
-import { useAuthContext } from "@hooks/useAuthContext";
+
+import { appRoutes } from "./Routes";
 import "@styles/theme.css";
+import "@styles/text-sizes.css";
 
 const clientId =
   "429589404591-g9br5uc0ptnmcrrtqrvt87on50ogaeup.apps.googleusercontent.com";
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { user, loading } = useAuthContext();
-
-  if (loading) return <div>Cargando...</div>;
-  if (!user) return <Navigate to="/auth" replace />;
-
-  return <>{children}</>;
-};
-
-const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, loading } = useAuthContext();
-
-  if (loading) return <div>Cargando...</div>;
-  if (user) return <Navigate to="/dashboard" replace />;
-
-  return <>{children}</>;
-};
-
 export const App: React.FC = () => {
+  const routes = useRoutes(appRoutes);
+
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Navigate to="/auth" replace />} />
-
-          <Route
-            path="/auth"
-            element={
-              <AuthRoute>
-                <AuthLayout />
-              </AuthRoute>
-            }
-          />
-
-          <Route
-            path="/dashboard/*"
-            element={
-              <ProtectedRoute>
-                <DashboardLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Principal />} />
-            <Route path="teams" element={<Teams />} />
-            <Route path="assets" element={<AssetPage />} />
-            <Route path="assets/register" element={<RegisterAsset />} />
-            <Route path="market" element={<MarketPage />} />
-          </Route>
-        </Routes>
-      </AuthProvider>
+      <AuthProvider>{routes}</AuthProvider>
     </GoogleOAuthProvider>
   );
 };

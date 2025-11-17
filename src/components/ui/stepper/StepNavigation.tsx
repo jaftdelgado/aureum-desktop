@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@components/ui/Button";
+import { Button } from "@core/base-design/Button";
 
 interface StepNavigationProps {
   currentStep: number;

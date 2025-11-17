@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import type { Column } from "./DataTable";
-import Checkbox from "@components/ui/Checkbox";
+import Checkbox from "@core/base-design/Checkbox";
 
 interface DataHeaderProps<T> {
   columns: Column<T>[];

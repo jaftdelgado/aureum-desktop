@@ -1,5 +1,5 @@
 import React, { type ReactNode, useEffect, useState } from "react";
-import { Label } from "./Label";
+import { Label } from "../../modules/core/base-design/Label";
 import { cn } from "@lib/utils";
 
 interface ToggleOption {

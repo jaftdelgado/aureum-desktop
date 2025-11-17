@@ -1,14 +1,13 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@components/ui/Button";
-import GoogleLogo from "@assets/svg/google-logo.svg";
+import { Button } from "@core/base-design/Button";
+import GoogleLogo from "@resources/svg/google-logo.svg";
 import { supabase } from "@lib/supabaseClient";
 
 const GoogleSignIn: React.FC = () => {
   const { t } = useTranslation();
 
   const handleGoogleSignIn = async () => {
-    // Detecta si estás en entorno local o en producción (Vercel)
     const redirectTo = import.meta.env.DEV
       ? "http://localhost:5173/dashboard"
       : "https://aureum-desktop.vercel.app/dashboard";
