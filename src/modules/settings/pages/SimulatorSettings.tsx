@@ -1,5 +1,5 @@
 import React from "react";
-import { PageHeader } from "@ui/PageHeader";
+import { PageHeader } from "@core/components/PageHeader";
 import { useTranslation } from "react-i18next";
 import { MarketSettings } from "@settings/components/MarketSettings";
 
@@ -13,7 +13,7 @@ export const SimulatorSettings: React.FC = () => {
         description={t("settings.simulator.description")}
       />
 
-      <div className="flex flex-1 flex-col gap-3 py-4 px-4 w-full max-w-[840px]">
+      <div className="flex flex-1 flex-col gap-3 py-page-y px-page-x w-full max-w-[840px]">
         <MarketSettings />
       </div>
     </div>

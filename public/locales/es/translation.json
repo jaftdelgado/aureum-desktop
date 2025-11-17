@@ -52,6 +52,14 @@
     "invalidSelection": "Selección inválida.",
     "passwordsMustMatch": "Las contraseñas deben coincidir."
   },
+  "modules": {
+    "dashboard": { "title": "Inicio" },
+    "assets": { "title": "Activos" },
+    "market": { "title": "Mercado" },
+    "settings": { "title": "Configuración" },
+    "simulator": { "title": "Simulador" },
+    "teams": { "title": "Equipos" }
+  },
   "assets": {
     "title": "Activos Financieros",
     "description": "Gestiona tu mercado simulado, añade activos personalizados y explora todos los activos disponibles.",

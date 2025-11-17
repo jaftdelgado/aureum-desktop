@@ -1,6 +1,6 @@
 import React, { type ReactNode } from "react";
 import { Label } from "@core/base-design/Label";
-import { useIsMobile } from "@hooks/useIsMobile";
+import { useIsMobile } from "@core/hooks/useIsMobile";
 
 interface PageHeaderProps {
   title: ReactNode;

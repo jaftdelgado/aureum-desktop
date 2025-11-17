@@ -1,5 +1,5 @@
 import React from "react";
-import { PageHeader } from "@ui/PageHeader";
+import { PageHeader } from "@core/components/PageHeader";
 import { useTranslation } from "react-i18next";
 import { SettingsOption } from "@settings/components/ui/SettingsOption";
 import { useNavigate } from "react-router-dom";

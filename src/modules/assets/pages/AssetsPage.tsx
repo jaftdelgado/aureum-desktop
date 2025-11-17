@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { PageHeader } from "@ui/PageHeader";
+import { PageHeader } from "@core/components/PageHeader";
 import { useTranslation } from "react-i18next";
 import { Button } from "@core/base-design/Button";
 import DataTable from "@ui/table/DataTable";

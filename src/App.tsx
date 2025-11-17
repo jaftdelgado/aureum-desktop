@@ -7,6 +7,7 @@ import { AuthProvider } from "@components/AuthProvider";
 import { appRoutes } from "./Routes";
 import "@styles/theme.css";
 import "@styles/text-sizes.css";
+import "@styles/design-tokens.css";
 
 const clientId =
   "429589404591-g9br5uc0ptnmcrrtqrvt87on50ogaeup.apps.googleusercontent.com";

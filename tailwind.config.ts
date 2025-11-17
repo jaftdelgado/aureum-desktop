@@ -34,6 +34,8 @@ const config: Config = {
       },
       spacing: {
         "8.5": "2.125rem",
+        "page-x": "var(--page-padding-x)",
+        "page-y": "var(--page-padding-y)",
       },
     },
   },

@@ -1,24 +1,18 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
-const routeNameMap: Record<string, string> = {
-  "": "Inicio",
-  home: "Inicio",
-  dashboard: "Inicio",
-  courses: "Cursos",
-};
+interface BreadcrumbProps {
+  pathnames: string[];
+  isDashboard: boolean;
+  formatName?: (name: string) => string; // se agrega la función opcional
+}
 
-const formatName = (name: string): string =>
-  routeNameMap[name] ||
-  name.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-
-export const Breadcrumb: React.FC = () => {
-  const location = useLocation();
-  const pathnames = location.pathname.split("/").filter(Boolean);
-  const isDashboard =
-    location.pathname === "/" || location.pathname === "/dashboard";
-
+export const Breadcrumb: React.FC<BreadcrumbProps> = ({
+  pathnames,
+  isDashboard,
+  formatName = (name) => name, // default: retorna el mismo string
+}) => {
   return (
     <nav className="flex items-center text-small font-normal text-secondaryText">
       {isDashboard ? (
@@ -28,7 +22,7 @@ export const Breadcrumb: React.FC = () => {
       ) : (
         <NavLink
           to="/dashboard"
-          className="text-secondaryText hover:text-gray-500 transition-colors"
+          className="text-secondaryText hover:text-primaryText transition-colors"
         >
           Inicio
         </NavLink>
@@ -52,7 +46,7 @@ export const Breadcrumb: React.FC = () => {
             ) : (
               <NavLink
                 to={routeTo}
-                className="text-secondaryText hover:text-gray-500 transition-colors truncate"
+                className="text-secondaryText hover:text-primaryText transition-colors truncate"
               >
                 {formatName(name)}
               </NavLink>

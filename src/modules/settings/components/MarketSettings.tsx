@@ -46,7 +46,7 @@ export const MarketSettings: React.FC = () => {
   const [allowShortSelling, setAllowShortSelling] = useState(false);
 
   return (
-    <div className="w-full h-full flex flex-col gap-4 py-4 px-4 max-w-[840px]">
+    <div className="w-full h-full flex flex-col gap-4 py-4 max-w-[840px]">
       {/* Sección: Capital y moneda */}
       <SettingsSection title={t("settings.simulator.sections.marketBasics")}>
         <SettingsControl
@@ -68,7 +68,6 @@ export const MarketSettings: React.FC = () => {
             <Combobox
               items={currencyOptions}
               value={currency}
-              size="sm"
               onChange={setCurrency}
             />
           }
@@ -141,7 +140,6 @@ export const MarketSettings: React.FC = () => {
         />
       </SettingsSection>
 
-      {/* Sección: Eventos y riesgos */}
       <SettingsSection title={t("settings.simulator.sections.marketEvents")}>
         <SettingsControl
           title={t("settings.simulator.settings.eventFrequency")}

@@ -1,0 +1,18 @@
+:root {
+  --page-padding-x: 2.5rem;
+  --page-padding-y: 1rem;
+}
+
+@media (max-width: 640px) { 
+  :root {
+    --page-padding-x: 1rem;
+    --page-padding-y: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --page-padding-x: 1rem;
+    --page-padding-y: 0.75rem;
+  }
+}
