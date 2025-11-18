@@ -18,7 +18,7 @@ export const DashboardLayout: React.FC = () => {
         {isMobile && <TopbarMenu />}
 
         {!isMobile && (
-          <div className="sticky top-0 z-10 flex items-center justify-between px-8 py-4 flex-shrink-0">
+          <div className="sticky top-0 z-10 flex items-center justify-between px-page-x py-4 flex-shrink-0">
             <AppBreadcrumb />
             <div className="flex items-center gap-3">
               <LanguageCombobox />

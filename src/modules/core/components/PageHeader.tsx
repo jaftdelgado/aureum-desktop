@@ -19,7 +19,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 
   return (
     <div
-      className={`flex justify-between items-end w-full py-4 px-6 border-b border-outline ${className}`}
+      className={`flex justify-between items-end w-full py-page-y px-page-x border-b border-outline ${className}`}
     >
       <div className="flex flex-col gap-1">
         <Label variant="header" color="primary">

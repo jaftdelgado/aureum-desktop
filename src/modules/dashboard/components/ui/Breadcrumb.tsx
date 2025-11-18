@@ -5,13 +5,13 @@ import { Icon } from "@iconify/react";
 interface BreadcrumbProps {
   pathnames: string[];
   isDashboard: boolean;
-  formatName?: (name: string) => string; // se agrega la función opcional
+  formatName?: (name: string) => string;
 }
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   pathnames,
   isDashboard,
-  formatName = (name) => name, // default: retorna el mismo string
+  formatName = (name) => name,
 }) => {
   return (
     <nav className="flex items-center text-small font-normal text-secondaryText">

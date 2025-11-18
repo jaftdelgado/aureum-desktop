@@ -5,6 +5,7 @@ import {
   SettingsSection,
 } from "@settings/components/ui/SettingsControl";
 import { Combobox, type ComboboxItem } from "@ui/Combobox";
+import { Switch } from "@core/base-design/Switch";
 
 const currencyOptions: ComboboxItem[] = [
   { value: "USD", label: "USD" },
@@ -128,13 +129,9 @@ export const MarketSettings: React.FC = () => {
           title={t("settings.simulator.settings.allowShortSelling")}
           description={t("settings.simulator.settings.allowShortSellingDesc")}
           control={
-            <Combobox
-              items={[
-                { value: "true", label: "Yes" },
-                { value: "false", label: "No" },
-              ]}
-              value={allowShortSelling ? "true" : "false"}
-              onChange={(val) => setAllowShortSelling(val === "true")}
+            <Switch
+              checked={allowShortSelling}
+              onCheckedChange={(checked) => setAllowShortSelling(checked)}
             />
           }
         />
