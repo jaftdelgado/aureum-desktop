@@ -28,6 +28,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   iconRightNode?: ReactNode;
 
   className?: string;
+
+  alignText?: "left" | "center" | "right";
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -47,6 +49,8 @@ export const Button: React.FC<ButtonProps> = ({
   iconRightNode,
 
   className = "",
+  alignText,
+
   ...props
 }) => {
   const baseClasses =
@@ -65,7 +69,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const sizeClasses: Record<ButtonSize, string> = {
     sm: "h-8 px-3 py-1.5",
-    md: "h-8 px-3 py-2",
+    md: "h-9 px-3 py-2",
     lg: "h-10 px-5 py-3",
   };
 
@@ -83,12 +87,21 @@ export const Button: React.FC<ButtonProps> = ({
 
   const isIconOnly = !!iconOnly;
 
+  /** Clases nuevas para alinear */
+  const alignClasses: Record<NonNullable<ButtonProps["alignText"]>, string> = {
+    left: "justify-start",
+    center: "justify-center",
+    right: "justify-end",
+  };
+
   const classes = [
     baseClasses,
     variantClasses[variant],
     isIconOnly
       ? `${iconOnlySize[size]} p-0 rounded-xl flex items-center justify-center`
-      : sizeClasses[size],
+      : `${sizeClasses[size]} flex ${
+          alignText ? alignClasses[alignText] : "justify-start"
+        }`,
     className,
   ]
     .filter(Boolean)

@@ -1,102 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@core/base-design/Button";
 import { Label } from "@core/base-design/Label";
 import { Separator } from "@core/base-design/Separator";
 import { Input } from "@core/base-design/Input";
 import GoogleSignIn from "@components/GoogleSignIn";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@lib/supabaseClient";
-import { useFormValidation } from "@hooks/useFormValidation";
+import { useLoginForm } from "@auth/hooks/useLoginForm";
+import { useIsMobile } from "@core/hooks/useIsMobile";
 
 interface LoginFormProps {
   onShowRegister: () => void;
 }
 
-interface LoginFields {
-  email: string;
-  password: string;
-}
-
 const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const { errors, setErrors, validateFields } = useFormValidation<LoginFields>([
-    {
-      field: "email",
-      validate: (value) =>
-        !String(value).trim()
-          ? t("signin.errors.identifierRequired", {
-              defaultValue: "Ingresa tu correo.",
-            })
-          : null,
-    },
-    {
-      field: "password",
-      validate: (value) =>
-        !String(value).trim()
-          ? t("signin.errors.passwordRequired", {
-              defaultValue: "Ingresa tu contraseña.",
-            })
-          : null,
-    },
-  ]);
+  const { loading, errorMsg, errors, handleSubmit } = useLoginForm();
+  const isMobile = useIsMobile();
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    setErrors({});
-    setErrorMsg(null);
-    setLoading(true);
+    const fd = new FormData(e.currentTarget);
 
-    try {
-      const fd = new FormData(e.currentTarget);
-      const formData: LoginFields = {
-        email: String(fd.get("email") || "").trim(),
-        password: String(fd.get("password") || ""),
-      };
-
-      const isValid = validateFields(formData);
-      if (!isValid) {
-        setLoading(false);
-        return;
-      }
-
-      const { error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (error) {
-        setErrorMsg(
-          error.message ||
-            t("signin.errors.invalidCredentials", {
-              defaultValue: "Correo o contraseña incorrectos.",
-            })
-        );
-      } else {
-        navigate("/dashboard", { replace: true });
-      }
-    } catch {
-      setErrorMsg(
-        t("signup.error.generic", {
-          defaultValue: "Ocurrió un error. Inténtalo de nuevo.",
-        })
-      );
-    } finally {
-      setLoading(false);
-    }
+    await handleSubmit({
+      email: String(fd.get("email") || "").trim(),
+      password: String(fd.get("password") || ""),
+    });
   };
 
   return (
-    <div className="bg-panel border border-sidebarHoverBtn p-8 rounded-xl w-full max-w-xs">
-      <Label
-        variant="subtitle"
-        color="primary"
-        className="text-left self-start"
-      >
+    <div
+      className={`
+        p-8 rounded-xl w-full
+        ${isMobile ? "max-w-full" : "max-w-[340px] mx-auto"}
+      `}
+    >
+      <Label variant="subtitle" color="primary">
         {t("signin.title")}
       </Label>
 
@@ -108,6 +46,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
           autoComplete="username"
           error={errors.email}
           disabled={loading}
+          className={isMobile ? "w-full" : ""}
         />
 
         <Input
@@ -117,12 +56,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
           autoComplete="current-password"
           error={errorMsg || errors.password}
           disabled={loading}
+          className={isMobile ? "w-full" : ""}
         />
 
         <Button
           variant="default"
-          className="mt-2"
+          className={`mt-2 ${isMobile ? "w-full" : ""}`}
           type="submit"
+          size="lg"
+          alignText="center"
           disabled={loading}
         >
           {loading
@@ -132,15 +74,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
 
         <Separator variant="line" className="my-1" />
 
-        {/* Botón de login con Google usando Supabase */}
         <GoogleSignIn />
 
-        <div className="flex justify-center items-center gap-1 mt-4 text-left self-start">
-          <Label
-            variant="body"
-            color="secondary"
-            className="align-middle mr-0.5"
-          >
+        <div
+          className={`
+            flex items-center gap-1 mt-4
+            ${isMobile ? "justify-start" : "justify-center"}
+          `}
+        >
+          <Label variant="body" color="secondary">
             {t("signin.noAccount")}
           </Label>
           <Button variant="link" type="button" onClick={onShowRegister}>

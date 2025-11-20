@@ -28,6 +28,7 @@ const GoogleSignIn: React.FC = () => {
     <Button
       variant="secondary"
       type="button"
+      alignText="center"
       onClick={handleGoogleSignIn}
       iconNode={<img src={GoogleLogo} alt="Google Logo" className="w-5 h-5" />}
     >
