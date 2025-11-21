@@ -1,4 +1,4 @@
-import type { Asset } from "../modules/core/types/asset";
+import type { Asset } from "@core/types/asset";
 
 export const getAssets = async (): Promise<Asset[]> => {
   const response = await fetch(`/assets`);
