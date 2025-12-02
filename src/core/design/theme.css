@@ -1,0 +1,28 @@
+:root {
+  --bg: #fefefe;
+  --outline: #dedede;
+
+  --primary-text: #101010;
+  --secondary-text: #86868a;
+
+  --input: #ebebf0;
+  --primary-btn: #101010;
+  --primary-hover-btn: #343434;
+  --secondary-btn: #ebebf0;
+  --secondary-hover-btn: #e0e0e3;
+}
+
+.dark {
+  --bg: #101010;
+  --outline: #2d2d2d;
+
+  --primary-text: #ededed;
+  --secondary-text: #626265;
+
+  --input: #3c3c3c;
+  --primary-btn: #ededed;
+  --primary-hover-btn: #cccccc;
+  --secondary-btn: #262626;
+  --secondary-hover-btn: #3c3c3c;
+  
+}

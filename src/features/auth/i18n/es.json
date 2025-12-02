@@ -1,0 +1,20 @@
+{
+  "welcome": "Bienvenido",
+  "common": {
+    "loading": "Cargando..."
+  },
+  "signin": {
+    "title": "Iniciar sesión",
+    "usernameOrEmail": "Correo electrónico o usuario",
+    "password": "Contraseña",
+    "noAccount": "¿No tienes una cuenta?",
+    "createAccount": "Crear cuenta",
+    "login": "Iniciar sesión",
+    "continueWithGoogle": "Continuar con Google",
+    "errors": {
+      "identifierRequired": "El correo o usuario es obligatorio",
+      "passwordRequired": "La contraseña es obligatoria",
+      "invalidCredentials": "Correo o contraseña incorrectos"
+    }
+  }
+}
