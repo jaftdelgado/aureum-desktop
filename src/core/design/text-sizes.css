@@ -1,6 +1,7 @@
 :root {
-  --font-h1: 1.4rem;
+  --font-h1: 1.5rem;
   --font-subtitle: 1.25rem;
+  --font-headline: 0.9rem;
   --font-body: 0.825rem;
   --font-small: 0.725rem;
 
@@ -12,6 +13,7 @@
   :root {
     --font-h1: 1.5rem;
     --font-subtitle: 1.4rem;
+    --font-headline: 1rem;
     --font-body: 0.875rem;
     --font-small: 0.7rem;
 

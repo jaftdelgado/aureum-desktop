@@ -1,6 +1,4 @@
 import React, { type ReactNode } from "react";
-import { cva } from "class-variance-authority";
-import { cn } from "@core/utils/cn";
 
 type LabelVariant = "header" | "subtitle" | "body" | "small";
 type LabelColor = "primary" | "secondary" | "destructive";
@@ -12,35 +10,28 @@ interface LabelProps {
   className?: string;
 }
 
-const labelVariants = cva("", {
-  variants: {
-    variant: {
-      header: "text-h1 font-medium leading-h1",
-      subtitle: "text-subtitle font-medium leading-5",
-      body: "text-body font-normal leading-body",
-      small: "text-small font-normal leading-4",
-    },
-    color: {
-      primary: "text-primaryText",
-      secondary: "text-secondaryText",
-      destructive: "text-destructive",
-    },
-  },
-  defaultVariants: {
-    variant: "body",
-    color: "primary",
-  },
-});
-
 export const Label: React.FC<LabelProps> = ({
   children,
-  variant,
-  color,
-  className,
+  variant = "body",
+  color = "primary",
+  className = "",
 }) => {
-  return (
-    <span className={cn(labelVariants({ variant, color }), className)}>
-      {children}
-    </span>
-  );
+  const colorClasses: Record<LabelColor, string> = {
+    primary: "text-primaryText",
+    secondary: "text-secondaryText",
+    destructive: "text-destructive",
+  };
+
+  const variantClasses: Record<LabelVariant, string> = {
+    header: "text-h1 font-semibold leading-h1",
+    subtitle: "text-subtitle font-medium leading-subtitle",
+    body: "text-body font-normal leading-body",
+    small: "text-small font-normal leading-small",
+  };
+
+  const classes = [variantClasses[variant], colorClasses[color], className]
+    .filter(Boolean)
+    .join(" ");
+
+  return <span className={classes}>{children}</span>;
 };

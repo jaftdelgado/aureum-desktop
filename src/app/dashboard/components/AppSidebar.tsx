@@ -6,9 +6,7 @@ import {
 } from "@app/dashboard/components/side-bar/SideBar";
 import { useAuth } from "@app/hooks/useAuth";
 
-// Ejemplo: obtener teamId desde algún contexto o estado global
 const useSelectedTeamId = () => {
-  // Aquí deberías reemplazar con tu lógica real
   return "123"; // ejemplo
 };
 

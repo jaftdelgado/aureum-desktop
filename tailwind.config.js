@@ -23,12 +23,17 @@ export default {
       fontSize: {
         h1: "var(--font-h1)",
         subtitle: "var(--font-subtitle)",
+        headline: "var(--font-headline)",
         body: "var(--font-body)",
         small: "var(--font-small)",
       },
       lineHeight: {
         h1: "var(--line-h1)",
         body: "var(--line-body)",
+      },
+      spacing: {
+        "page-x": "var(--page-padding-x)",
+        "page-y": "var(--page-padding-y)",
       },
     },
   },
