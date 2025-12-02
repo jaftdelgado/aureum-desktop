@@ -29,12 +29,24 @@ export const AppSidebar: React.FC = () => {
       label: "Equipos",
       route: "/teams",
     },
+    {
+      type: "button",
+      icon: "hugeicons:video-01",
+      label: "Lecciones",
+      route: "/lessons"
+    },
     { type: "separator", label: "Gestión" },
     {
       type: "button",
       icon: "hugeicons:shopping-bag-01",
       label: "Mercado",
       route: selectedTeamId ? `/teams/${selectedTeamId}/market` : "/teams",
+    },
+    {
+      type: "button",
+      icon: "hugeicons:wallet-03",
+      label: "Portafolio",
+      route: selectedTeamId ? `/teams/${selectedTeamId}/portfolio` : "/teams"    
     },
     {
       type: "button",
