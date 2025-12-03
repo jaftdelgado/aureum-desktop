@@ -6,6 +6,7 @@ export interface AuthContextValue {
   user: LoggedInUser | null;
   setUser: (user: LoggedInUser | null) => void;
   loading: boolean;
+  logout: () => Promise<void>;
 }
 
 // Valor inicial del contexto
@@ -13,4 +14,5 @@ export const AuthContext = createContext<AuthContextValue>({
   user: null,
   setUser: () => {},
   loading: true,
+  logout: async () => {},
 });
