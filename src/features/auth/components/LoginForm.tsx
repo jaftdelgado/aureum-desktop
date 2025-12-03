@@ -92,7 +92,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister, onGoogleMissingPr
           <Label variant="body" color="secondary">
             {t("signin.noAccount")}
           </Label>
-          <Button variant="link" type="button" onClick={onShowRegister}>
+          <Button variant="link" type="button" onClick={onShowRegister} disabled={loading}>
             {t("signin.createAccount")}
           </Button>
         </div>

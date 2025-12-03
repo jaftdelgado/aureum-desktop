@@ -34,6 +34,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
     trigger,
     setValue, 
     watch, 
+    setError,
     formState: { errors },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(createSignUpSchema((key) => t(key))),
@@ -87,7 +88,20 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
       });
       setCurrentStep(4);
     } catch (error: any) {
-      setApiError(error.message);
+      const errorMessage = error.message || "";
+      if (
+        errorMessage.includes("already registered") || 
+        errorMessage.includes("already exists")
+      ) {
+        setCurrentStep(1);
+        
+        setError("email", {
+          type: "manual",
+          message: t("signup.errors.emailAlreadyRegistered"),
+        });
+      } else {
+        setApiError(errorMessage);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -137,6 +151,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
             setCurrentStep((prev) => prev - 1);
           }}
           isSubmitting={isSubmitting}
+          loadingLabel={t("common.loading")}
           nextLabel={
             (currentStep === 3) || (isGoogleFlow && currentStep === 2) 
               ? t("signup.finish", "Finalizar") 
@@ -192,7 +207,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                   <Input 
                     {...field} 
                     label={t("signup.username", "Nombre de Usuario")} 
-                    placeholder="@usuario" 
+                    placeholder="usuario" 
                     error={errors.username?.message}
                     autoComplete="username"
                   />
