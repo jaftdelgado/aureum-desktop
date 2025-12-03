@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { checkPasswordLeaked } from "@core/utils/pwned";
 
 const RESERVED_USERNAMES = ["admin", "root", "support", "system", "user", "guest", "aureum"];
 
@@ -74,6 +75,16 @@ export const createSignUpSchema = (t: (key: string) => string) => {
         })
         .refine((val) => !["123456", "password", "12345678", "qwerty"].includes(val), {
           message: t("signup.errors.passwordCommon"),
+        })
+
+        .refine(async (val) => {
+          if (val === "GOOGLE_AUTH_DUMMY_PASS") return true; 
+          if (val.length < 8) return true; 
+          
+          const isLeaked = await checkPasswordLeaked(val);
+          return !isLeaked;
+        }, {
+          message: t("signup.errors.passwordPwned"), // Nuevo mensaje
         }),
 
       confirmPassword: z.string(),

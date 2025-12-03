@@ -41,6 +41,14 @@
     "goToLogin": "Go to Login",
     "goToDashboard": "Go to Dashboard",
     "alreadyHaveAccount": "Already have an account? Sign In",
+    "strength":{
+      "title":"Password Strength:",
+      "length": "At least 8 characters",
+      "uppercase": "One uppercase letter",
+      "lowercase": "One lowercase letter",
+      "number": "One number",
+      "symbol": "One symbol or special character"
+    },
     "errors": {
       "firstNameRequired": "First name is required",
       "lastNameRequired": "Last name is required",
@@ -50,6 +58,7 @@
       "emailLength": "Email cannot exceed 254 characters",
       "usernameMin": "Minimum 4 characters",
       "usernameMax": "Maximum 20 characters",
+      "passwordPwned": "This password has been exposed in a data breach. Please choose another one.",
       "usernameInvalid": "Only letters, numbers, and underscores (_) are allowed",
       "usernameReserved": "This username is not allowed",
       "accountTypeRequired": "Please select an account type",
