@@ -37,7 +37,6 @@ interface AppRoute {
 
 const routes: AppRoute[] = [
   {
-    type: "public",
     path: "/auth",
     element: <AuthPage />,
   },
