@@ -3,6 +3,7 @@ import type { AuthRepository } from "@domain/repositories/AuthRepository";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 import { httpClient } from "@infra/external/http/client";
 import { mapUserDTOToLoggedInUser } from "@infra/external/auth/auth.mappers";
+import type { LoggedInUserDTO, UserProfileDTO } from "@infra/external/auth/auth.dto";
 
 export interface RegisterData {
   email: string;
@@ -16,11 +17,31 @@ export interface RegisterData {
 
 export class AuthApiRepository implements AuthRepository {
   
+  private async fetchProfile(authId: string): Promise<UserProfileDTO | undefined> {
+    try {
+      const profile = await httpClient.get<UserProfileDTO>(`/api/users/profiles/${authId}`);
+      return profile;
+    } catch (error) {
+      console.warn(`No se pudo cargar el perfil para ${authId}`, error);
+      return undefined;
+    }
+  }
+
   async login(email: string, password: string): Promise<LoggedInUser> {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      
       if (error) throw new Error(error.message);
       if (!data.user) throw new Error("No se pudo iniciar sesión");
-      return mapUserDTOToLoggedInUser({ id: data.user.id, email: data.user.email, created_at: data.user.created_at });
+
+      const authDto: LoggedInUserDTO = {
+        id: data.user.id,
+        email: data.user.email,
+        created_at: data.user.created_at,
+      };
+
+      const profileDto = await this.fetchProfile(data.user.id);
+      
+      return mapUserDTOToLoggedInUser(authDto, profileDto);
   }
 
   async logout(): Promise<void> {
@@ -31,8 +52,18 @@ export class AuthApiRepository implements AuthRepository {
   async getSession(): Promise<LoggedInUser | null> {
     const { data } = await supabase.auth.getSession();
     const user = data.session?.user;
+
     if (!user) return null;
-    return mapUserDTOToLoggedInUser({ id: user.id, email: user.email, created_at: user.created_at });
+
+    const authDto: LoggedInUserDTO = {
+      id: user.id,
+      email: user.email,
+      created_at: user.created_at,
+    };
+
+    const profileDto = await this.fetchProfile(user.id);
+
+    return mapUserDTOToLoggedInUser(authDto, profileDto);
   }
 
   async register(data: RegisterData): Promise<void> {
@@ -72,10 +103,14 @@ export class AuthApiRepository implements AuthRepository {
       await httpClient.get(`/api/users/profiles/${authId}`);
       return true;
     } catch (error: any) {
-      if (error.message.includes("404")) {
+      const errorString = error?.message || String(error);
+      
+      if (errorString.includes("404") || errorString.includes("Not Found")) {
         return false;
       }
-      throw error;
+      
+      console.warn("Error checking profile:", error);
+      return false; 
     }
   }
 }
