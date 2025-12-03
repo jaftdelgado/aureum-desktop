@@ -29,13 +29,14 @@ export const Input: React.FC<InputProps> = ({
       {label && (
         <Label
           variant="small"
-          className="font-medium mb-1 ml-2 text-primaryText"
+          className="font-medium mb-1 ml-1 text-primaryText" 
         >
           {label}
         </Label>
       )}
 
-      <div className={cn("relative w-full", error && "mb-4")}>
+      {/* Input Container */}
+      <div className="relative w-full">
         <input
           type={type}
           data-slot="input"
@@ -44,31 +45,33 @@ export const Input: React.FC<InputProps> = ({
           className={cn(
             "w-full text-body rounded-xl outline-none transition-all duration-150",
             "bg-input text-primaryText placeholder:text-secondaryText",
-            "border border-outline focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn",
+            "border focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn", 
             "disabled:pointer-events-none disabled:opacity-60",
-            error &&
-              "border-destructive focus:border-destructive focus:ring-destructive",
+            error 
+              ? "border-red-500 focus:border-red-500 focus:ring-red-500/50" 
+              : "border-outline hover:border-outline/80",
             sizeClasses[size],
             className
           )}
           {...props}
         />
-
-        {error && (
-          <div
-            id={`${props.id}-error`}
-            className="absolute -bottom-5 left-1 flex items-center gap-1"
-          >
-            <Icon
-              icon="lucide:circle-x"
-              className="w-3.5 h-3.5 text-destructive"
-            />
-            <Label variant="small" color="destructive">
-              {error}
-            </Label>
-          </div>
-        )}
       </div>
+
+      {/* Error Message (Fuera del relative, alineado con flex) */}
+      {error && (
+        <div 
+          id={`${props.id}-error`}
+          className="flex items-center gap-1.5 mt-1.5 ml-1 animate-in slide-in-from-top-1 fade-in duration-200"
+        >
+          <Icon
+            icon="lucide:circle-x"
+            className="w-3.5 h-3.5 text-red-500 flex-shrink-0" 
+          />
+          <span className="text-[0.8rem] font-medium text-red-500 leading-none">
+            {error}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

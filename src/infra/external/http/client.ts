@@ -6,6 +6,15 @@ interface RequestOptions extends RequestInit {
   params?: Record<string, string>; 
 }
 
+export class HttpError extends Error {
+  public status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+    this.name = "HttpError";
+  }
+}
+
 export class HttpClient {
   private baseUrl: string;
 
@@ -57,19 +66,18 @@ export class HttpClient {
       const response = await fetch(url, config);
 
       if (!response.ok) {
-        let errorData;
-        try {
-          errorData = await response.json();
-        } catch {
-          errorData = { message: response.statusText };
-        }
-        
-        throw new Error(errorData.message || `Error HTTP ${response.status}`);
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { message: response.statusText };
       }
-
-      if (response.status === 204) {
-        return null as T;
-      }
+      
+      throw new HttpError(
+        response.status, 
+        errorData.message || `Error HTTP ${response.status}`
+      );
+    }
 
       return await response.json();
     } catch (error) {
