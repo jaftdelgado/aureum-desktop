@@ -1,7 +1,49 @@
 {
-  "welcome": "Bienvenido",
+  "welcome": "Welcome",
+  "common": {
+    "loading": "Loading...",
+    "next": "Next",
+    "back": "Back"
+  },
   "signin": {
-    "createAccount": "Crear cuenta",
-    "login": "Iniciar sesión"
+    "title": "Sign In",
+    "usernameOrEmail": "Email or Username",
+    "password": "Password",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create Account",
+    "login": "Sign In",
+    "continueWithGoogle": "Continue with Google",
+    "errors": {
+      "identifierRequired": "Email or username is required",
+      "passwordRequired": "Password is required",
+      "invalidCredentials": "Invalid email or password"
+    }
+  },
+  "signup": {
+    "createAccount": "Create Account",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "username": "Username",
+    "role": "I am a...",
+    "student": "Student",
+    "professor": "Professor",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "finish": "Finish",
+    "successTitle": "Account Created!",
+    "successMsg": "Your profile has been successfully set up.",
+    "goToLogin": "Go to Login",
+    "alreadyHaveAccount": "Already have an account? Sign In",
+    "errors": {
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "emailInvalid": "Invalid email",
+      "usernameMin": "Minimum 3 characters",
+      "usernameInvalid": "Only letters, numbers and _",
+      "accountTypeRequired": "Please select an account type",
+      "passwordMin": "Minimum 6 characters",
+      "passwordsDoNotMatch": "Passwords do not match"
+    }
   }
 }

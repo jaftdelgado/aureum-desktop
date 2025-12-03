@@ -1,8 +1,6 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { Icon } from "@iconify/react";
 import { Label } from "@core/ui/Label";
-import { useAuth } from "@app/hooks/useAuth";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 interface SidebarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -51,8 +49,6 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
   avatarUrl,
   onClick,
 }) => {
-  const { t } = useTranslation();
-  const { logout } = useAuth();
   return (
     <SidebarButton
       onClick={onClick}

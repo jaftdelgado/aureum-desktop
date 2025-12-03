@@ -1,10 +1,8 @@
 import { supabase } from "@infra/external/http/supabase";
 import type { AuthRepository } from "@domain/repositories/AuthRepository";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
-import type { LoggedInUserDTO } from "@infra/external/auth/auth.dto";
+import { httpClient } from "@infra/external/http/client";
 import { mapUserDTOToLoggedInUser } from "@infra/external/auth/auth.mappers";
-
-const GATEWAY_URL = "https://gateway-production.up.railway.app";
 
 export interface RegisterData {
   email: string;
@@ -66,21 +64,18 @@ export class AuthApiRepository implements AuthRepository {
       role: roleToSend,
     };
 
-    const { data: session } = await supabase.auth.getSession();
-    const token = session.session?.access_token;
+    await httpClient.post("/api/users/profiles", profilePayload);
+  }
 
-    const response = await fetch(`${GATEWAY_URL}/api/users/profiles`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, 
-      },
-      body: JSON.stringify(profilePayload),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Error creando perfil: ${errorText}`);
+  async checkProfileExists(authId: string): Promise<boolean> {
+    try {
+      await httpClient.get(`/api/users/profiles/${authId}`);
+      return true;
+    } catch (error: any) {
+      if (error.message.includes("404")) {
+        return false;
+      }
+      throw error;
     }
   }
 }
