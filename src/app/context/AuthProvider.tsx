@@ -5,6 +5,7 @@ import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 import type { AuthRepository } from "@domain/repositories/AuthRepository";
 import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
 import { GetSessionUseCase } from "@domain/use-cases/auth/GetSessionUseCase";
+import { LogoutUseCase } from "@domain/use-cases/auth/LogoutUseCase";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -13,6 +14,17 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<LoggedInUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const authRepo = new AuthApiRepository();
+
+  const logout = async () => {
+    try {
+      const logoutUseCase = new LogoutUseCase(authRepo);
+      await logoutUseCase.execute(); 
+      setUser(null);                
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
 
   useEffect(() => {
     console.log("[AuthProvider] useEffect init");
@@ -38,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   console.log("[AuthProvider] render:", { user, loading });
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );

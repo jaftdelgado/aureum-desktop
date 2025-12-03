@@ -5,6 +5,7 @@ import {
   type SidebarItem,
 } from "@app/dashboard/components/side-bar/SideBar";
 import { useAuth } from "@app/hooks/useAuth";
+import { SidebarButton } from "./side-bar/SidebarButton";
 
 const useSelectedTeamId = () => {
   return "123"; // ejemplo
@@ -12,7 +13,7 @@ const useSelectedTeamId = () => {
 
 export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const selectedTeamId = useSelectedTeamId();
 
   const items: SidebarItem[] = [
@@ -62,8 +63,22 @@ export const AppSidebar: React.FC = () => {
         onClick: () => navigate("/home"),
       }
     : undefined;
-
+  
+  const logoutButton = (
+    <SidebarButton
+      onClick={logout}
+      icon="mdi:logout"
+      className="text-red-400 hover:text-red-300 hover:bg-red-500/10 w-full justify-start"
+    >
+      Cerrar Sesión
+    </SidebarButton>
+  );
   return (
-    <Sidebar items={items} onNavigate={handleNavigate} profile={profile} />
+    <Sidebar 
+      items={items} 
+      onNavigate={handleNavigate} 
+      profile={profile}
+      bottomActions={logoutButton}  
+    />
   );
 };
