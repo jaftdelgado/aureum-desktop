@@ -1,5 +1,7 @@
-const { contextBridge } = require('electron');
+const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld('electronAPI', {
-  // ej: sayHello: () => console.log('Hello from Electron!')
+contextBridge.exposeInMainWorld("electronAPI", {
+  onAuthToken: (callback) => {
+    ipcRenderer.on("supabase-auth-token", (_event, url) => callback(url));
+  },
 });

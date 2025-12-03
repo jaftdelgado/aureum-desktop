@@ -63,12 +63,14 @@
       "usernameReserved": "Este nombre de usuario no está permitido",
       "accountTypeRequired": "Selecciona un tipo de cuenta",
       "passwordMin": "La contraseña debe tener al menos 8 caracteres",
+      "passwordMax": "La contraseña no puede exceder los 64 caracteres",
       "passwordComplexity": "Debe incluir mayúscula, minúscula, número y símbolo",
       "passwordCommon": "Esta contraseña es demasiado común o insegura",
       "passwordRepeating": "No repitas el mismo carácter tantas veces",
       "passwordSpaces": "La contraseña no puede empezar ni terminar con espacios",
       "passwordSimilar": "La contraseña no debe contener tu nombre, usuario o email",
-      "passwordsDoNotMatch": "Las contraseñas no coinciden"
+      "passwordsDoNotMatch": "Las contraseñas no coinciden",
+      "emailAlreadyRegistered": "Este correo ya está registrado"
     }
   },
   "logout": {
