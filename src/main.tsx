@@ -4,12 +4,20 @@ import App from "./App";
 import initI18n from "@app/i18n/i18n";
 import "./index.css";
 
-(async () => {
-  await initI18n();
-
+const renderApp = () => {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <App />
     </StrictMode>
   );
-})();
+};
+
+initI18n()
+  .then(() => {
+    console.log("i18n inicializado correctamente");
+    renderApp();
+  })
+  .catch((err) => {
+    console.error("Error al inicializar i18n:", err);
+    renderApp();
+  });

@@ -2,16 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Geist";
-  src: url("@app/resources/typefaces/Geist.ttf") format("truetype");
-}
-
-html {
-  @apply font-geist;
-  letter-spacing: -0.5px;
-}
-
-input, textarea {
-  @apply text-body;
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
