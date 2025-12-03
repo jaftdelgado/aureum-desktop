@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,7 @@ import { ToggleSelection } from "@core/ui/ToggleSelection";
 import { Button } from "@core/ui/Button";
 import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
 import { createSignUpSchema, type SignUpFormData } from "../schemas/signUpSchema";
+import { supabase } from "@infra/external/http/supabase"; 
 
 interface SignUpFormProps {
   onShowLogin: () => void;
@@ -19,7 +20,8 @@ const authRepo = new AuthApiRepository();
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = false }) => {
   const { t } = useTranslation("auth");
-  const [currentStep, setCurrentStep] = useState(1);
+  
+  const [currentStep, setCurrentStep] = useState(isGoogleFlow ? 2 : 1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
@@ -27,6 +29,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
     control,
     handleSubmit,
     trigger,
+    setValue, 
     formState: { errors },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(createSignUpSchema((key) => t(key))),
@@ -40,6 +43,32 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
       username: ""
     }
   });
+
+  useEffect(() => {
+    if (isGoogleFlow) {
+      const loadGoogleData = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          const email = user.email || "";
+          const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
+          
+          const nameParts = fullName.split(" ");
+          const firstName = nameParts[0] || "";
+          const lastName = nameParts.slice(1).join(" ") || "";
+
+          setValue("email", email);
+          setValue("firstName", firstName);
+          setValue("lastName", lastName);
+
+          setValue("password", "GOOGLE_AUTH_DUMMY_PASS");
+          setValue("confirmPassword", "GOOGLE_AUTH_DUMMY_PASS");
+        }
+      };
+      
+      loadGoogleData();
+    }
+  }, [isGoogleFlow, setValue]);
 
   const onSubmit = async (data: SignUpFormData) => {
     setIsSubmitting(true);
@@ -59,10 +88,17 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
 
   const handleNext = async () => {
     let isValid = false;
+    
     if (currentStep === 1) isValid = await trigger(["firstName", "lastName", "email"]);
     if (currentStep === 2) isValid = await trigger(["username", "accountType"]);
+    
     if (currentStep === 3) {
         isValid = await trigger(["password", "confirmPassword"]);
+        if (isValid) handleSubmit(onSubmit)();
+        return;
+    }
+
+    if (currentStep === 2 && isGoogleFlow) {
         if (isValid) handleSubmit(onSubmit)();
         return;
     }
@@ -70,10 +106,12 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
     if (isValid) setCurrentStep((prev) => prev + 1);
   };
 
+  const shouldHideBackButton = currentStep === 1 || (isGoogleFlow && currentStep === 2);
+
   return (
     <div className="w-full max-w-[400px] p-6 bg-surface rounded-xl border border-border">
       <Label variant="subtitle" className="mb-4 text-center block" color="primary">
-        {t("signup.createAccount", "Crear Cuenta")}
+        {isGoogleFlow ? t("signup.finish", "Completar Registro") : t("signup.createAccount", "Crear Cuenta")}
       </Label>
 
       {apiError && (
@@ -85,12 +123,23 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
       {currentStep < 4 ? (
         <Stepper
           currentStep={currentStep}
-          totalSteps={3}
+          totalSteps={isGoogleFlow ? 2 : 3} 
           onNext={handleNext}
-          onBack={() => setCurrentStep((prev) => prev - 1)}
+          onBack={() => {
+            if (isGoogleFlow && currentStep === 2) return;
+            setCurrentStep((prev) => prev - 1);
+          }}
           isSubmitting={isSubmitting}
-          nextLabel={currentStep === 3 ? t("signup.finish", "Finalizar") : t("common.next", "Siguiente")}
+          nextLabel={
+            (currentStep === 3) || (isGoogleFlow && currentStep === 2) 
+              ? t("signup.finish", "Finalizar") 
+              : t("common.next", "Siguiente")
+          }
           backLabel={t("common.back", "Atrás")}
+          backButtonProps={{
+            className: shouldHideBackButton ? "invisible pointer-events-none" : "",
+            disabled: isSubmitting
+          }}
         >
           {/* PASO 1: Datos Personales */}
           {currentStep === 1 && (
@@ -124,6 +173,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           {/* PASO 2: Perfil Académico */}
           {currentStep === 2 && (
             <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
+              {isGoogleFlow && (
+                 <p className="text-sm text-secondary text-center mb-2">
+                   Configura tu perfil para continuar.
+                 </p>
+              )}
               <Controller
                 name="username"
                 control={control}
@@ -155,8 +209,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
             </div>
           )}
 
-          {/* PASO 3: Seguridad */}
-          {currentStep === 3 && (
+          {/* PASO 3: Seguridad (Solo si NO es Google Flow) */}
+          {currentStep === 3 && !isGoogleFlow && (
             <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
               <Controller
                 name="password"
@@ -182,12 +236,12 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           <h3 className="text-lg font-bold text-primary mb-2">{t("signup.successTitle", "¡Cuenta Creada!")}</h3>
           <p className="text-secondary text-sm mb-6">{t("signup.successMsg", "Tu perfil ha sido configurado correctamente.")}</p>
           <Button variant="default" onClick={onShowLogin} className="w-full">
-            {t("signup.goToLogin", "Ir a Iniciar Sesión")}
+            {isGoogleFlow ? "Ir al Dashboard" : t("signup.goToLogin", "Ir a Iniciar Sesión")}
           </Button>
         </div>
       )}
 
-      {currentStep < 4 && (
+      {currentStep < 4 && !isGoogleFlow && (
         <div className="mt-4 text-center">
           <Button variant="link" onClick={onShowLogin} className="text-sm">
             {t("signup.alreadyHaveAccount", "¿Ya tienes cuenta? Inicia sesión")}

@@ -12,6 +12,7 @@ interface StepperProps {
   nextLabel?: string;
   backLabel?: string;
   hideButtons?: boolean;
+  backButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
 }
 
 export const Stepper: React.FC<StepperProps> = ({
@@ -24,6 +25,7 @@ export const Stepper: React.FC<StepperProps> = ({
   nextLabel = "Siguiente",
   backLabel = "Atrás",
   hideButtons = false,
+  backButtonProps, 
 }) => {
   return (
     <div className="w-full flex flex-col gap-6">
@@ -48,14 +50,16 @@ export const Stepper: React.FC<StepperProps> = ({
 
       <div className="flex-1">{children}</div>
 
+      {/* Botones de Navegación */}
       {!hideButtons && (
         <div className="flex justify-between mt-4 gap-4">
           <Button
-            variant="secondary"
+            variant="default"
             onClick={onBack}
             disabled={currentStep === 1 || isSubmitting}
             type="button"
             className={currentStep === 1 ? "invisible" : ""}
+            {...backButtonProps} 
           >
             {backLabel}
           </Button>

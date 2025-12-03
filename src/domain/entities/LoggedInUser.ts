@@ -3,4 +3,8 @@ export interface LoggedInUser {
   id: string;
   email: string;
   createdAt: string;
+  username?: string;
+  fullName?: string;
+  role?: "student" | "professor";
+  avatarUrl?: string;
 }
