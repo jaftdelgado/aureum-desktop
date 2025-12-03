@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// https://vite.dev/config/
 export default defineConfig({
   base: "./", 
   plugins: [react()],
@@ -14,6 +13,8 @@ export default defineConfig({
       "@features": path.resolve(__dirname, "src/features"),
       "@infra": path.resolve(__dirname, "src/infra"),
       "@resources": path.resolve(__dirname, "src/resources"),
+      '@auth': path.resolve(__dirname, './src/features/auth'),
+      '@ui': path.resolve(__dirname, './src/core/ui'),
     },
   },
 });

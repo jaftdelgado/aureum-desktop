@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route,
   Navigate,
@@ -9,6 +9,7 @@ import {
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
 import { DashboardLayout } from "@app/dashboard/layout/DashboardLayout";
+import { RequireProfile } from "./RequireProfile";
 
 const AuthPage = lazy(() => import("@features/auth/pages/AuthPage"));
 const HomePage = lazy(() => import("@features/home/pages/HomePage"));
@@ -26,7 +27,6 @@ const SimulatorSettings = lazy(
   () => import("@features/team-settings/pages/SimulatorSettings")
 );
 
-// Layout para un equipo específico
 const TeamLayout: React.FC = () => <Outlet />;
 
 interface AppRoute {
@@ -38,14 +38,17 @@ interface AppRoute {
 
 const routes: AppRoute[] = [
   {
-    type: "public",
     path: "/auth",
     element: <AuthPage />,
   },
   {
     type: "private",
     path: "/",
-    element: <DashboardLayout />,
+    element: (
+      <RequireProfile>
+        <DashboardLayout />
+      </RequireProfile>
+    ),
     children: [
       { path: "", element: <Navigate to="/home" replace /> },
       { path: "home", element: <HomePage /> },
@@ -88,10 +91,10 @@ export const AppRouter: React.FC = () => {
     });
 
   return (
-    <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+    <HashRouter>
+      <Suspense fallback={<div className="h-screen w-full flex items-center justify-center">Cargando aplicación...</div>}>
         <Routes>{renderRoutes(routes)}</Routes>
       </Suspense>
-    </BrowserRouter>
+    </HashRouter>
   );
 };

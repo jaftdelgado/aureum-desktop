@@ -1,10 +1,15 @@
-import type { LoggedInUserDTO } from "@infra/external/auth/auth.dto";
+import type { LoggedInUserDTO, UserProfileDTO } from "@infra/external/auth/auth.dto";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 
 export const mapUserDTOToLoggedInUser = (
-  dto: LoggedInUserDTO
+  dto: LoggedInUserDTO,
+  profileDto?: UserProfileDTO
 ): LoggedInUser => ({
   id: dto.id,
   email: dto.email ?? "",
   createdAt: dto.created_at,
+  username: profileDto?.username,
+  fullName: profileDto?.full_name,
+  role: profileDto?.role,
+  avatarUrl: profileDto?.avatar_url,
 });
