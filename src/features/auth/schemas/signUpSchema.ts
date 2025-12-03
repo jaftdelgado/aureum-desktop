@@ -64,6 +64,7 @@ export const createSignUpSchema = (t: (key: string) => string) => {
       password: z
         .string()
         .min(8, { message: t("signup.errors.passwordMin") })
+        .max(64, { message: t("signup.errors.passwordMax") })
         .refine((val) => val.trim() === val, {
           message: t("signup.errors.passwordSpaces"),
         })

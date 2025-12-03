@@ -11,6 +11,7 @@ interface StepperProps {
   isSubmitting?: boolean;
   nextLabel?: string;
   backLabel?: string;
+  loadingLabel?: string; 
   hideButtons?: boolean;
   backButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
 }
@@ -24,11 +25,13 @@ export const Stepper: React.FC<StepperProps> = ({
   isSubmitting,
   nextLabel = "Siguiente",
   backLabel = "Atrás",
+  loadingLabel = "Cargando...", 
   hideButtons = false,
-  backButtonProps, 
+  backButtonProps,
 }) => {
   return (
     <div className="w-full flex flex-col gap-6">
+      {/* Indicador de Pasos */}
       <div className="flex items-center justify-center gap-2 mb-4">
         {Array.from({ length: totalSteps }).map((_, idx) => {
           const step = idx + 1;
@@ -50,7 +53,6 @@ export const Stepper: React.FC<StepperProps> = ({
 
       <div className="flex-1">{children}</div>
 
-      {/* Botones de Navegación */}
       {!hideButtons && (
         <div className="flex justify-between mt-4 gap-4">
           <Button
@@ -66,10 +68,11 @@ export const Stepper: React.FC<StepperProps> = ({
           <Button
             variant="default"
             onClick={onNext}
-            disabled={isSubmitting}
+            disabled={isSubmitting} 
             type="button"
+            className={isSubmitting ? "opacity-80 cursor-wait" : ""}
           >
-            {isSubmitting ? "Cargando..." : nextLabel}
+            {isSubmitting ? loadingLabel : nextLabel}
           </Button>
         </div>
       )}
