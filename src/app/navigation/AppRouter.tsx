@@ -9,6 +9,7 @@ import {
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
 import { DashboardLayout } from "@app/dashboard/layout/DashboardLayout";
+import { RequireProfile } from "./RequireProfile";
 
 const AuthPage = lazy(() => import("@features/auth/pages/AuthPage"));
 const HomePage = lazy(() => import("@features/home/pages/HomePage"));
@@ -43,7 +44,11 @@ const routes: AppRoute[] = [
   {
     type: "private",
     path: "/",
-    element: <DashboardLayout />,
+    element: (
+      <RequireProfile>
+        <DashboardLayout />
+      </RequireProfile>
+    ),
     children: [
       { path: "", element: <Navigate to="/home" replace /> },
       { path: "home", element: <HomePage /> },

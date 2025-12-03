@@ -25,7 +25,7 @@ export const ToggleSelection: React.FC<ToggleSelectionProps> = ({
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       {label && <Label variant="body">{label}</Label>}
-      <div className="flex bg-surface-variant rounded-lg p-1 border border-border">
+      <div className="flex bg-gray-100 p-1 rounded-lg border border-gray-200">
         {options.map((option) => {
           const isSelected = value === option.value;
           return (
@@ -36,8 +36,8 @@ export const ToggleSelection: React.FC<ToggleSelectionProps> = ({
               className={cn(
                 "flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200",
                 isSelected
-                  ? "bg-primary text-on-primary shadow-sm"
-                  : "text-on-surface-variant hover:text-on-surface"
+                  ? "bg-blue-600 text-white shadow-md transform scale-[1.02]" 
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/50"   
               )}
             >
               {option.label}
