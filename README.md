@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# 🖥️ Aureum Desktop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aureum es una plataforma educativa web y de escritorio que enseña inversiones mediante simulaciones prácticas en equipo.
+Cada equipo funciona como un mercado aislado, donde las decisiones de compra y venta afectan el rendimiento colectivo, permitiendo un entorno seguro, gamificado e interactivo para aprender estrategias de inversión y comprender el comportamiento del mercado.
 
-Currently, two official plugins are available:
+> [!IMPORTANT]  
+> Este proyecto es privado y **no acepta contribuciones externas**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠 Stack Tecnológico
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🏗 Arquitectura: Hexagonal + Modular
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+El proyecto implementa una combinación de arquitectura hexagonal y modularidad por funcionalidades, permitiendo aislar la lógica de negocio de la infraestructura y mantener una interfaz limpia y desacoplada.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Capa / Concepto | Carpeta / Ubicación | Descripción |
+|-----------------|---------------------|-------------|
+| 🏠 App | `app/` | Configuración global de la aplicación, navegación y providers. |
+|             | `app/config/` | Manejo de variables de entorno (`env.ts`). |
+|             | `app/context/` | Contextos globales: autenticación, estado global, etc. |
+|             | `app/navigation/` | Rutas, protección de rutas, redirecciones y layout principal. |
+|             | `app/components/` | Componentes específicos del shell de la app (ej. `ThemeToggleButton`). |
+|             | `app/dashboard/` | Layout y componentes principales del dashboard (sidebar, header, etc.). |
+|             | `app/resources/` | Assets globales, como tipografías. |
+| 🎨 Core     | `core/` | Biblioteca interna reutilizable en toda la aplicación. No depende de features. |
+|             | `core/components/` | Componentes avanzados desacoplados (Dialog, PageHeader, Popover...). |
+|             | `core/ui/` | Componentes UI básicos (Button, Input, Label, Switch, Separator…). |
+|             | `core/design/` | Tokens de diseño, temas, tipografías y estilos globales. |
+|             | `core/utils/` | Utilidades independientes (`cn.ts`, helpers…). |
+| 💼 Domain   | `domain/` | Lógica de negocio pura, independiente de UI e infraestructura. |
+|             | `domain/entities/` | Entidades del dominio (`LoggedInUser`, etc.). |
+|             | `domain/repositories/` | Interfaces de repositorios. |
+|             | `domain/use-cases/` | Casos de uso organizados por módulo (login, sesión, etc.). |
+| 🔧 Infra    | `infra/` | Adaptadores y conectores hacia infraestructura externa. |
+|             | `infra/api/` | Implementaciones de acceso a APIs propias. |
+|             | `infra/external/` | Integraciones externas como Supabase |
+| 🗂 Features | `features/` | Módulos independientes organizados por funcionalidad. |
+|             | `features/auth/`, `features/assets/`, `features/market/`, etc. | Cada módulo contiene sus propios componentes, hooks, i18n, páginas y schemas. |
+|             | `features/team-settings/` | Módulo específico con layouts, componentes y UI propia. |
+|             | `features/teams/` | Flujo y pantallas relacionadas con equipos. |
+| 📦 Entrypoints | `main.tsx`, `App.tsx` | Punto de entrada de la aplicación, carga inicial de contextos, temas y router. |
+| 🎨 Styles globales | `index.css` | Estilos globales que inicializan Tailwind y variables de diseño. |
+--- 
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ⚡ Instalación
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1️⃣ Clonar el repositorio:
+```bash
+git clone https://github.com/usuario/aureum-desktop.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2️⃣ Instalar dependencias:
+```bash
+npm install
 ```
+
+3️⃣ Ejecutar la aplicación:
+```bash
+# Ejecutar la versión de escritorio
+npm run dev:desktop
+
+# Ejecutar la versión web
+npm run dev:web
+```
+
+> [!NOTE]
+> Asegúrate de tener instalado Node.js y un gestor de paquetes como npm o pnpm.
+
+## 🔒 Estado del proyecto
+
+Proyecto **en desarrollo**.
+
+Código privado no abierto para contribuciones externas.
+
+## 📄 Licencia
+
+Propietario: código privado.
