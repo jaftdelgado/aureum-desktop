@@ -41,6 +41,14 @@
     "goToLogin": "Ir a Iniciar Sesión",
     "goToDashboard": "Ir al Panel",
     "alreadyHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
+    "strength": {
+      "title": "Requisitos de seguridad:",
+      "length": "Mínimo 8 caracteres",
+      "uppercase": "Una letra mayúscula",
+      "lowercase": "Una letra minúscula",
+      "number": "Un número",
+      "symbol": "Un símbolo o carácter especial"
+    },
     "errors": {
       "firstNameRequired": "El nombre es requerido",
       "lastNameRequired": "El apellido es requerido",
@@ -50,6 +58,7 @@
       "emailLength": "El correo no puede exceder los 254 caracteres",
       "usernameMin": "Mínimo 4 caracteres",
       "usernameMax": "Máximo 20 caracteres",
+      "passwordPwned": "Esta contraseña ha aparecido en filtraciones de datos. Por seguridad, elige otra.",
       "usernameInvalid": "Solo letras, números y guiones bajos (_)",
       "usernameReserved": "Este nombre de usuario no está permitido",
       "accountTypeRequired": "Selecciona un tipo de cuenta",
