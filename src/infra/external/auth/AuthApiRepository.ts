@@ -4,6 +4,7 @@ import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 import { httpClient } from "@infra/external/http/client";
 import { mapUserDTOToLoggedInUser } from "@infra/external/auth/auth.mappers";
 import type { LoggedInUserDTO, UserProfileDTO } from "@infra/external/auth/auth.dto";
+import { HttpError } from "@infra/external/http/client";
 
 export interface RegisterData {
   email: string;
@@ -103,14 +104,11 @@ export class AuthApiRepository implements AuthRepository {
       await httpClient.get(`/api/users/profiles/${authId}`);
       return true;
     } catch (error: any) {
-      const errorString = error?.message || String(error);
       
-      if (errorString.includes("404") || errorString.includes("Not Found")) {
+      if (error instanceof HttpError && error.status === 404) {
         return false;
       }
-      
-      console.warn("Error checking profile:", error);
-      return false; 
+      return false;
     }
   }
 }

@@ -16,6 +16,7 @@ interface SignUpFormProps {
   isGoogleFlow?: boolean; 
 }
 
+const GOOGLE_AUTH_DUMMY_PASS = "GOOGLE_AUTH_DUMMY_PASS";
 const authRepo = new AuthApiRepository();
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = false }) => {
@@ -61,8 +62,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           setValue("firstName", firstName);
           setValue("lastName", lastName);
 
-          setValue("password", "GOOGLE_AUTH_DUMMY_PASS");
-          setValue("confirmPassword", "GOOGLE_AUTH_DUMMY_PASS");
+          setValue("password", GOOGLE_AUTH_DUMMY_PASS);
+          setValue("confirmPassword", GOOGLE_AUTH_DUMMY_PASS);
         }
       };
       
@@ -149,14 +150,14 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                   name="firstName"
                   control={control}
                   render={({ field }) => (
-                    <Input {...field} label={t("signup.firstName", "Nombre")} error={errors.firstName?.message} />
+                    <Input {...field} label={t("signup.firstName", "Nombre")} error={errors.firstName?.message } autoComplete="given-name"/>
                   )}
                 />
                 <Controller
                   name="lastName"
                   control={control}
                   render={({ field }) => (
-                    <Input {...field} label={t("signup.lastName", "Apellido")} error={errors.lastName?.message} />
+                    <Input {...field} label={t("signup.lastName", "Apellido")} error={errors.lastName?.message} autoComplete="family-name"/>
                   )}
                 />
               </div>
@@ -164,7 +165,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                 name="email"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} type="email" label={t("signup.email", "Correo")} error={errors.email?.message} disabled={isGoogleFlow} />
+                  <Input {...field} type="email" label={t("signup.email", "Correo")} error={errors.email?.message} disabled={isGoogleFlow} autoComplete="email"/>
                 )}
               />
             </div>
@@ -175,7 +176,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
             <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
               {isGoogleFlow && (
                  <p className="text-sm text-secondary text-center mb-2">
-                   Configura tu perfil para continuar.
+                   t("signup.googleFlowMessage")
                  </p>
               )}
               <Controller
@@ -186,7 +187,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                     {...field} 
                     label={t("signup.username", "Nombre de Usuario")} 
                     placeholder="@usuario" 
-                    error={errors.username?.message} 
+                    error={errors.username?.message}
+                    autoComplete="username"
                   />
                 )}
               />
@@ -202,10 +204,10 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                     ]}
                     value={field.value ?? "student"}
                     onChange={field.onChange}
+                    error={errors.accountType?.message}
                   />
                 )}
               />
-              {errors.accountType && <span className="text-xs text-destructive">{errors.accountType.message}</span>}
             </div>
           )}
 
@@ -216,14 +218,14 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                 name="password"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} type="password" label={t("signup.password", "Contraseña")} error={errors.password?.message} />
+                  <Input {...field} type="password" label={t("signup.password", "Contraseña")} error={errors.password?.message} autoComplete="new-password"/>
                 )}
               />
               <Controller
                 name="confirmPassword"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} type="password" label={t("signup.confirmPassword", "Confirmar Contraseña")} error={errors.confirmPassword?.message} />
+                  <Input {...field} type="password" label={t("signup.confirmPassword", "Confirmar Contraseña")} error={errors.confirmPassword?.message} autoComplete="new-password"/>
                 )}
               />
             </div>
@@ -236,7 +238,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           <h3 className="text-lg font-bold text-primary mb-2">{t("signup.successTitle", "¡Cuenta Creada!")}</h3>
           <p className="text-secondary text-sm mb-6">{t("signup.successMsg", "Tu perfil ha sido configurado correctamente.")}</p>
           <Button variant="default" onClick={onShowLogin} className="w-full">
-            {isGoogleFlow ? "Ir al Dashboard" : t("signup.goToLogin", "Ir a Iniciar Sesión")}
+            {isGoogleFlow ? t("signup.goToDashboard") : t("signup.goToLogin")}
           </Button>
         </div>
       )}
