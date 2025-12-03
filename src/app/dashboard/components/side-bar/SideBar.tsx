@@ -27,6 +27,7 @@ interface SidebarProps {
     avatarUrl: string;
     onClick?: () => void;
   };
+  bottomActions?: React.ReactNode;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -34,6 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onNavigate,
   className = "",
   profile,
+  bottomActions,
 }) => {
   const location = useLocation();
   const currentRoute = location.pathname;
@@ -71,14 +73,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )
         )}
       </nav>
-      {profile && (
-        <SidebarFooter
-          name={profile.name}
-          role={profile.role}
-          avatarUrl={profile.avatarUrl}
-          onClick={profile.onClick}
-        />
-      )}
+      <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-outline/30">
+        {bottomActions && (
+          <div className="mb-1">
+            {bottomActions}
+          </div>
+        )}
+
+        {profile && (
+          <SidebarFooter
+            name={profile.name}
+            role={profile.role}
+            avatarUrl={profile.avatarUrl}
+            onClick={profile.onClick}
+          />
+        )}
+      </div>
     </aside>
   );
 };
