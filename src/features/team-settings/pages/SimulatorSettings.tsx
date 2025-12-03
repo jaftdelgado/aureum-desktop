@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { PageHeader } from "@core/components/PageHeader";
 import { SimulatorSettingsList } from "@features/team-settings/components/SimulatorSettingsList";
 import { Combobox, type ComboboxItem } from "@core/components/Combobox";
 import { Switch } from "@core/ui/Switch";
@@ -38,11 +39,11 @@ const SimulatorSettings: React.FC = () => {
 
   const sections = [
     {
-      title: t("settings.simulator.sections.marketBasics"),
+      title: t("simulator.sections.marketBasics"),
       items: [
         {
-          title: t("settings.simulator.settings.initialCash"),
-          description: t("settings.simulator.settings.initialCashDesc"),
+          title: t("simulator.settings.initialCash"),
+          description: t("simulator.settings.initialCashDesc"),
           control: (
             <input
               type="number"
@@ -53,8 +54,8 @@ const SimulatorSettings: React.FC = () => {
           ),
         },
         {
-          title: t("settings.simulator.settings.currency"),
-          description: t("settings.simulator.settings.currencyDesc"),
+          title: t("simulator.settings.currency"),
+          description: t("simulator.settings.currencyDesc"),
           control: (
             <Combobox
               items={currencyOptions}
@@ -66,11 +67,11 @@ const SimulatorSettings: React.FC = () => {
       ],
     },
     {
-      title: t("settings.simulator.sections.marketParams"),
+      title: t("simulator.sections.marketParams"),
       items: [
         {
-          title: t("settings.simulator.settings.marketVolatility"),
-          description: t("settings.simulator.settings.marketVolatilityDesc"),
+          title: t("simulator.settings.marketVolatility"),
+          description: t("simulator.settings.marketVolatilityDesc"),
           control: (
             <Combobox
               items={simpleOptions}
@@ -80,8 +81,8 @@ const SimulatorSettings: React.FC = () => {
           ),
         },
         {
-          title: t("settings.simulator.settings.marketLiquidity"),
-          description: t("settings.simulator.settings.marketLiquidityDesc"),
+          title: t("simulator.settings.marketLiquidity"),
+          description: t("simulator.settings.marketLiquidityDesc"),
           control: (
             <Combobox
               items={simpleOptions}
@@ -91,8 +92,8 @@ const SimulatorSettings: React.FC = () => {
           ),
         },
         {
-          title: t("settings.simulator.settings.thickSpeed"),
-          description: t("settings.simulator.settings.thickSpeedDesc"),
+          title: t("simulator.settings.thickSpeed"),
+          description: t("simulator.settings.thickSpeedDesc"),
           control: (
             <Combobox
               items={thickSpeedOptions}
@@ -104,11 +105,11 @@ const SimulatorSettings: React.FC = () => {
       ],
     },
     {
-      title: t("settings.simulator.sections.tradingRules"),
+      title: t("simulator.sections.tradingRules"),
       items: [
         {
-          title: t("settings.simulator.settings.transactionFee"),
-          description: t("settings.simulator.settings.transactionFeeDesc"),
+          title: t("simulator.settings.transactionFee"),
+          description: t("simulator.settings.transactionFeeDesc"),
           control: (
             <Combobox
               items={simpleOptions}
@@ -118,8 +119,8 @@ const SimulatorSettings: React.FC = () => {
           ),
         },
         {
-          title: t("settings.simulator.settings.allowShortSelling"),
-          description: t("settings.simulator.settings.allowShortSellingDesc"),
+          title: t("simulator.settings.allowShortSelling"),
+          description: t("simulator.settings.allowShortSellingDesc"),
           control: (
             <Switch
               checked={allowShortSelling}
@@ -130,11 +131,11 @@ const SimulatorSettings: React.FC = () => {
       ],
     },
     {
-      title: t("settings.simulator.sections.marketEvents"),
+      title: t("simulator.sections.marketEvents"),
       items: [
         {
-          title: t("settings.simulator.settings.eventFrequency"),
-          description: t("settings.simulator.settings.eventFrequencyDesc"),
+          title: t("simulator.settings.eventFrequency"),
+          description: t("simulator.settings.eventFrequencyDesc"),
           control: (
             <Combobox
               items={simpleOptions}
@@ -144,8 +145,8 @@ const SimulatorSettings: React.FC = () => {
           ),
         },
         {
-          title: t("settings.simulator.settings.dividendImpact"),
-          description: t("settings.simulator.settings.dividendImpactDesc"),
+          title: t("simulator.settings.dividendImpact"),
+          description: t("simulator.settings.dividendImpactDesc"),
           control: (
             <Combobox
               items={simpleOptions}
@@ -155,8 +156,8 @@ const SimulatorSettings: React.FC = () => {
           ),
         },
         {
-          title: t("settings.simulator.settings.crashImpact"),
-          description: t("settings.simulator.settings.crashImpactDesc"),
+          title: t("simulator.settings.crashImpact"),
+          description: t("simulator.settings.crashImpactDesc"),
           control: (
             <Combobox
               items={simpleOptions}
@@ -169,7 +170,16 @@ const SimulatorSettings: React.FC = () => {
     },
   ];
 
-  return <SimulatorSettingsList sections={sections} />;
+  return (
+    <div>
+      <PageHeader
+        title={t("simulator.title")}
+        description={t("simulator.description")}
+      />
+
+      <SimulatorSettingsList sections={sections} />
+    </div>
+  );
 };
 
 export default SimulatorSettings;

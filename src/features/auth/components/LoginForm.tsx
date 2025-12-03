@@ -10,9 +10,10 @@ import { useIsMobile } from "@app/hooks/useIsMobile";
 
 interface LoginFormProps {
   onShowRegister: () => void;
+  onGoogleMissingProfile: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister, onGoogleMissingProfile }) => {
   const { t } = useTranslation("auth");
   const isMobile = useIsMobile();
   const { loading, errorMsg, errors, handleSubmit } = useLoginForm();
@@ -81,7 +82,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister }) => {
         </Button>
 
         <Separator variant="line" className="my-1" />
-        <GoogleSignIn />
+        <GoogleSignIn onMissingProfile={onGoogleMissingProfile}/>
 
         <div
           className={`flex items-center gap-1 mt-4 ${
