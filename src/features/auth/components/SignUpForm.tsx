@@ -10,6 +10,8 @@ import { Button } from "@core/ui/Button";
 import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
 import { createSignUpSchema, type SignUpFormData } from "../schemas/signUpSchema";
 import { supabase } from "@infra/external/http/supabase"; 
+import { PasswordStrength } from "./PasswordStrength";
+import { Icon } from "@iconify/react";
 
 interface SignUpFormProps {
   onShowLogin: () => void;
@@ -21,7 +23,7 @@ const authRepo = new AuthApiRepository();
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = false }) => {
   const { t } = useTranslation("auth");
-  
+  const [showPassword, setShowPassword] = useState(false);
   const [currentStep, setCurrentStep] = useState(isGoogleFlow ? 2 : 1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -31,6 +33,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
     handleSubmit,
     trigger,
     setValue, 
+    watch, 
     formState: { errors },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(createSignUpSchema((key) => t(key))),
@@ -44,6 +47,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
       username: ""
     }
   });
+
+  const watchedPassword = watch("password");
+  const togglePassword = () => setShowPassword(!showPassword);
 
   useEffect(() => {
     if (isGoogleFlow) {
@@ -176,7 +182,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
             <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
               {isGoogleFlow && (
                  <p className="text-sm text-secondary text-center mb-2">
-                   t("signup.googleFlowMessage")
+                   {t("signup.googleFlowMessage")}
                  </p>
               )}
               <Controller
@@ -214,18 +220,51 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           {/* PASO 3: Seguridad (Solo si NO es Google Flow) */}
           {currentStep === 3 && !isGoogleFlow && (
             <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <Input {...field} type="password" label={t("signup.password", "Contraseña")} error={errors.password?.message} autoComplete="new-password"/>
+          
+              <div className="flex flex-col gap-1">
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                        type={showPassword ? "text" : "password"} 
+                        label={t("signup.password")}
+                        error={errors.password?.message}
+                        autoComplete="new-password"
+                        endContent={
+                        <button
+                          type="button"
+                          onClick={togglePassword}
+                          className="hover:text-primaryText transition-colors focus:outline-none"
+                          tabIndex={-1}
+                        >
+                          <Icon 
+                            icon={showPassword ? "lucide:eye-off" : "lucide:eye"} 
+                            width={18} 
+                          />
+                        </button>
+                      }
+                    />
+                  )}
+                />
+            
+                {watchedPassword && watchedPassword.length > 0 && (
+                  <PasswordStrength password={watchedPassword} />
                 )}
-              />
+              </div>
+
               <Controller
                 name="confirmPassword"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} type="password" label={t("signup.confirmPassword", "Confirmar Contraseña")} error={errors.confirmPassword?.message} autoComplete="new-password"/>
+                  <Input
+                    {...field}
+                    type="password" 
+                    label={t("signup.confirmPassword")}
+                    error={errors.confirmPassword?.message}
+                    autoComplete="new-password"
+                  />
                 )}
               />
             </div>

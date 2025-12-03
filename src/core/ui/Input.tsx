@@ -8,6 +8,7 @@ export interface InputProps
   label?: string;
   error?: string;
   size?: "sm" | "md" | "lg";
+  endContent?: React.ReactNode; 
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -16,6 +17,7 @@ export const Input: React.FC<InputProps> = ({
   label,
   error,
   size = "md",
+  endContent, 
   ...props
 }) => {
   const sizeClasses: Record<NonNullable<InputProps["size"]>, string> = {
@@ -29,13 +31,11 @@ export const Input: React.FC<InputProps> = ({
       {label && (
         <Label
           variant="small"
-          className="font-medium mb-1 ml-1 text-primaryText" 
+          className="font-medium mb-1 ml-1 text-primaryText"
         >
           {label}
         </Label>
       )}
-
-      {/* Input Container */}
       <div className="relative w-full">
         <input
           type={type}
@@ -45,8 +45,9 @@ export const Input: React.FC<InputProps> = ({
           className={cn(
             "w-full text-body rounded-xl outline-none transition-all duration-150",
             "bg-input text-primaryText placeholder:text-secondaryText",
-            "border focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn", 
+            "border focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn",
             "disabled:pointer-events-none disabled:opacity-60",
+            endContent ? "pr-10" : "", 
             error 
               ? "border-red-500 focus:border-red-500 focus:ring-red-500/50" 
               : "border-outline hover:border-outline/80",
@@ -55,9 +56,15 @@ export const Input: React.FC<InputProps> = ({
           )}
           {...props}
         />
+
+        {endContent && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-secondaryText flex items-center justify-center">
+            {endContent}
+          </div>
+        )}
       </div>
 
-      {/* Error Message (Fuera del relative, alineado con flex) */}
+
       {error && (
         <div 
           id={`${props.id}-error`}
@@ -65,7 +72,7 @@ export const Input: React.FC<InputProps> = ({
         >
           <Icon
             icon="lucide:circle-x"
-            className="w-3.5 h-3.5 text-red-500 flex-shrink-0" 
+            className="w-3.5 h-3.5 text-red-500 flex-shrink-0"
           />
           <span className="text-[0.8rem] font-medium text-red-500 leading-none">
             {error}
