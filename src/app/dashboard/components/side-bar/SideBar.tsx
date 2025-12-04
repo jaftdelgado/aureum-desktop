@@ -25,7 +25,8 @@ interface SidebarProps {
     name: string;
     role: string;
     avatarUrl: string;
-    onClick?: () => void;
+    onProfileClick?: () => void;
+    onLogout?: () => void;
   };
   bottomActions?: React.ReactNode;
 }
@@ -85,7 +86,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             name={profile.name}
             role={profile.role}
             avatarUrl={profile.avatarUrl}
-            onClick={profile.onClick}
+            onProfileClick={profile.onProfileClick}
+            onLogout={profile.onLogout}
           />
         )}
       </div>
