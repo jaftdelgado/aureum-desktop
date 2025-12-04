@@ -11,5 +11,5 @@ export const mapUserDTOToLoggedInUser = (
   username: profileDto?.username,
   fullName: profileDto?.full_name,
   role: profileDto?.role,
-  avatarUrl: profileDto?.avatar_url,
+  avatarUrl: profileDto?.profile_pic_id || dto.avatar_url || undefined,
 });

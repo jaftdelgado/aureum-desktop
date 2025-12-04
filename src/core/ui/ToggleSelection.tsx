@@ -12,6 +12,7 @@ interface ToggleSelectionProps {
   value: string;
   onChange: (value: string) => void;
   label?: string;
+  error?: string;
   className?: string;
 }
 
@@ -20,12 +21,23 @@ export const ToggleSelection: React.FC<ToggleSelectionProps> = ({
   value,
   onChange,
   label,
+  error,
   className,
 }) => {
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
-      {label && <Label variant="body">{label}</Label>}
-      <div className="flex bg-gray-100 p-1 rounded-lg border border-gray-200">
+    <div className={cn("flex flex-col", className)}>
+      {label && (
+        <Label variant="body" className="mb-2">
+          {label}
+        </Label>
+      )}
+      
+      <div 
+        className={cn(
+          "flex bg-surface-variant p-1 rounded-lg border transition-colors duration-200",
+          error ? "border-red-500 bg-red-500/5" : "border-border"
+        )}
+      >
         {options.map((option) => {
           const isSelected = value === option.value;
           return (
@@ -34,10 +46,10 @@ export const ToggleSelection: React.FC<ToggleSelectionProps> = ({
               type="button"
               onClick={() => onChange(option.value)}
               className={cn(
-                "flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200",
+                "flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50",
                 isSelected
-                  ? "bg-blue-600 text-white shadow-md transform scale-[1.02]" 
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/50"   
+                  ? "bg-white text-primary shadow-sm border border-gray-100"
+                  : "text-secondary-text hover:text-primary hover:bg-gray-200/50"
               )}
             >
               {option.label}
@@ -45,6 +57,12 @@ export const ToggleSelection: React.FC<ToggleSelectionProps> = ({
           );
         })}
       </div>
+
+      {error && (
+        <span className="mt-1.5 text-[0.8rem] font-medium text-red-500 leading-none ml-1">
+          {error}
+        </span>
+      )}
     </div>
   );
 };

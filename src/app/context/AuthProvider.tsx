@@ -27,8 +27,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
-    console.log("[AuthProvider] useEffect init");
-
     const initAuth = async () => {
       const authRepo: AuthRepository = new AuthApiRepository();
       const getSessionUseCase = new GetSessionUseCase(authRepo);
@@ -37,6 +35,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const sessionUser = await getSessionUseCase.execute();
         console.log("[AuthProvider] sessionUser:", sessionUser);
         setUser(sessionUser);
+        if (sessionUser && window.location.hash.includes("access_token")) {
+           window.location.hash = "/"; 
+        }
       } catch (error) {
         console.error("[AuthProvider] error getting session:", error);
       } finally {
