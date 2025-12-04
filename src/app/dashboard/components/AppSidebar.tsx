@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Sidebar, type SidebarItem } from "@app/dashboard/components/side-bar/SideBar";
-import { SidebarButton } from "@app/dashboard/components/side-bar/SidebarButton";
 import { useAuth } from "@app/hooks/useAuth";
 import { Button } from "@core/ui/Button";
 
@@ -69,7 +68,7 @@ export const AppSidebar: React.FC = () => {
     navigate(route);
   };
 
-  const handleLogoutClick = () => {
+  const handleLogoutRequest = () => {
     setShowLogoutDialog(true);
   };
 
@@ -81,8 +80,7 @@ export const AppSidebar: React.FC = () => {
   const getProfileData = () => {
     if (!user) return undefined;
 
-    const displayName = user.username || user.fullName || user.email;
-
+    const displayName = user.fullName || user.username || user.email;
     let displayRole = "Miembro";
     if (user.role === "professor") displayRole = t("signup.professor", "Profesor");
     if (user.role === "student") displayRole = t("signup.student", "Estudiante");
@@ -94,21 +92,12 @@ export const AppSidebar: React.FC = () => {
       name: displayName,
       role: displayRole,
       avatarUrl: finalAvatarUrl,
-      onClick: () => navigate("/home"), 
+      onProfileClick: () => navigate("/home"), 
+      onLogout: handleLogoutRequest,
     };
   };
 
   const profile = getProfileData();
-
-  const logoutButton = (
-    <SidebarButton
-      onClick={handleLogoutClick}
-      icon="mdi:logout"
-      className="text-red-400 hover:text-red-300 hover:bg-red-500/10 w-full justify-start"
-    >
-      {t("logout.label", "Cerrar Sesión")}
-    </SidebarButton>
-  );
 
   return (
     <>
@@ -116,7 +105,6 @@ export const AppSidebar: React.FC = () => {
         items={items} 
         onNavigate={handleNavigate} 
         profile={profile}
-        bottomActions={logoutButton} 
       />
 
       {showLogoutDialog && (

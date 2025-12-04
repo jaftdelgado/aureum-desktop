@@ -77,5 +77,10 @@
     "label": "Log Out",
     "confirmTitle": "Are you sure you want to log out?",
     "confirmMessage": "Your current session will end and you will be redirected to login."
+  },
+  "sidebar": {
+    "viewProfile": "View Profile",
+    "changeLanguage": "Change Language",
+    "language": "Language"
   }
 }

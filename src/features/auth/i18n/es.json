@@ -77,5 +77,10 @@
     "label": "Cerrar Sesión",
     "confirmTitle": "¿Seguro que deseas cerrar sesión?",
     "confirmMessage": "Tu sesión actual se cerrará y serás redirigido al inicio."
+  },
+  "sidebar": {
+    "viewProfile": "Ver perfil",
+    "changeLanguage": "Cambiar idioma",
+    "language": "Idioma"
   }
 }
