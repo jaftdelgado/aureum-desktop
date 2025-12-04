@@ -1,6 +1,6 @@
 // src/app/navigation/PublicRoute.tsx
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate} from "react-router-dom";
 import { useAuth } from "@app/hooks/useAuth";
 
 interface PublicRouteProps {
@@ -9,7 +9,6 @@ interface PublicRouteProps {
 
 export const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const { user, loading } = useAuth();
-  const location = useLocation();
 
   if (loading) {
     return (
@@ -20,7 +19,7 @@ export const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   }
 
   if (user) {
-    return <Navigate to="/home" state={{ from: location }} replace />;
+    return <Navigate to="/home"  replace />;
   }
 
   return <>{children}</>;

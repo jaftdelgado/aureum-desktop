@@ -15,6 +15,11 @@ export class HttpError extends Error {
   }
 }
 
+interface RequestOptions extends RequestInit {
+  data?: unknown;
+  params?: Record<string, string>;
+}
+
 export class HttpClient {
   private baseUrl: string;
 
@@ -22,13 +27,11 @@ export class HttpClient {
     this.baseUrl = baseUrl.replace(/\/$/, "");
   }
 
-  private async getAuthHeaders(): Promise<HeadersInit> {
+  protected async getAuthHeaders(): Promise<HeadersInit> {
     const { data } = await supabase.auth.getSession();
     const token = data.session?.access_token;
 
     const headers: HeadersInit = {
-      "Content-Type": "application/json",
-      // Headers comunes pueden ir aquí
     };
 
     if (token) {
@@ -54,6 +57,7 @@ export class HttpClient {
       ...options,
       headers: {
         ...authHeaders,
+        "Content-Type": "application/json",
         ...options.headers,
       },
     };
@@ -66,24 +70,34 @@ export class HttpClient {
       const response = await fetch(url, config);
 
       if (!response.ok) {
-      let errorData;
-      try {
-        errorData = await response.json();
-      } catch {
-        errorData = { message: response.statusText };
+        let errorData;
+        try { errorData = await response.json(); } catch { errorData = { message: response.statusText }; }
+        throw new HttpError(response.status, errorData.message || `Error HTTP ${response.status}`);
       }
-      
-      throw new HttpError(
-        response.status, 
-        errorData.message || `Error HTTP ${response.status}`
-      );
-    }
 
+      if (response.status === 204) return null as T;
       return await response.json();
     } catch (error) {
       console.error(`[HttpClient] Error en ${options.method || "GET"} ${url}:`, error);
       throw error;
     }
+  }
+
+  async getBlob(endpoint: string): Promise<Blob> {
+    const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+    const url = `${this.baseUrl}${cleanEndpoint}`;
+    const authHeaders = await this.getAuthHeaders();
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: authHeaders, 
+    });
+
+    if (!response.ok) {
+      throw new HttpError(response.status, "Error fetching blob");
+    }
+
+    return await response.blob();
   }
 
   get<T>(endpoint: string, params?: Record<string, string>, options?: RequestOptions) {
