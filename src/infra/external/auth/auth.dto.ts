@@ -3,6 +3,7 @@ export interface LoggedInUserDTO {
   id: string;
   email?: string | null;
   created_at: string;
+  avatar_url?: string | null;
 }
 
 export interface UserProfileDTO {
@@ -11,6 +12,6 @@ export interface UserProfileDTO {
   username: string;
   full_name: string;
   role: "student" | "professor";
-  avatar_url?: string;
+  profile_pic_id?: string | null;
   created_at?: string;
 }
