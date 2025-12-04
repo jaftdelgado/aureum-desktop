@@ -18,7 +18,7 @@ const TeamSettingsPage: React.FC = () => {
       icon: "hugeicons:user-group",
       title: t("settings.members"),
       description: t("settings.membersDesc"),
-      route: "/dashboard/settings/members",
+      route: "/teams/:teamId/settings/members",
     },
     {
       icon: "hugeicons:cpu",
