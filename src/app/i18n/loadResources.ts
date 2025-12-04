@@ -16,6 +16,9 @@ export async function loadResources() {
       portfolio: await import("@features/portfolio/i18n/es.json").then(
         (m) => m.default
       ),
+      market: await import("@features/market/i18n/es.json").then(
+        (m) => m.default
+      )
     },
     en: {
       app: await import("@app/i18n/locales/en.json").then((m) => m.default),
@@ -32,6 +35,9 @@ export async function loadResources() {
       portfolio: await import("@features/portfolio/i18n/en.json").then(
         (m) => m.default
       ),
+      market: await import("@features/market/i18n/en.json").then(
+        (m) => m.default
+      )
     },
   };
 }
