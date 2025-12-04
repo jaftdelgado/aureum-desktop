@@ -18,9 +18,35 @@ export interface RegisterData {
 
 export class AuthApiRepository implements AuthRepository {
   
+  private blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
   private async fetchProfile(authId: string): Promise<UserProfileDTO | undefined> {
     try {
       const profile = await httpClient.get<UserProfileDTO>(`/api/users/profiles/${authId}`);
+      console.log("Perfil descargado del Gateway:", profile);
+
+      if (profile && profile.profile_pic_id) {
+        try {
+          console.log("Perfil tiene avatar UUID, intentando descargar...", profile.profile_pic_id);
+          const imageBlob = await httpClient.getBlob(`/api/users/profiles/${authId}/avatar`);
+          
+          const base64Image = await this.blobToBase64(imageBlob);
+          console.log("Imagen descargada y convertida a Base64 (longitud):", base64Image.length);
+          profile.profile_pic_id = base64Image;
+          
+        } catch (imageError) {
+          console.warn("No se pudo descargar la imagen del perfil:", imageError);
+          profile.profile_pic_id = undefined;
+        }
+      }
+
       return profile;
     } catch (error) {
       console.warn(`No se pudo cargar el perfil para ${authId}`, error);
@@ -38,6 +64,7 @@ export class AuthApiRepository implements AuthRepository {
         id: data.user.id,
         email: data.user.email,
         created_at: data.user.created_at,
+        avatar_url: data.user.user_metadata?.avatar_url || null,
       };
 
       const profileDto = await this.fetchProfile(data.user.id);
@@ -60,6 +87,7 @@ export class AuthApiRepository implements AuthRepository {
       id: user.id,
       email: user.email,
       created_at: user.created_at,
+      avatar_url: user.user_metadata?.avatar_url || null,
     };
 
     const profileDto = await this.fetchProfile(user.id);
