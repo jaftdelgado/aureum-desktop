@@ -1,70 +1,63 @@
-// src/features/auth/hooks/useLoginForm.ts
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useFormValidation } from "@app/hooks/useFormValidation";
+import { useState} from "react";
 import { useAuth } from "@app/hooks/useAuth";
-import { LoginUseCase } from "@domain/use-cases/auth/LoginUseCase";
+import { useTranslation } from "react-i18next";
 import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
-import type { LoggedInUser } from "@domain/entities/LoggedInUser";
+import { LoginUseCase } from "@domain/use-cases/auth/LoginUseCase";
+import { createLoginSchema, type LoginFormData } from "../schemas/loginSchema";
 
-const authRepository = new AuthApiRepository();
-const loginUseCase = new LoginUseCase(authRepository);
+const authRepo = new AuthApiRepository();
+const loginUseCase = new LoginUseCase(authRepo);
 
 export const useLoginForm = () => {
-  const navigate = useNavigate();
+  const { t } = useTranslation("auth");
   const { setUser } = useAuth();
-
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const { errors, setErrors, validateFields } = useFormValidation([
-    {
-      field: "email",
-      validate: (value) => (!value.trim() ? "REQUIRED" : null),
-    },
-    {
-      field: "password",
-      validate: (value) => (!value.trim() ? "REQUIRED" : null),
-    },
-  ]);
-
-  const handleSubmit = async (formData: {
-    email: string;
-    password: string;
-  }) => {
-    setErrors({});
-    setErrorMsg(null);
+  const handleSubmit = async (data: LoginFormData) => {
     setLoading(true);
+    setErrorMsg(null);
+    setFieldErrors({});
 
-    if (!validateFields(formData)) {
+    const loginSchema = createLoginSchema(t);
+    const result = loginSchema.safeParse(data);
+    if (!result.success) {
+      const formattedErrors: Record<string, string> = {};
+      result.error.issues.forEach((issue: { path: { toString: () => string | number; }[]; message: string; }) => {
+        if (issue.path[0]) {
+          formattedErrors[issue.path[0].toString()] = issue.message;
+        }
+      });
+      setFieldErrors(formattedErrors);
       setLoading(false);
       return;
     }
 
     try {
-      // Llamamos al UseCase del dominio
-      const user: LoggedInUser = await loginUseCase.execute(
-        formData.email,
-        formData.password
-      );
+      const user = await loginUseCase.execute(data.email, data.password);
+      setUser(user); 
+    } catch (error: any) {
+      const message = error.message || "";
+      console.error("Login error:", message);
 
-      console.log("Login success", user);
-
-      // Guardamos el usuario en el contexto global (UI / App)
-      setUser(user);
-
-      // Navegamos al home
-      navigate("/home", { replace: true });
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrorMsg(error.message);
-      } else {
+      if (message.includes("Invalid login credentials")) {
         setErrorMsg("INVALID_CREDENTIALS");
+      } else if (message.includes("Email not confirmed")) {
+        setErrorMsg("EMAIL_NOT_CONFIRMED");
+      } else {
+        setErrorMsg(message); 
       }
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, errorMsg, errors, handleSubmit };
+  return {
+    loading,
+    errorMsg,
+    errors: fieldErrors, 
+    handleSubmit,
+  };
 };

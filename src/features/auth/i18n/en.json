@@ -19,7 +19,7 @@
     "googleFlowMessage": "Hi there! We just need a bit more info to finish up.",
     "googleFlowSubtitle": "Set up your profile to continue.",
     "errors": {
-      "identifierRequired": "Email or username is required",
+      "identifierRequired": "Email is required",
       "passwordRequired": "Password is required",
       "invalidCredentials": "Invalid email or password"
     }
