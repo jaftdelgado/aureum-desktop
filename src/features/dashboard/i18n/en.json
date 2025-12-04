@@ -1,0 +1,12 @@
+{
+  "breadcrumb": {
+    "home": "Home",
+    "teams": "Teams",
+    "lessons": "Lessons",
+    "assets": "Assets",
+    "market": "Market",
+    "settings": "Settings",
+    "settingsSimulator": "Simulator",
+    "portfolio": "Portfolio"
+  }
+}

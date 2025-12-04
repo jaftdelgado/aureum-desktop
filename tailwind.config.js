@@ -11,7 +11,7 @@ export default {
         outline: "var(--outline)",
         primaryText: "var(--primary-text)",
         secondaryText: "var(--secondary-text)",
-        input: "var(--input)",
+        card: "var(--card)",
         primaryBtn: "var(--primary-btn)",
         primaryHoverBtn: "var(--primary-hover-btn)",
         secondaryBtn: "var(--secondary-btn)",

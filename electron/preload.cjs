@@ -1,5 +1,7 @@
-const { contextBridge } = require('electron');
+// electron/preload.cjs
 
-contextBridge.exposeInMainWorld('electronAPI', {
-  // ej: sayHello: () => console.log('Hello from Electron!')
+const { contextBridge, ipcRenderer } = require("electron");
+
+contextBridge.exposeInMainWorld("electronAPI", {
+  windowAction: (action) => ipcRenderer.send("window-action", action),
 });

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Sidebar,
   type SidebarItem,
-} from "@app/dashboard/components/side-bar/SideBar";
+} from "@features/dashboard/components/side-bar/SideBar";
 import { useAuth } from "@app/hooks/useAuth";
 import { SidebarButton } from "./side-bar/SidebarButton";
 
@@ -34,7 +34,7 @@ export const AppSidebar: React.FC = () => {
       type: "button",
       icon: "hugeicons:video-01",
       label: "Lecciones",
-      route: "/lessons"
+      route: "/lessons",
     },
     { type: "separator", label: "Gestión" },
     {
@@ -47,7 +47,7 @@ export const AppSidebar: React.FC = () => {
       type: "button",
       icon: "hugeicons:wallet-03",
       label: "Portafolio",
-      route: selectedTeamId ? `/teams/${selectedTeamId}/portfolio` : "/teams"    
+      route: selectedTeamId ? `/teams/${selectedTeamId}/portfolio` : "/teams",
     },
     {
       type: "button",
@@ -75,7 +75,7 @@ export const AppSidebar: React.FC = () => {
         onClick: () => navigate("/home"),
       }
     : undefined;
-  
+
   const logoutButton = (
     <SidebarButton
       onClick={logout}
@@ -85,12 +85,13 @@ export const AppSidebar: React.FC = () => {
       Cerrar Sesión
     </SidebarButton>
   );
+
   return (
-    <Sidebar 
-      items={items} 
-      onNavigate={handleNavigate} 
+    <Sidebar
+      items={items}
+      onNavigate={handleNavigate}
       profile={profile}
-      bottomActions={logoutButton}  
+      bottomActions={logoutButton}
     />
   );
 };
