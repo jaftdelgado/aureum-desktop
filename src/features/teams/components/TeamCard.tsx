@@ -16,7 +16,7 @@ export const TeamCard: React.FC<TeamCardProps> = ({
     <div className="bg-card rounded-xl overflow-hidden border border-outline transition-shadow cursor-pointer max-w-xs">
       <div className="relative aspect-[4/3] w-full">
         <img
-          src={image}
+          src={image || "https://placehold.co/600x400?text=Curso"}
           alt={title}
           className="absolute inset-0 w-full h-full object-cover"
         />
