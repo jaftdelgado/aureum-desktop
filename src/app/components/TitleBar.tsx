@@ -2,7 +2,7 @@ import React from "react";
 
 export const TitleBar: React.FC = () => {
   const action = (type: "minimize" | "maximize" | "close") => {
-    window.electronAPI.windowAction(type);
+    window.electronAPI?.windowAction(type);
   };
 
   return (
