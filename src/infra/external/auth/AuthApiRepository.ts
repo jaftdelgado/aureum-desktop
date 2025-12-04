@@ -1,10 +1,13 @@
 import { supabase } from "@infra/external/http/supabase";
 import type { AuthRepository } from "@domain/repositories/AuthRepository";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
-import { httpClient } from "@infra/external/http/client";
+import { client } from "@infra/api/http/client";
 import { mapUserDTOToLoggedInUser } from "@infra/external/auth/auth.mappers";
-import type { LoggedInUserDTO, UserProfileDTO } from "@infra/external/auth/auth.dto";
-import { HttpError } from "@infra/external/http/client";
+import type {
+  LoggedInUserDTO,
+  UserProfileDTO,
+} from "@infra/external/auth/auth.dto";
+import { HttpError } from "@infra/api/http/client";
 
 export interface RegisterData {
   email: string;
@@ -17,7 +20,6 @@ export interface RegisterData {
 }
 
 export class AuthApiRepository implements AuthRepository {
-  
   private blobToBase64(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -27,19 +29,27 @@ export class AuthApiRepository implements AuthRepository {
     });
   }
 
-  private async fetchProfile(authId: string): Promise<UserProfileDTO | undefined> {
+  private async fetchProfile(
+    authId: string
+  ): Promise<UserProfileDTO | undefined> {
     try {
-      const profile = await httpClient.get<UserProfileDTO>(`/api/users/profiles/${authId}`);
+      const profile = await client.get<UserProfileDTO>(
+        `/api/users/profiles/${authId}`
+      );
 
       if (profile && profile.profile_pic_id) {
         try {
-          const imageBlob = await httpClient.getBlob(`/api/users/profiles/${authId}/avatar`);
-          
+          const imageBlob = await client.getBlob(
+            `/api/users/profiles/${authId}/avatar`
+          );
+
           const base64Image = await this.blobToBase64(imageBlob);
           profile.profile_pic_id = base64Image;
-          
         } catch (imageError) {
-          console.warn("No se pudo descargar la imagen del perfil:", imageError);
+          console.warn(
+            "No se pudo descargar la imagen del perfil:",
+            imageError
+          );
           profile.profile_pic_id = undefined;
         }
       }
@@ -52,21 +62,24 @@ export class AuthApiRepository implements AuthRepository {
   }
 
   async login(email: string, password: string): Promise<LoggedInUser> {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      
-      if (error) throw new Error(error.message);
-      if (!data.user) throw new Error("No se pudo iniciar sesión");
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      const authDto: LoggedInUserDTO = {
-        id: data.user.id,
-        email: data.user.email,
-        created_at: data.user.created_at,
-        avatar_url: data.user.user_metadata?.avatar_url || null,
-      };
+    if (error) throw new Error(error.message);
+    if (!data.user) throw new Error("No se pudo iniciar sesión");
 
-      const profileDto = await this.fetchProfile(data.user.id);
-      
-      return mapUserDTOToLoggedInUser(authDto, profileDto);
+    const authDto: LoggedInUserDTO = {
+      id: data.user.id,
+      email: data.user.email,
+      created_at: data.user.created_at,
+      avatar_url: data.user.user_metadata?.avatar_url || null,
+    };
+
+    const profileDto = await this.fetchProfile(data.user.id);
+
+    return mapUserDTOToLoggedInUser(authDto, profileDto);
   }
 
   async logout(): Promise<void> {
@@ -121,15 +134,14 @@ export class AuthApiRepository implements AuthRepository {
       role: roleToSend,
     };
 
-    await httpClient.post("/api/users/profiles", profilePayload);
+    await client.post("/api/users/profiles", profilePayload);
   }
 
   async checkProfileExists(authId: string): Promise<boolean> {
     try {
-      await httpClient.get(`/api/users/profiles/${authId}`);
+      await client.get(`/api/users/profiles/${authId}`);
       return true;
     } catch (error: any) {
-      
       if (error instanceof HttpError && error.status === 404) {
         return false;
       }

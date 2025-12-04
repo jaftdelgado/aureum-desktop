@@ -17,6 +17,9 @@ const MarketPage = lazy(() => import("@features/market/pages/MarketPage"));
 const TeamSettingsPage = lazy(
   () => import("@features/team-settings/pages/TeamSettingsPage")
 );
+const TeamMembersPage = lazy(
+  () => import("@features/team-settings/pages/MembersSettingsPage")
+);
 const SimulatorSettings = lazy(
   () => import("@features/team-settings/pages/SimulatorSettings")
 );
@@ -55,6 +58,7 @@ const routes: AppRoute[] = [
           { path: "assets", element: <AssetsPage /> },
           { path: "market", element: <MarketPage /> },
           { path: "settings", element: <TeamSettingsPage /> },
+          { path: "settings/members", element: <TeamMembersPage /> },
           { path: "settings/simulator", element: <SimulatorSettings /> },
           { path: "portfolio", element: <PortfolioPage /> },
         ],

@@ -1,9 +1,9 @@
-import { supabase } from "./supabase";
+import { supabase } from "@infra/external/http/supabase";
 import { ENV } from "@app/config/env";
 
 interface RequestOptions extends RequestInit {
-  data?: unknown; 
-  params?: Record<string, string>; 
+  data?: unknown;
+  params?: Record<string, string>;
 }
 
 export class HttpError extends Error {
@@ -31,8 +31,7 @@ export class HttpClient {
     const { data } = await supabase.auth.getSession();
     const token = data.session?.access_token;
 
-    const headers: HeadersInit = {
-    };
+    const headers: HeadersInit = {};
 
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
@@ -42,9 +41,8 @@ export class HttpClient {
   }
 
   async request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-
     const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-    
+
     let url = `${this.baseUrl}${cleanEndpoint}`;
     if (options.params) {
       const query = new URLSearchParams(options.params).toString();
@@ -71,14 +69,24 @@ export class HttpClient {
 
       if (!response.ok) {
         let errorData;
-        try { errorData = await response.json(); } catch { errorData = { message: response.statusText }; }
-        throw new HttpError(response.status, errorData.message || `Error HTTP ${response.status}`);
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { message: response.statusText };
+        }
+        throw new HttpError(
+          response.status,
+          errorData.message || `Error HTTP ${response.status}`
+        );
       }
 
       if (response.status === 204) return null as T;
       return await response.json();
     } catch (error) {
-      console.error(`[HttpClient] Error en ${options.method || "GET"} ${url}:`, error);
+      console.error(
+        `[HttpClient] Error en ${options.method || "GET"} ${url}:`,
+        error
+      );
       throw error;
     }
   }
@@ -90,7 +98,7 @@ export class HttpClient {
 
     const response = await fetch(url, {
       method: "GET",
-      headers: authHeaders, 
+      headers: authHeaders,
     });
 
     if (!response.ok) {
@@ -100,7 +108,11 @@ export class HttpClient {
     return await response.blob();
   }
 
-  get<T>(endpoint: string, params?: Record<string, string>, options?: RequestOptions) {
+  get<T>(
+    endpoint: string,
+    params?: Record<string, string>,
+    options?: RequestOptions
+  ) {
     return this.request<T>(endpoint, { ...options, method: "GET", params });
   }
 
@@ -121,4 +133,4 @@ export class HttpClient {
   }
 }
 
-export const httpClient = new HttpClient(ENV.API_GATEWAY_URL);
+export const client = new HttpClient(ENV.API_GATEWAY_URL);

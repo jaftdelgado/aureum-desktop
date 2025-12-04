@@ -11,6 +11,11 @@
     "simulatorDesc": "Configura el comportamiento del motor del simulador."
   },
 
+  "members": {
+    "title": "Configuración de participantes",
+    "description": "Gestiona los miembros del equipo: invita nuevos participantes o elimina los existentes."
+  },
+
   "simulator": {
     "title": "Configuración del simulador",
     "description": "Ajusta los parámetros y comportamientos del simulador según las necesidades del equipo.",
