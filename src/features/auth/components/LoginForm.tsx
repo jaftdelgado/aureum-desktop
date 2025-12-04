@@ -7,10 +7,11 @@ import { Input } from "@core/ui/Input";
 import GoogleSignIn from "@features/auth/components/GoogleSignIn";
 import { useLoginForm } from "../hooks/useLoginForm";
 import { useIsMobile } from "@app/hooks/useIsMobile";
+import { Icon } from "@iconify/react";
 
 interface LoginFormProps {
   onShowRegister: () => void;
-  onGoogleMissingProfile: () => void;
+  onGoogleMissingProfile?: () => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister, onGoogleMissingProfile }) => {
@@ -21,7 +22,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister, onGoogleMissingPr
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-
     await handleSubmit({
       email: String(fd.get("email") || "").trim(),
       password: String(fd.get("password") || ""),
@@ -29,70 +29,69 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister, onGoogleMissingPr
   };
 
   return (
-    <div
-      className={`p-8 rounded-xl w-full ${
-        isMobile ? "max-w-full" : "max-w-[340px] mx-auto"
-      }`}
-    >
+    <div className={`p-8 rounded-xl w-full ${isMobile ? "max-w-full" : "max-w-[340px] mx-auto"}`}>
       <Label variant="subtitle" color="primary">
         {t("signin.title")}
       </Label>
 
       <form className="flex flex-col gap-4 mt-6" onSubmit={onSubmit} noValidate>
+        
+        {errorMsg && (
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2 animate-in fade-in slide-in-from-top-1">
+            <Icon icon="lucide:alert-circle" className="w-4 h-4 text-red-600 mt-0.5 shrink-0" />
+            <span className="text-xs text-red-600 font-medium">
+              {errorMsg === "INVALID_CREDENTIALS" 
+                ? t("signin.errors.invalidCredentials")
+                : errorMsg === "EMAIL_NOT_CONFIRMED"
+                ? t("signin.errors.emailNotConfirmed")
+                : errorMsg}
+            </span>
+          </div>
+        )}
+
         <Input
           type="email"
           name="email"
           placeholder={t("signin.usernameOrEmail")}
           autoComplete="username"
-          error={
-            errors.email === "REQUIRED"
-              ? t("signin.errors.identifierRequired")
-              : undefined
-          }
+          error={errors.email} 
           disabled={loading}
-          className={isMobile ? "w-full" : ""}
         />
+        
         <Input
           type="password"
           name="password"
           placeholder={t("signin.password")}
           autoComplete="current-password"
-          error={
-            errorMsg === "INVALID_CREDENTIALS"
-              ? t("signin.errors.invalidCredentials")
-              : errors.password === "REQUIRED"
-              ? t("signin.errors.passwordRequired")
-              : undefined
-          }
+          error={errors.password}
           disabled={loading}
-          className={isMobile ? "w-full" : ""}
         />
 
         <Button
           variant="default"
-          className={`mt-2 ${isMobile ? "w-full" : ""}`}
+          className={`mt-2 ${isMobile ? "w-full" : ""} ${loading ? "opacity-80 cursor-wait" : ""}`}
           type="submit"
           size="lg"
           alignText="center"
           disabled={loading}
         >
-          {loading
-            ? t("common.loading", { defaultValue: "Cargando..." })
-            : t("signin.login")}
+          {loading ? t("common.loading") : t("signin.login")}
         </Button>
 
         <Separator variant="line" className="my-1" />
-        <GoogleSignIn onMissingProfile={onGoogleMissingProfile}/>
+        
+        <GoogleSignIn onMissingProfile={onGoogleMissingProfile} />
 
-        <div
-          className={`flex items-center gap-1 mt-4 ${
-            isMobile ? "justify-start" : "justify-center"
-          }`}
-        >
+        <div className={`flex items-center gap-1 mt-4 ${isMobile ? "justify-start" : "justify-center"}`}>
           <Label variant="body" color="secondary">
             {t("signin.noAccount")}
           </Label>
-          <Button variant="link" type="button" onClick={onShowRegister}>
+          <Button 
+            variant="link" 
+            type="button" 
+            onClick={onShowRegister}
+            disabled={loading}
+          >
             {t("signin.createAccount")}
           </Button>
         </div>

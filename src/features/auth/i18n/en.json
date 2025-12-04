@@ -2,8 +2,11 @@
   "welcome": "Welcome",
   "common": {
     "loading": "Loading...",
+    "verifyingAccess": "Verifying access...",
     "next": "Next",
-    "back": "Back"
+    "back": "Back",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   },
   "signin": {
     "title": "Sign In",
@@ -13,8 +16,10 @@
     "createAccount": "Create Account",
     "login": "Sign In",
     "continueWithGoogle": "Continue with Google",
+    "googleFlowMessage": "Hi there! We just need a bit more info to finish up.",
+    "googleFlowSubtitle": "Set up your profile to continue.",
     "errors": {
-      "identifierRequired": "Email or username is required",
+      "identifierRequired": "Email is required",
       "passwordRequired": "Password is required",
       "invalidCredentials": "Invalid email or password"
     }
@@ -34,16 +39,48 @@
     "successTitle": "Account Created!",
     "successMsg": "Your profile has been successfully set up.",
     "goToLogin": "Go to Login",
+    "goToDashboard": "Go to Dashboard",
     "alreadyHaveAccount": "Already have an account? Sign In",
+    "strength":{
+      "title":"Password Strength:",
+      "length": "At least 8 characters",
+      "uppercase": "One uppercase letter",
+      "lowercase": "One lowercase letter",
+      "number": "One number",
+      "symbol": "One symbol or special character"
+    },
     "errors": {
       "firstNameRequired": "First name is required",
       "lastNameRequired": "Last name is required",
-      "emailInvalid": "Invalid email",
-      "usernameMin": "Minimum 3 characters",
-      "usernameInvalid": "Only letters, numbers and _",
+      "nameLength": "Must be between 2 and 50 characters",
+      "nameInvalid": "Only letters, spaces, and hyphens are allowed",
+      "emailInvalid": "Invalid email format",
+      "emailLength": "Email cannot exceed 254 characters",
+      "usernameMin": "Minimum 4 characters",
+      "usernameMax": "Maximum 20 characters",
+      "passwordPwned": "This password has been exposed in a data breach. Please choose another one.",
+      "usernameInvalid": "Only letters, numbers, and underscores (_) are allowed",
+      "usernameReserved": "This username is not allowed",
       "accountTypeRequired": "Please select an account type",
-      "passwordMin": "Minimum 6 characters",
-      "passwordsDoNotMatch": "Passwords do not match"
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordMax": "Password cannot exceed 64 characters",
+      "passwordComplexity": "Must include uppercase, lowercase, number, and symbol",
+      "passwordCommon": "This password is too common or insecure",
+      "passwordRepeating": "Do not repeat the same character so many times",
+      "passwordSpaces": "Password cannot start or end with spaces",
+      "passwordSimilar": "Password should not contain your name, username, or email",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "emailAlreadyRegistered": "This email is already registered."
     }
+  },
+  "logout": {
+    "label": "Log Out",
+    "confirmTitle": "Are you sure you want to log out?",
+    "confirmMessage": "Your current session will end and you will be redirected to login."
+  },
+  "sidebar": {
+    "viewProfile": "View Profile",
+    "changeLanguage": "Change Language",
+    "language": "Language"
   }
 }

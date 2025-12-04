@@ -20,6 +20,7 @@ function PopoverContent({
   align = "center",
   sideOffset = 4,
   children,
+  ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Content>) {
   return (
     <PopoverPrimitive.Portal>
@@ -27,6 +28,7 @@ function PopoverContent({
         asChild
         align={align}
         sideOffset={sideOffset}
+        {...props}
         forceMount
       >
         <motion.div

@@ -2,8 +2,11 @@
   "welcome": "Bienvenido",
   "common": {
     "loading": "Cargando...",
+    "verifyingAccess": "Verificando acceso...",
     "next": "Siguiente",
-    "back": "Atrás"
+    "back": "Atrás",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
   },
   "signin": {
     "title": "Iniciar sesión",
@@ -13,8 +16,10 @@
     "createAccount": "Crear cuenta",
     "login": "Iniciar sesión",
     "continueWithGoogle": "Continuar con Google",
+    "googleFlowMessage": "¡Hola! Solo necesitamos unos datos más para terminar.",
+    "googleFlowSubtitle": "Configura tu perfil para continuar.",
     "errors": {
-      "identifierRequired": "El correo o usuario es obligatorio",
+      "identifierRequired": "El correo es obligatorio",
       "passwordRequired": "La contraseña es obligatoria",
       "invalidCredentials": "Correo o contraseña incorrectos"
     }
@@ -34,16 +39,48 @@
     "successTitle": "¡Cuenta Creada!",
     "successMsg": "Tu perfil ha sido configurado correctamente.",
     "goToLogin": "Ir a Iniciar Sesión",
+    "goToDashboard": "Ir al Panel",
     "alreadyHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
+    "strength": {
+      "title": "Requisitos de seguridad:",
+      "length": "Mínimo 8 caracteres",
+      "uppercase": "Una letra mayúscula",
+      "lowercase": "Una letra minúscula",
+      "number": "Un número",
+      "symbol": "Un símbolo o carácter especial"
+    },
     "errors": {
       "firstNameRequired": "El nombre es requerido",
       "lastNameRequired": "El apellido es requerido",
-      "emailInvalid": "Correo inválido",
-      "usernameMin": "Mínimo 3 caracteres",
-      "usernameInvalid": "Solo letras, números y _",
+      "nameLength": "Debe tener entre 2 y 50 caracteres",
+      "nameInvalid": "Solo se permiten letras, espacios y guiones",
+      "emailInvalid": "Formato de correo inválido",
+      "emailLength": "El correo no puede exceder los 254 caracteres",
+      "usernameMin": "Mínimo 4 caracteres",
+      "usernameMax": "Máximo 20 caracteres",
+      "passwordPwned": "Esta contraseña ha aparecido en filtraciones de datos. Por seguridad, elige otra.",
+      "usernameInvalid": "Solo letras, números y guiones bajos (_)",
+      "usernameReserved": "Este nombre de usuario no está permitido",
       "accountTypeRequired": "Selecciona un tipo de cuenta",
-      "passwordMin": "Mínimo 6 caracteres",
-      "passwordsDoNotMatch": "Las contraseñas no coinciden"
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres",
+      "passwordMax": "La contraseña no puede exceder los 64 caracteres",
+      "passwordComplexity": "Debe incluir mayúscula, minúscula, número y símbolo",
+      "passwordCommon": "Esta contraseña es demasiado común o insegura",
+      "passwordRepeating": "No repitas el mismo carácter tantas veces",
+      "passwordSpaces": "La contraseña no puede empezar ni terminar con espacios",
+      "passwordSimilar": "La contraseña no debe contener tu nombre, usuario o email",
+      "passwordsDoNotMatch": "Las contraseñas no coinciden",
+      "emailAlreadyRegistered": "Este correo ya está registrado"
     }
+  },
+  "logout": {
+    "label": "Cerrar Sesión",
+    "confirmTitle": "¿Seguro que deseas cerrar sesión?",
+    "confirmMessage": "Tu sesión actual se cerrará y serás redirigido al inicio."
+  },
+  "sidebar": {
+    "viewProfile": "Ver perfil",
+    "changeLanguage": "Cambiar idioma",
+    "language": "Idioma"
   }
 }

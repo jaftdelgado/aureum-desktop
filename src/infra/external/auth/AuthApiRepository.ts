@@ -4,6 +4,7 @@ import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 import { httpClient } from "@infra/external/http/client";
 import { mapUserDTOToLoggedInUser } from "@infra/external/auth/auth.mappers";
 import type { LoggedInUserDTO, UserProfileDTO } from "@infra/external/auth/auth.dto";
+import { HttpError } from "@infra/external/http/client";
 
 export interface RegisterData {
   email: string;
@@ -17,9 +18,32 @@ export interface RegisterData {
 
 export class AuthApiRepository implements AuthRepository {
   
+  private blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
   private async fetchProfile(authId: string): Promise<UserProfileDTO | undefined> {
     try {
       const profile = await httpClient.get<UserProfileDTO>(`/api/users/profiles/${authId}`);
+
+      if (profile && profile.profile_pic_id) {
+        try {
+          const imageBlob = await httpClient.getBlob(`/api/users/profiles/${authId}/avatar`);
+          
+          const base64Image = await this.blobToBase64(imageBlob);
+          profile.profile_pic_id = base64Image;
+          
+        } catch (imageError) {
+          console.warn("No se pudo descargar la imagen del perfil:", imageError);
+          profile.profile_pic_id = undefined;
+        }
+      }
+
       return profile;
     } catch (error) {
       console.warn(`No se pudo cargar el perfil para ${authId}`, error);
@@ -37,6 +61,7 @@ export class AuthApiRepository implements AuthRepository {
         id: data.user.id,
         email: data.user.email,
         created_at: data.user.created_at,
+        avatar_url: data.user.user_metadata?.avatar_url || null,
       };
 
       const profileDto = await this.fetchProfile(data.user.id);
@@ -59,6 +84,7 @@ export class AuthApiRepository implements AuthRepository {
       id: user.id,
       email: user.email,
       created_at: user.created_at,
+      avatar_url: user.user_metadata?.avatar_url || null,
     };
 
     const profileDto = await this.fetchProfile(user.id);
@@ -103,14 +129,11 @@ export class AuthApiRepository implements AuthRepository {
       await httpClient.get(`/api/users/profiles/${authId}`);
       return true;
     } catch (error: any) {
-      const errorString = error?.message || String(error);
       
-      if (errorString.includes("404") || errorString.includes("Not Found")) {
+      if (error instanceof HttpError && error.status === 404) {
         return false;
       }
-      
-      console.warn("Error checking profile:", error);
-      return false; 
+      return false;
     }
   }
 }

@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Sidebar,
   type SidebarItem,
 } from "@features/dashboard/components/side-bar/SideBar";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@app/hooks/useAuth";
-import { SidebarButton } from "./side-bar/SidebarButton";
+import { Button } from "@core/ui/Button";
 
 const useSelectedTeamId = () => {
-  return "123"; // ejemplo
+  return "123";
 };
 
 export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { t } = useTranslation("auth");
   const selectedTeamId = useSelectedTeamId();
+
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const items: SidebarItem[] = [
     { type: "separator", label: "Principal" },
@@ -63,35 +67,73 @@ export const AppSidebar: React.FC = () => {
     },
   ];
 
-  const handleNavigate = (route: string) => {
-    navigate(route);
+  const handleNavigate = (route: string) => navigate(route);
+
+  const getProfileData = () => {
+    if (!user) return undefined;
+
+    const displayName = user.fullName || user.username || user.email;
+    let displayRole = "Miembro";
+
+    if (user.role === "professor")
+      displayRole = t("signup.professor", "Profesor");
+    if (user.role === "student")
+      displayRole = t("signup.student", "Estudiante");
+
+    const avatarName = encodeURIComponent(displayName);
+    const finalAvatarUrl =
+      user.avatarUrl ||
+      `https://ui-avatars.com/api/?name=${avatarName}&background=0D8ABC&color=fff`;
+
+    return {
+      name: displayName,
+      role: displayRole,
+      avatarUrl: finalAvatarUrl,
+      onProfileClick: () => navigate("/home"),
+      onLogout: () => setShowLogoutDialog(true),
+    };
   };
 
-  const profile = user
-    ? {
-        name: user.email,
-        role: "Miembro",
-        avatarUrl: `https://ui-avatars.com/api/?name=${user.email}&background=random`,
-        onClick: () => navigate("/home"),
-      }
-    : undefined;
+  const profile = getProfileData();
 
-  const logoutButton = (
-    <SidebarButton
-      onClick={logout}
-      icon="mdi:logout"
-      className="text-red-400 hover:text-red-300 hover:bg-red-500/10 w-full justify-start"
-    >
-      Cerrar Sesión
-    </SidebarButton>
-  );
+  const confirmLogout = async () => {
+    await logout();
+    setShowLogoutDialog(false);
+  };
 
   return (
-    <Sidebar
-      items={items}
-      onNavigate={handleNavigate}
-      profile={profile}
-      bottomActions={logoutButton}
-    />
+    <>
+      <Sidebar items={items} onNavigate={handleNavigate} profile={profile} />
+
+      {showLogoutDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-surface border border-border rounded-xl p-6 shadow-2xl w-full max-w-sm animate-in zoom-in-95 slide-in-from-bottom-2 duration-200">
+            <h3 className="text-lg font-semibold text-primary mb-2">
+              {t("logout.confirmTitle", "¿Seguro que deseas cerrar sesión?")}
+            </h3>
+            <p className="text-sm text-secondary mb-6">
+              {t("logout.confirmMessage", "Tu sesión se cerrará.")}
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <Button
+                variant="default"
+                onClick={() => setShowLogoutDialog(false)}
+              >
+                {t("common.cancel", "Cancelar")}
+              </Button>
+
+              <Button
+                variant="default"
+                className="bg-red-600 hover:bg-red-700 text-white"
+                onClick={confirmLogout}
+              >
+                {t("common.confirm", "Confirmar")}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };

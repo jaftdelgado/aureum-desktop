@@ -1,16 +1,27 @@
-// electron/main.cjs
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const path = require("node:path");
 
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 const isDev = !!VITE_DEV_SERVER_URL;
 
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient("aureum", process.execPath, [
+      path.resolve(process.argv[1]),
+    ]);
+  }
+} else {
+  app.setAsDefaultProtocolClient("aureum");
+}
+
+let mainWindow;
+
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    frame: false, // <- ventana sin marco para crear titlebar personalizada
-    titleBarStyle: "hidden", // macOS
+    frame: false,
+    titleBarStyle: "hidden",
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
       contextIsolation: true,
@@ -18,12 +29,19 @@ function createWindow() {
     },
   });
 
-  // Forward events to renderer so el TitleBar puede actualizar iconos
   mainWindow.on("maximize", () => {
     mainWindow.webContents.send("window-maximized", true);
   });
+
   mainWindow.on("unmaximize", () => {
     mainWindow.webContents.send("window-maximized", false);
+  });
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith("https:")) {
+      shell.openExternal(url);
+    }
+    return { action: "deny" };
   });
 
   if (isDev && VITE_DEV_SERVER_URL) {
@@ -36,36 +54,62 @@ function createWindow() {
   return mainWindow;
 }
 
-app.whenReady().then(() => {
-  const win = createWindow();
+const gotTheLock = app.requestSingleInstanceLock();
 
-  // IPC: acciones desde renderer
-  ipcMain.on("window-action", (event, action) => {
-    const senderWin = BrowserWindow.fromWebContents(event.sender);
-    if (!senderWin) return;
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on("second-instance", (event, commandLine) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
 
-    switch (action) {
-      case "minimize":
-        senderWin.minimize();
-        break;
-      case "maximize":
-        if (senderWin.isMaximized()) senderWin.unmaximize();
-        else senderWin.maximize();
-        break;
-      case "close":
-        senderWin.close();
-        break;
-      default:
-        break;
+      const url = commandLine.find((arg) => arg.startsWith("aureum://"));
+      if (url) {
+        handleOpenUrl(url);
+      }
     }
   });
 
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
+  app.whenReady().then(() => {
+    const win = createWindow();
+
+    ipcMain.on("window-action", (event, action) => {
+      const senderWin = BrowserWindow.fromWebContents(event.sender);
+      if (!senderWin) return;
+
+      switch (action) {
+        case "minimize":
+          senderWin.minimize();
+          break;
+        case "maximize":
+          senderWin.isMaximized()
+            ? senderWin.unmaximize()
+            : senderWin.maximize();
+          break;
+        case "close":
+          senderWin.close();
+          break;
+      }
+    });
+
+    app.on("activate", () => {
+      if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    });
   });
-});
+
+  app.on("open-url", (event, url) => {
+    event.preventDefault();
+    handleOpenUrl(url);
+  });
+}
+
+function handleOpenUrl(url) {
+  console.log("Deep link recibido:", url);
+  if (mainWindow) {
+    mainWindow.webContents.send("supabase-auth-token", url);
+  }
+}
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
