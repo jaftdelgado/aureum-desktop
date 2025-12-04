@@ -1,14 +1,8 @@
 import React, { Suspense, lazy } from "react";
-import {
-  HashRouter,
-  Routes,
-  Route,
-  Navigate,
-  Outlet,
-} from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
-import { DashboardLayout } from "@app/dashboard/layout/DashboardLayout";
+import { DashboardLayout } from "@features/dashboard/layout/DashboardLayout";
 import { RequireProfile } from "./RequireProfile";
 
 const AuthPage = lazy(() => import("@features/auth/pages/AuthPage"));
@@ -92,7 +86,13 @@ export const AppRouter: React.FC = () => {
 
   return (
     <HashRouter>
-      <Suspense fallback={<div className="h-screen w-full flex items-center justify-center">Cargando aplicación...</div>}>
+      <Suspense
+        fallback={
+          <div className="h-screen w-full flex items-center justify-center">
+            Cargando aplicación...
+          </div>
+        }
+      >
         <Routes>{renderRoutes(routes)}</Routes>
       </Suspense>
     </HashRouter>

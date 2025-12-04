@@ -21,7 +21,7 @@ export const SettingsOption: React.FC<SettingsOptionProps> = ({
       className="
         w-full flex items-center justify-between 
         px-5 py-4 rounded-xl
-        bg-input hover:bg-card/80 
+        bg-card hover:bg-card/80 
         transition-colors
         text-left
       "

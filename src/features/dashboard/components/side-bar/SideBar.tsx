@@ -1,7 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { SidebarFooter } from "@app/dashboard/components/side-bar/SidebarFooter";
-import { SidebarButton } from "@app/dashboard/components/side-bar/SidebarButton";
+import { SidebarFooter } from "@features/dashboard/components/side-bar/SidebarFooter";
+import { SidebarButton } from "@features/dashboard/components/side-bar/SidebarButton";
+import { SidebarHeader } from "@features/dashboard/components/side-bar/SidebarHeader";
 
 export type SidebarItem =
   | {
@@ -57,6 +58,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside
       className={`flex flex-col w-60 h-full bg-panel text-white p-4 border-r border-outline ${className}`}
     >
+      {/* 🔥 HEADER AQUI */}
+      <SidebarHeader />
+
+      {/* ITEMS */}
       <nav className="flex flex-col gap-1 flex-1">
         {items.map((item, index) =>
           item.type === "separator" ? (
@@ -73,12 +78,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )
         )}
       </nav>
+
+      {/* FOOTER */}
       <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-outline/30">
-        {bottomActions && (
-          <div className="mb-1">
-            {bottomActions}
-          </div>
-        )}
+        {bottomActions && <div className="mb-1">{bottomActions}</div>}
 
         {profile && (
           <SidebarFooter

@@ -24,7 +24,7 @@ export const SettingsControl: React.FC<SettingsControlProps> = ({
       className={`
         w-full flex items-center justify-between
         px-5 py-4
-        bg-input
+        bg-card
         text-left
         ${borderTop} ${roundedTop} ${roundedBottom}
       `}
