@@ -1,0 +1,29 @@
+{
+  "title": "Mercado",
+  "description": "Analiza los activos del equipo y realiza operaciones.",
+  "noAssets": "No hay activos disponibles.",
+  "selectedAsset": {
+    "label": "Activo seleccionado",
+    "currentPrice": "Precio actual",
+    "change24h": "Cambio 24h",
+    "portfolioPercent": "% en portafolio"
+  },
+  "chart": {
+    "title": "Historial de precios",
+    "subtitle": "{{symbol}} · últimos días"
+  },
+  "table": {
+    "title": "Lista de activos",
+    "count": "{{count}} activos",
+    "columns": {
+      "asset": "Activo",
+      "price": "Precio",
+      "change24h": "24h",
+      "portfolioPercent": "% Portafolio"
+    }
+  },
+  "actions": {
+    "buy": "Comprar",
+    "sell": "Vender"
+  }
+}

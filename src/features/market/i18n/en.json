@@ -1,0 +1,29 @@
+{
+  "title": "Market",
+  "description": "Analyze your team assets and place trades.",
+  "noAssets": "No assets available.",
+  "selectedAsset": {
+    "label": "Selected asset",
+    "currentPrice": "Current price",
+    "change24h": "24h change",
+    "portfolioPercent": "Portfolio %"
+  },
+  "chart": {
+    "title": "Price history",
+    "subtitle": "{{symbol}} · last days"
+  },
+  "table": {
+    "title": "Assets list",
+    "count": "{{count}} assets",
+    "columns": {
+      "asset": "Asset",
+      "price": "Price",
+      "change24h": "24h",
+      "portfolioPercent": "Portfolio %"
+    }
+  },
+  "actions": {
+    "buy": "Buy",
+    "sell": "Sell"
+  }
+}
