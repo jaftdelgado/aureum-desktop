@@ -30,15 +30,12 @@ export class AuthApiRepository implements AuthRepository {
   private async fetchProfile(authId: string): Promise<UserProfileDTO | undefined> {
     try {
       const profile = await httpClient.get<UserProfileDTO>(`/api/users/profiles/${authId}`);
-      console.log("Perfil descargado del Gateway:", profile);
 
       if (profile && profile.profile_pic_id) {
         try {
-          console.log("Perfil tiene avatar UUID, intentando descargar...", profile.profile_pic_id);
           const imageBlob = await httpClient.getBlob(`/api/users/profiles/${authId}/avatar`);
           
           const base64Image = await this.blobToBase64(imageBlob);
-          console.log("Imagen descargada y convertida a Base64 (longitud):", base64Image.length);
           profile.profile_pic_id = base64Image;
           
         } catch (imageError) {
