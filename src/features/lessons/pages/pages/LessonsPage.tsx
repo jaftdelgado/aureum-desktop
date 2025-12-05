@@ -50,7 +50,6 @@ const LessonsPage: React.FC = () => {
           </div>
         )}
       </div>
-
       <VideoPlayerDialog
         isOpen={!!selectedLesson}
         lesson={selectedLesson}
