@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose, 
+ 
 } from "@core/components/Dialog";
 import type { Lesson } from "@domain/entities/Lesson";
 import { LessonsRepository } from "@infra/api/lessons/LessonsRepository";
@@ -22,12 +22,10 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
   onClose,
   lesson,
 }) => {
-  // 1. Creamos una referencia para controlar el elemento <video>
   const videoRef = useRef<HTMLVideoElement>(null);
 
   if (!lesson) return null;
 
-  // 2. Función para saltar tiempo
   const handleSkip = (seconds: number) => {
     if (videoRef.current) {
       videoRef.current.currentTime += seconds;
@@ -38,13 +36,11 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="gap-0 overflow-hidden bg-black p-0 sm:max-w-4xl border-zinc-800">
         
-        {/* Cabecera con Título y Botón de Cerrar */}
         <DialogHeader className="flex flex-row items-center justify-between border-b border-white/10 bg-zinc-900 p-4">
           <DialogTitle className="text-white text-lg font-medium">
             {lesson.title}
           </DialogTitle>
           
-          {/* Botón explícito para cerrar */}
           <Button 
             variant="icon" 
             size="sm" 
@@ -55,11 +51,10 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
           </Button>
         </DialogHeader>
 
-        {/* Contenedor del Video */}
         <div className="relative flex w-full flex-col bg-black">
             <video
-                ref={videoRef} 
-                controls 
+                ref={videoRef}
+                controls
                 autoPlay
                 className="max-h-[60vh] w-full"
                 src={LessonsRepository.getVideoUrl(lesson.id)}
@@ -67,7 +62,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
                 Tu navegador no soporta video HTML5.
             </video>
 
-            {/* Barra de Herramientas Personalizada (Debajo del video) */}
             <div className="flex items-center justify-center gap-4 bg-zinc-900/50 p-2 border-b border-white/10 backdrop-blur-sm">
                 <Button 
                     variant="secondary" 
@@ -91,7 +85,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
             </div>
         </div>
         
-        {/* Descripción */}
         <div className="max-h-32 overflow-y-auto bg-zinc-900 p-4">
             <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
               Descripción
