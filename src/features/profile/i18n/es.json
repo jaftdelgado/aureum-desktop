@@ -23,5 +23,12 @@
     "student": "Estudiante",
     "professor": "Profesor",
     "admin": "Administrador"
+  },
+  "deleteAccount": {
+    "button": "Eliminar mi cuenta",
+    "title": "¿Estás seguro?",
+    "message": "Esta acción es permanente. Se eliminará tu perfil y no podrás recuperar tus datos.",
+    "confirm": "Sí, eliminar cuenta",
+    "cancel": "Cancelar"
   }
 }

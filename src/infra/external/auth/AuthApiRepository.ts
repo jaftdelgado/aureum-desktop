@@ -181,4 +181,10 @@ export class AuthApiRepository implements AuthRepository {
 
     await client.post(`/api/users/profiles/${authId}/avatar`, formData);
   }
+
+  async deleteAccount(authId: string): Promise<void> {
+    await client.delete(`/api/users/profiles/${authId}`);
+    
+    await this.logout();
+  }
 }
