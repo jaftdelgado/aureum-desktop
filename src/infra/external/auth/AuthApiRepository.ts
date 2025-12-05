@@ -170,4 +170,15 @@ export class AuthApiRepository implements AuthRepository {
       return false;
     }
   }
+
+  async updateProfile(authId: string, data: { bio?: string }): Promise<void> {
+    await client.patch(`/api/users/profiles/${authId}`, data);
+  }
+
+  async uploadAvatar(authId: string, file: File): Promise<void> {
+    const formData = new FormData();
+    formData.append("file", file); 
+
+    await client.post(`/api/users/profiles/${authId}/avatar`, formData);
+  }
 }

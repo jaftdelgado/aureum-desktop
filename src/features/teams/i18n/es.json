@@ -1,6 +1,6 @@
 {
   "title": "Equipos",
-  "description": "Administra y gestiona los equipos de trabajo.",
+  "subtitle": "Administra y gestiona los equipos de trabajo.",
   "joinCourse": "Unirse a curso",
   "createCourse": "Crear nuevo curso",
   "joinModal": {
