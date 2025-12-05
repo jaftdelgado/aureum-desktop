@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@core/ui/Button";
 import { Icon } from "@iconify/react";
 
@@ -15,6 +16,7 @@ export const LessonCard: React.FC<LessonCardProps> = ({
   thumbnail,
   onPlay,
 }) => {
+  const { t } = useTranslation("lessons");
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all hover:shadow-md">
       {/* Zona de Imagen Clickable */}
@@ -48,7 +50,7 @@ export const LessonCard: React.FC<LessonCardProps> = ({
             onClick={onPlay}
             iconLeft="mdi:play"
           >
-            Ver Video
+            {t("card.watch")} {/* 3. Usar la traducción */}
           </Button>
         </div>
       </div>
