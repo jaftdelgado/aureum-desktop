@@ -87,7 +87,7 @@ export const createSignUpSchema = (t: (key: string) => string) => {
           message: t("signup.errors.passwordPwned"), 
         }),
 
-      confirmPassword: z.string(),
+      confirmPassword: z.string().max(64),
     })
     .superRefine((data, ctx) => {
       if (data.password !== data.confirmPassword) {

@@ -19,6 +19,8 @@ export interface RegisterData {
   isGoogle?: boolean;
 }
 
+const PRESERVED_KEYS = ["theme", "i18nextLng"];
+
 export class AuthApiRepository implements AuthRepository {
   private blobToBase64(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -90,7 +92,20 @@ export class AuthApiRepository implements AuthRepository {
       console.warn("Error al cerrar sesión en Supabase, limpiando localmente...", error);
     } finally {
       if (typeof sessionStorage !== "undefined") sessionStorage.clear();
-      if (typeof localStorage !== "undefined") localStorage.clear();
+      if (typeof localStorage !== "undefined") {
+        const preferences: Record<string, string | null> = {};
+        PRESERVED_KEYS.forEach(key => {
+          preferences[key] = localStorage.getItem(key);
+        });
+
+        localStorage.clear();
+
+        PRESERVED_KEYS.forEach(key => {
+          if (preferences[key]) {
+            localStorage.setItem(key, preferences[key]!);
+          }
+        });
+      }
     }
   }
 
