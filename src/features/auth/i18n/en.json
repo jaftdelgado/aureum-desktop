@@ -85,6 +85,7 @@
   "sidebar": {
     "viewProfile": "View Profile",
     "changeLanguage": "Change Language",
+    "toggleTheme": "Switch Theme",
     "language": "Language"
   }
 }
