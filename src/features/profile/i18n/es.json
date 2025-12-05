@@ -1,17 +1,27 @@
 {
   "title": "Mi Perfil",
   "subtitle": "Gestiona tu información personal",
+  "editProfile": "Editar Perfil",
   "labels": {
     "fullName": "Nombre completo",
     "username": "Usuario",
     "email": "Correo electrónico",
+    "bio": "Biografía",
     "role": "Rol",
-    "accountType": "Tipo de cuenta",
-    "joinedAt": "Miembro desde"
+    "joinedAt": "Miembro desde",
+    "changePhoto": "Cambiar foto"
+  },
+  "modals": {
+    "edit": {
+      "title": "Editar Perfil",
+      "message": "Actualiza tu foto y biografía.",
+      "cancel": "Cancelar",
+      "save": "Guardar Cambios"
+    }
   },
   "roles": {
     "student": "Estudiante",
-    "teacher": "Profesor",
+    "professor": "Profesor",
     "admin": "Administrador"
   }
 }
