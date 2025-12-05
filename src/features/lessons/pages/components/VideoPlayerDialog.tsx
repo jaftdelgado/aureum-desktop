@@ -10,6 +10,8 @@ import {
 } from "@core/components/Dialog";
 import type { Lesson } from "@domain/entities/Lesson";
 import { LessonsRepository } from "@infra/api/lessons/LessonsRepository";
+// Importación del cliente local corregida
+import { lessonsClient } from "@features/lessons/pages/api/client";
 
 interface VideoPlayerDialogProps {
   isOpen: boolean;
@@ -34,6 +36,9 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Estado para la URL segura del video (blob)
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+
   const [isPlaying, setIsPlaying] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
@@ -41,6 +46,7 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
   const [isMuted, setIsMuted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  // Manejo de pantalla completa
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -48,6 +54,46 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
+
+  // --- EFFECT: Carga segura del video con token ---
+  useEffect(() => {
+    let isActive = true;
+    let currentBlobUrl: string | null = null;
+
+    const fetchVideoSecurely = async () => {
+      if (!lesson || !isOpen) return;
+
+      try {
+        setIsLoading(true);
+        setVideoSrc(null); // Reseteamos source anterior
+
+        // 1. URL del endpoint protegido
+        const endpointUrl = LessonsRepository.getVideoUrl(lesson.id);
+        
+        // 2. Descargar blob con token usando el cliente local
+        const blobUrl = await lessonsClient.fetchVideoBlob(endpointUrl);
+        
+        if (isActive) {
+          currentBlobUrl = blobUrl;
+          setVideoSrc(blobUrl);
+          // Nota: isLoading pasará a false en onLoadedMetadata
+        }
+      } catch (error) {
+        console.error("Error cargando el video:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchVideoSecurely();
+
+    // Cleanup: Revocar URL para liberar memoria
+    return () => {
+      isActive = false;
+      if (currentBlobUrl) {
+        URL.revokeObjectURL(currentBlobUrl);
+      }
+    };
+  }, [lesson, isOpen]);
 
   // --- HANDLERS ---
   const togglePlay = () => {
@@ -103,6 +149,10 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
     if (videoRef.current) {
       setDuration(videoRef.current.duration);
       setIsLoading(false);
+      // Intentar autoreproducir si estaba reproduciendo
+      if (isPlaying) {
+        videoRef.current.play().catch(() => setIsPlaying(false));
+      }
     }
   };
 
@@ -144,31 +194,34 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
 
           {/* AREA DE VIDEO */}
           <div className="relative flex-1 flex items-center justify-center bg-black min-h-[300px]">
-              <video
-                  ref={videoRef}
-                  controls={false}
-                  autoPlay
-                  className="w-full h-full max-h-[60vh] object-contain cursor-pointer"
-                  src={LessonsRepository.getVideoUrl(lesson.id)}
-                  onClick={togglePlay}
-                  onTimeUpdate={onTimeUpdate}
-                  onLoadedMetadata={onLoadedMetadata}
-                  onLoadStart={() => setIsLoading(true)}
-                  onWaiting={() => setIsLoading(true)}
-                  onSeeking={() => setIsLoading(true)}
-                  onSeeked={() => setIsLoading(false)}
-                  onCanPlay={() => setIsLoading(false)}
-                  onPlaying={() => {
-                     setIsLoading(false);
-                     setIsPlaying(true);
-                  }}
-                  onPause={() => setIsPlaying(false)}
-              >
-                  Tu navegador no soporta video HTML5.
-              </video>
+              {/* Solo renderizamos el video si videoSrc existe */}
+              {videoSrc && (
+                <video
+                    ref={videoRef}
+                    controls={false}
+                    autoPlay
+                    className="w-full h-full max-h-[60vh] object-contain cursor-pointer"
+                    src={videoSrc}
+                    onClick={togglePlay}
+                    onTimeUpdate={onTimeUpdate}
+                    onLoadedMetadata={onLoadedMetadata}
+                    onLoadStart={() => setIsLoading(true)}
+                    onWaiting={() => setIsLoading(true)}
+                    onSeeking={() => setIsLoading(true)}
+                    onSeeked={() => setIsLoading(false)}
+                    onCanPlay={() => setIsLoading(false)}
+                    onPlaying={() => {
+                       setIsLoading(false);
+                       setIsPlaying(true);
+                    }}
+                    onPause={() => setIsPlaying(false)}
+                >
+                    Tu navegador no soporta video HTML5.
+                </video>
+              )}
 
               {/* Spinner de Carga */}
-              {isLoading && (
+              {(isLoading || !videoSrc) && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-30 pointer-events-none backdrop-blur-[1px]">
                    <div className="flex flex-col items-center gap-2">
                       <Icon icon="mdi:loading" className="text-white w-12 h-12 animate-spin" />
@@ -180,7 +233,7 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
               )}
 
               {/* Overlay Play/Pause */}
-              {!isPlaying && !isLoading && (
+              {!isPlaying && !isLoading && videoSrc && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none">
                   <Icon icon="mdi:play-circle" className="text-white/80 w-20 h-20 drop-shadow-2xl opacity-80" />
                 </div>
@@ -192,28 +245,33 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
               
               {/* Slider */}
               <div className="w-full flex items-center gap-3 cursor-pointer group/slider">
-                 <span className="text-xs font-mono text-white/80 w-10 text-right">{formatTime(currentTime)}</span>
+                 <span className="text-xs font-mono text-white/80 w-10 text-right">
+                    {formatTime(currentTime)}
+                 </span>
                  
                  <div className="relative flex-1 h-1 group-hover/slider:h-2 transition-all bg-white/20 rounded-full">
                     <input 
                       type="range" 
                       min={0} 
-                      max={duration} 
+                      max={duration || 100} 
                       value={currentTime} 
                       onChange={handleSeek}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                      disabled={!videoSrc}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20 disabled:cursor-not-allowed"
                     />
                     <div 
                       className="absolute top-0 left-0 h-full bg-indigo-500 rounded-full pointer-events-none z-10"
-                      style={{ width: `${(currentTime / duration) * 100}%` }}
+                      style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
                     />
                     <div 
                       className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow pointer-events-none z-10 opacity-0 group-hover/slider:opacity-100 transition-opacity"
-                      style={{ left: `${(currentTime / duration) * 100}%` }}
+                      style={{ left: `${(currentTime / (duration || 1)) * 100}%` }}
                     />
                  </div>
 
-                 <span className="text-xs font-mono text-white/80 w-10">{formatTime(duration)}</span>
+                 <span className="text-xs font-mono text-white/80 w-10">
+                    {formatTime(duration)}
+                 </span>
               </div>
 
               {/* Botones */}
