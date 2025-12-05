@@ -19,6 +19,9 @@ export async function loadResources() {
       ),
       market: await import("@features/market/i18n/es.json").then(
         (m) => m.default
+      ),
+      lessons: await import("@features/lessons/pages/i18n/es.json").then(
+        (m) => m.default
       )
     },
     en: {
@@ -38,6 +41,9 @@ export async function loadResources() {
         (m) => m.default
       ),
       market: await import("@features/market/i18n/en.json").then(
+        (m) => m.default
+      ),
+      lessons: await import("@features/lessons/pages/i18n/en.json").then(
         (m) => m.default
       )
     },
