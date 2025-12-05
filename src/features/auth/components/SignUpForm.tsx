@@ -319,7 +319,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           <h3 className="text-lg font-bold text-primary mb-2">{t("signup.successTitle", "¡Cuenta Creada!")}</h3>
           <p className="text-secondary text-sm mb-6">{t("signup.successMsg", "Tu perfil ha sido configurado correctamente.")}</p>
           <Button variant="default" onClick={onShowLogin} className="w-full">
-            {isGoogleFlow ? t("signup.goToDashboard") : t("signup.goToLogin")}
+            {t("signup.goToLogin")}
           </Button>
         </div>
       )}

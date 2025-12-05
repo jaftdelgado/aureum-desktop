@@ -1,0 +1,17 @@
+{
+  "title": "My Profile",
+  "subtitle": "Manage your personal information",
+  "labels": {
+    "fullName": "Full name",
+    "username": "Username",
+    "email": "Email",
+    "role": "Role",
+    "accountType": "Account type",
+    "joinedAt": "Member since"
+  },
+  "roles": {
+    "student": "Student",
+    "teacher": "Professor",
+    "admin": "Administrator"
+  }
+}
