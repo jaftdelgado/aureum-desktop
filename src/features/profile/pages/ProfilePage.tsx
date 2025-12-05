@@ -6,6 +6,7 @@ import { Separator } from "@core/ui/Separator";
 import { useProfilePage } from "../hooks/useProfilePage";
 import { EditProfileDialog } from "../components/EditProfileDialog";
 import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
+import { DeleteAccountDialog } from "../components/DeleteAccountDialog";
 
 const authRepo = new AuthApiRepository();
 
@@ -13,6 +14,8 @@ const ProfilePage: React.FC = () => {
   const { t } = useTranslation("profile");
   const { user } = useProfilePage();
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   if (!user) return null;
 
@@ -36,6 +39,18 @@ const ProfilePage: React.FC = () => {
     } catch (error) {
       console.error("Error actualizando perfil:", error);
       alert("Hubo un error al guardar los cambios.");
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      await authRepo.deleteAccount(user.id);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error eliminando cuenta:", error);
+      setIsDeleting(false);
+      setIsDeleteOpen(false);
     }
   };
 
@@ -86,7 +101,7 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-surface border border-border rounded-xl p-4 w-full shadow-sm flex flex-col gap-0">
+        <div className="bg-surface border border-border rounded-xl p-4 w-full shadow-sm flex flex-col gap-0 mb-8">
           <div className="flex flex-col gap-1">
             <div>
                 <Label variant="small" color="secondary" className="mb-0">{t("labels.username")}</Label>
@@ -106,14 +121,31 @@ const ProfilePage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <div className="w-full flex justify-center mt-auto">
+          <Button 
+            variant="default" 
+            className="text-red-500 hover:text-red-600 hover:bg-red-500/10 w-full sm:w-auto"
+            onClick={() => setIsDeleteOpen(true)}
+          >
+            {t("deleteAccount.button")}
+          </Button>
+        </div>
       </div>
 
-    <EditProfileDialog 
+      <EditProfileDialog 
         open={isEditOpen} 
         onOpenChange={setIsEditOpen}
         currentBio={user.bio}
         currentAvatarUrl={user.avatarUrl}
         onSave={handleSaveChanges}
+      />
+
+      <DeleteAccountDialog
+        open={isDeleteOpen}
+        onOpenChange={setIsDeleteOpen}
+        onConfirm={handleDeleteAccount}
+        isDeleting={isDeleting}
       />
     </div>
   );
