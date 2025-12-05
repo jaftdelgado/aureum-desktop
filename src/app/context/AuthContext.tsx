@@ -9,7 +9,6 @@ export interface AuthContextValue {
   logout: () => Promise<void>;
 }
 
-// Valor inicial del contexto
 export const AuthContext = createContext<AuthContextValue>({
   user: null,
   setUser: () => {},
