@@ -1,0 +1,10 @@
+{
+"title": "Biblioteca de Lecciones",
+"description": "Aprende trading e inversiones con nuestros videos exclusivos.",
+"player": {
+    "playingNow": "Reproduciendo ahora",
+    "close": "Cerrar",
+    "description": "Descripción",
+    "loading": "CARGANDO..."
+  }
+}
