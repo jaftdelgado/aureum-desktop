@@ -8,7 +8,7 @@ import { RequireProfile } from "./RequireProfile";
 const AuthPage = lazy(() => import("@features/auth/pages/AuthPage"));
 const HomePage = lazy(() => import("@features/home/pages/HomePage"));
 const TeamsPage = lazy(() => import("@features/teams/pages/TeamsPage"));
-const LessonsPage = lazy(() => import("@features/lessons/pages/LessonsPage"));
+const LessonsPage = lazy(() => import("@features/lessons/pages/pages/LessonsPage"));
 const PortfolioPage = lazy(
   () => import("@features/portfolio/pages/PortfolioPage")
 );
