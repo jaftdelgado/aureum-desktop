@@ -1,13 +1,23 @@
 {
   "title": "My Profile",
   "subtitle": "Manage your personal information",
+  "editProfile": "Edit Profile",
   "labels": {
     "fullName": "Full name",
     "username": "Username",
     "email": "Email",
+    "bio": "Biography",
     "role": "Role",
     "accountType": "Account type",
     "joinedAt": "Member since"
+  },
+  "modals":{
+    "edit": {
+      "title": "Edit Profile",
+      "message": "Update your picture and biography",
+      "cancel": "Cancel",
+      "save": "Save changes"
+    }
   },
   "roles": {
     "student": "Student",

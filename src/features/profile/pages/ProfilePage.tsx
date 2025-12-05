@@ -1,13 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import { useTranslation } from "react-i18next";
-import { PageHeader } from "@core/components/PageHeader";
 import { Label } from "@core/ui/Label";
+import { Button } from "@core/ui/Button";
 import { Separator } from "@core/ui/Separator";
 import { useProfilePage } from "../hooks/useProfilePage";
+import { EditProfileDialog } from "../components/EditProfileDialog";
+import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
+
+const authRepo = new AuthApiRepository();
 
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation("profile");
   const { user } = useProfilePage();
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   if (!user) return null;
 
@@ -17,18 +22,53 @@ const ProfilePage: React.FC = () => {
     day: 'numeric'
   });
 
+  const handleSaveChanges = async (newBio: string, newFile: File | null) => {
+    try {
+      if (newBio !== user.bio) {
+        await authRepo.updateProfile(user.id, { bio: newBio });
+      }
+      if (newFile) {
+        await authRepo.uploadAvatar(user.id, newFile);
+      }
+      
+      window.location.reload();
+      
+    } catch (error) {
+      console.error("Error actualizando perfil:", error);
+      alert("Hubo un error al guardar los cambios.");
+    }
+  };
+
   return (
-    <div className="flex flex-col h-full animate-in fade-in duration-300">
-      <PageHeader title={t("title")} description={t("subtitle")} />
-      <div className="flex flex-col items-center mt-2 max-w-md mx-auto w-full">
-        <div className="flex flex-col items-center gap-2 mb-8">
+    <div className="w-full h-full flex flex-col">
+      <div className="flex flex-col gap-2 mb-0">
+        <div className="flex items-center justify-between w-full pr-8 pl-10"> 
+          <div className="flex flex-col gap-1">
+            <Label variant="subtitle" color="primary" className="text-2xl font-semibold">
+              {t("title")}
+            </Label>
+            <p className="text-body text-secondaryText">
+              {t("subtitle")}
+            </p>
+          </div>
+          
+          <Button onClick={() => setIsEditOpen(true)}>
+            {t("editProfile")}
+          </Button>
+        </div>
+        <Separator />
+      </div>
+
+
+      <div className="flex flex-col items-center mt-0 max-w-md mx-auto w-full">
+        <div className="flex flex-col items-center gap-2 mb-2">
           <img
             src={user.avatarUrl}
             alt={user.fullName}
-            className="w-32 h-32 rounded-full object-cover border-4 border-surface-variant shadow-xl"
+            className="w-28 h-28 rounded-full object-cover border-4 border-surface-variant shadow-xl"
           />
           <div className="flex flex-col items-center gap-1">
-            <h2 className="text-2xl font-bold text-primaryText">
+            <h2 className="text-xl font-bold text-primaryText">
               {user.fullName}
             </h2>
             <Label 
@@ -39,7 +79,7 @@ const ProfilePage: React.FC = () => {
               {t(`roles.${user.role}` as any, { defaultValue: user.role })}
             </Label>
             {user.bio && (
-              <p className="text-sm text-secondaryText mt-2 max-w-[80%] italic">
+              <p className="text-sm text-secondaryText mt-0 max-w-[80%] italic">
                 "{user.bio}"
               </p>
             )}
@@ -59,7 +99,7 @@ const ProfilePage: React.FC = () => {
             </div>
           </div>
            <Separator />
-          <div className="grid grid-cols-2 gap-1">
+          <div className="grid grid-cols-2 gap-0">
             <div>
                 <Label variant="small" color="secondary" className="mb-1">{t("labels.joinedAt")}</Label>
                 <p className="text-primaryText text-sm">{joinedDate}</p>
@@ -67,6 +107,14 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
       </div>
+
+    <EditProfileDialog 
+        open={isEditOpen} 
+        onOpenChange={setIsEditOpen}
+        currentBio={user.bio}
+        currentAvatarUrl={user.avatarUrl}
+        onSave={handleSaveChanges}
+      />
     </div>
   );
 };
