@@ -4,6 +4,7 @@ export async function loadResources() {
     es: {
       app: await import("@app/i18n/locales/es.json").then((m) => m.default),
       auth: await import("@features/auth/i18n/es.json").then((m) => m.default),
+      profile: await import("@features/profile/i18n/es.json").then((m) => m.default),
       dashboard: await import("@features/dashboard/i18n/es.json").then(
         (m) => m.default
       ),
@@ -23,6 +24,7 @@ export async function loadResources() {
     en: {
       app: await import("@app/i18n/locales/en.json").then((m) => m.default),
       auth: await import("@features/auth/i18n/en.json").then((m) => m.default),
+      profile: await import("@features/profile/i18n/en.json").then((m) => m.default),
       dashboard: await import("@features/dashboard/i18n/en.json").then(
         (m) => m.default
       ),

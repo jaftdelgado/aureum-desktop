@@ -1,0 +1,17 @@
+{
+  "title": "Mi Perfil",
+  "subtitle": "Gestiona tu información personal",
+  "labels": {
+    "fullName": "Nombre completo",
+    "username": "Usuario",
+    "email": "Correo electrónico",
+    "role": "Rol",
+    "accountType": "Tipo de cuenta",
+    "joinedAt": "Miembro desde"
+  },
+  "roles": {
+    "student": "Estudiante",
+    "teacher": "Profesor",
+    "admin": "Administrador"
+  }
+}

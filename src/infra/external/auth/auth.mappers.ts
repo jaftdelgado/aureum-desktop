@@ -10,6 +10,7 @@ export const mapUserDTOToLoggedInUser = (
   createdAt: dto.created_at,
   username: profileDto?.username,
   fullName: profileDto?.full_name,
+  bio: profileDto?.bio,
   role: profileDto?.role,
   avatarUrl: profileDto?.profile_pic_id || dto.avatar_url || undefined,
 });
