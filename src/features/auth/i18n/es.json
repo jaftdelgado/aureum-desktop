@@ -40,6 +40,7 @@
     "successMsg": "Tu perfil ha sido configurado correctamente.",
     "goToLogin": "Ir a Iniciar Sesión",
     "goToDashboard": "Ir al Panel",
+    "googleFlowMessage":"Solo necesitamos unos datos más para terminar",
     "alreadyHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
     "strength": {
       "title": "Requisitos de seguridad:",

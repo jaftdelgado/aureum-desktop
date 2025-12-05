@@ -72,12 +72,15 @@ export class HttpClient {
         try {
           errorData = await response.json();
         } catch {
-          errorData = { message: response.statusText };
+          errorData = { detail: response.statusText };
         }
-        throw new HttpError(
-          response.status,
-          errorData.message || `Error HTTP ${response.status}`
-        );
+
+        const errorMessage = 
+          errorData.detail || 
+          errorData.message || 
+          `Error HTTP ${response.status}`;
+
+        throw new HttpError(response.status, errorMessage);
       }
 
       if (response.status === 204) return null as T;
