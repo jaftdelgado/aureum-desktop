@@ -19,10 +19,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = async () => {
     try {
       const logoutUseCase = new LogoutUseCase(authRepo);
-      await logoutUseCase.execute(); 
-      setUser(null);                
+      await logoutUseCase.execute();               
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
+    } finally{
+      setUser(null);  
     }
   };
 
