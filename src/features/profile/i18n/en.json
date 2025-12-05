@@ -23,5 +23,12 @@
     "student": "Student",
     "teacher": "Professor",
     "admin": "Administrator"
+  },
+  "deleteAccount": {
+    "button": "Delete my account",
+    "title": "Are you sure?",
+    "message": "This action is permanent. Your profile will be deleted and data cannot be recovered.",
+    "confirm": "Yes, delete account",
+    "cancel": "Cancel"
   }
 }
