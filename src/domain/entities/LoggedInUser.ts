@@ -7,4 +7,5 @@ export interface LoggedInUser {
   fullName?: string;
   role?: "student" | "professor";
   avatarUrl?: string;
+  bio?: string;
 }
