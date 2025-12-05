@@ -52,7 +52,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister, onGoogleMissingPr
         <Input
           type="email"
           name="email"
-          placeholder={t("signin.usernameOrEmail")}
+          placeholder={t("signin.email")}
           autoComplete="username"
           error={errors.email} 
           disabled={loading}
