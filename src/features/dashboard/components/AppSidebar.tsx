@@ -72,7 +72,7 @@ export const AppSidebar: React.FC = () => {
   const getProfileData = () => {
     if (!user) return undefined;
 
-    const displayName = user.fullName || user.username || user.email;
+    const displayName = user.username || user.email;
     let displayRole = "Miembro";
 
     if (user.role === "professor")
@@ -89,7 +89,7 @@ export const AppSidebar: React.FC = () => {
       name: displayName,
       role: displayRole,
       avatarUrl: finalAvatarUrl,
-      onProfileClick: () => navigate("/home"),
+      onProfileClick: () => navigate("/profile"),
       onLogout: () => setShowLogoutDialog(true),
     };
   };

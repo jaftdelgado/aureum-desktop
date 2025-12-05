@@ -42,7 +42,6 @@
     "successTitle": "Account Created!",
     "successMsg": "Your profile has been successfully set up.",
     "goToLogin": "Go to Login",
-    "goToDashboard": "Go to Dashboard",
     "googleFlowMessage":"We just need a bit more info to finish up",
     "alreadyHaveAccount": "Already have an account? Sign In",
     "strength":{

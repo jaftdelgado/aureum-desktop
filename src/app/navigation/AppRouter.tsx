@@ -23,6 +23,7 @@ const TeamMembersPage = lazy(
 const SimulatorSettings = lazy(
   () => import("@features/team-settings/pages/SimulatorSettings")
 );
+const ProfilePage = lazy(() => import("@features/profile/pages/ProfilePage"));
 
 const TeamLayout: React.FC = () => <Outlet />;
 
@@ -51,6 +52,7 @@ const routes: AppRoute[] = [
       { path: "home", element: <HomePage /> },
       { path: "teams", element: <TeamsPage /> }, // lista de equipos
       { path: "lessons", element: <LessonsPage /> },
+      { path: "profile", element: <ProfilePage /> },
       {
         path: "teams/:teamId", // layout de equipo
         element: <TeamLayout />,
