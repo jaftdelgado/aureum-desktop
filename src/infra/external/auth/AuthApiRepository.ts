@@ -83,8 +83,15 @@ export class AuthApiRepository implements AuthRepository {
   }
 
   async logout(): Promise<void> {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw new Error(error.message);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw new Error(error.message);
+    } catch (error) {
+      console.warn("Error al cerrar sesión en Supabase, limpiando localmente...", error);
+    } finally {
+      if (typeof sessionStorage !== "undefined") sessionStorage.clear();
+      if (typeof localStorage !== "undefined") localStorage.clear();
+    }
   }
 
   async getSession(): Promise<LoggedInUser | null> {

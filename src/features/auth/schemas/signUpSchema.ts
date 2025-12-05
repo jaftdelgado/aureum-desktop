@@ -79,13 +79,12 @@ export const createSignUpSchema = (t: (key: string) => string) => {
         })
 
         .refine(async (val) => {
-          if (val === "GOOGLE_AUTH_DUMMY_PASS") return true; 
-          if (val.length < 8) return true; 
+          if (val === "Google_Auth_Dummy_123!" || val.length < 8) return true; 
           
           const isLeaked = await checkPasswordLeaked(val);
           return !isLeaked;
         }, {
-          message: t("signup.errors.passwordPwned"), // Nuevo mensaje
+          message: t("signup.errors.passwordPwned"), 
         }),
 
       confirmPassword: z.string(),

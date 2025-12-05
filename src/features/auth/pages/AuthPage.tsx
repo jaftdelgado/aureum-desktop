@@ -13,7 +13,7 @@ const authRepo = new AuthApiRepository();
 
 const AuthPage: React.FC = () => {
   const { t } = useTranslation("auth");
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, logout } = useAuth();
   const navigate = useNavigate();
 
   const [showRegister, setShowRegister] = useState(false);
@@ -45,12 +45,21 @@ const AuthPage: React.FC = () => {
     }
   }, [user, authLoading, navigate, showRegister]);
 
-  const handleShowRegister = () => {
+  const handleShowRegister = async () => {
+    if (user) {
+      await logout();
+    }
     setShowRegister(true);
     setIsGoogleFlow(false);
   };
 
-  const handleShowLogin = () => {
+  const handleShowLogin = async () => {
+    if (user) {
+      await logout();
+      window.location.reload(); 
+      return;
+    }
+
     setShowRegister(false);
     setIsGoogleFlow(false);
   };
