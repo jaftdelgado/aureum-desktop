@@ -5,6 +5,7 @@ import { SidebarButton } from "./SidebarButton";
 import { Popover, PopoverContent, PopoverTrigger } from "@core/components/Popover";
 import { useTranslation } from "react-i18next";
 import { cn } from "@core/utils/cn";
+import { useAppTheme } from "@app/hooks/useAppTheme";
 
 export interface SidebarFooterProps {
   name: string;
@@ -22,6 +23,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
   onLogout,
 }) => {
   const { t, i18n } = useTranslation("auth");
+  const { theme, toggleTheme } = useAppTheme();
 
   const toggleLanguage = () => {
     const newLang = i18n.language === "es" ? "en" : "es";
@@ -85,6 +87,20 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               <span>{t("sidebar.changeLanguage", "Cambiar idioma")}</span>
               <span className="text-[10px] uppercase font-bold bg-surface px-1.5 py-0.5 rounded text-secondaryText border border-outline">
                 {i18n.language}
+              </span>
+            </div>
+          </button>
+
+          <button onClick={toggleTheme} className={menuItemClass}>
+            <Icon 
+              icon={theme === "dark" ? "lucide:moon" : "lucide:sun"} 
+              width={16} 
+              className="text-secondaryText" 
+            />
+            <div className="flex-1 text-left flex justify-between items-center">
+              <span>{t("sidebar.toggleTheme")}</span>
+              <span className="text-[10px] uppercase font-bold bg-surface px-1.5 py-0.5 rounded text-secondaryText border border-outline">
+                {theme === "dark" ? "Dark" : "Light"}
               </span>
             </div>
           </button>
