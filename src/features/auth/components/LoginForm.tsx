@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@core/ui/Button";
 import { Label } from "@core/ui/Label";
@@ -18,6 +18,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister, onGoogleMissingPr
   const { t } = useTranslation("auth");
   const isMobile = useIsMobile();
   const { loading, errorMsg, errors, handleSubmit } = useLoginForm();
+
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePassword = () => setShowPassword(!showPassword);
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -59,12 +62,25 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister, onGoogleMissingPr
         />
         
         <Input
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="password"
           placeholder={t("signin.password")}
           autoComplete="current-password"
           error={errors.password}
           disabled={loading}
+          endContent={
+            <button
+              type="button"
+              onClick={togglePassword}
+              className="hover:text-primaryText transition-colors focus:outline-none"
+              tabIndex={-1}
+            >
+              <Icon 
+                icon={showPassword ? "lucide:eye-off" : "lucide:eye"} 
+                width={18} 
+              />
+            </button>
+          }
         />
 
         <Button

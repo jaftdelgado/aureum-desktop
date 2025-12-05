@@ -124,7 +124,7 @@ const ProfilePage: React.FC = () => {
 
         <div className="w-full flex justify-center mt-auto">
           <Button 
-            variant="default" 
+            variant="destructive" 
             className="text-red-500 hover:text-red-600 hover:bg-red-500/10 w-full sm:w-auto"
             onClick={() => setIsDeleteOpen(true)}
           >
