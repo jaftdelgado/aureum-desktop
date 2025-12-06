@@ -28,7 +28,7 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primaryBtn text-bg hover:bg-primaryHoverBtn rounded-xl",
         destructive:
-          "bg-destructive text-white hover:bg-destructive/90 rounded-xl",
+          "bg-secondaryBtn text-destructive hover:bg-secondaryHoverBtn rounded-xl",
         secondary:
           "bg-secondaryBtn text-primaryText hover:bg-secondaryHoverBtn rounded-xl",
         thirdy:

@@ -11,6 +11,7 @@ export default {
         outline: "var(--outline)",
         primaryText: "var(--primary-text)",
         secondaryText: "var(--secondary-text)",
+        destructive: "var(--destructive)",
         card: "var(--card)",
         primaryBtn: "var(--primary-btn)",
         primaryHoverBtn: "var(--primary-hover-btn)",
