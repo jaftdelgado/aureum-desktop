@@ -1,4 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+import { MarketApiRepository } from "@infra/api/market/MarketApiRepository";
+import { SubscribeToMarketUseCase } from "@domain/use-cases/market/SubscribeToMarketUseCase";
+import type { MarketSnapshot } from "@domain/entities/MarketSnapshot";
+
 
 export type AssetHistoryPoint = {
   date: string;
@@ -10,81 +15,10 @@ export type Asset = {
   symbol: string;
   name: string;
   currentPrice: number;
-  change24h: number; // porcentaje
-  allocation: number; // % en el portafolio
+  change24h: number; 
+  allocation: number; 
   history: AssetHistoryPoint[];
 };
-
-const MOCK_ASSETS: Asset[] = [
-  {
-    id: "btc",
-    symbol: "BTC",
-    name: "Bitcoin",
-    currentPrice: 78320.23,
-    change24h: 4.61,
-    allocation: 35,
-    history: [
-      { date: "Jul 08", value: 54000 },
-      { date: "Jul 09", value: 56000 },
-      { date: "Jul 10", value: 58000 },
-      { date: "Jul 11", value: 60000 },
-      { date: "Jul 12", value: 64000 },
-      { date: "Jul 13", value: 70000 },
-      { date: "Jul 14", value: 78320.23 },
-    ],
-  },
-  {
-    id: "eth",
-    symbol: "ETH",
-    name: "Ethereum",
-    currentPrice: 3450.5,
-    change24h: -1.2,
-    allocation: 28,
-    history: [
-      { date: "Jul 08", value: 2900 },
-      { date: "Jul 09", value: 2950 },
-      { date: "Jul 10", value: 3000 },
-      { date: "Jul 11", value: 3100 },
-      { date: "Jul 12", value: 3200 },
-      { date: "Jul 13", value: 3350 },
-      { date: "Jul 14", value: 3450.5 },
-    ],
-  },
-  {
-    id: "sol",
-    symbol: "SOL",
-    name: "Solana",
-    currentPrice: 180.12,
-    change24h: 0.85,
-    allocation: 18,
-    history: [
-      { date: "Jul 08", value: 140 },
-      { date: "Jul 09", value: 145 },
-      { date: "Jul 10", value: 150 },
-      { date: "Jul 11", value: 160 },
-      { date: "Jul 12", value: 170 },
-      { date: "Jul 13", value: 175 },
-      { date: "Jul 14", value: 180.12 },
-    ],
-  },
-  {
-    id: "ada",
-    symbol: "ADA",
-    name: "Cardano",
-    currentPrice: 0.72,
-    change24h: 3.1,
-    allocation: 9,
-    history: [
-      { date: "Jul 08", value: 0.55 },
-      { date: "Jul 09", value: 0.58 },
-      { date: "Jul 10", value: 0.6 },
-      { date: "Jul 11", value: 0.61 },
-      { date: "Jul 12", value: 0.65 },
-      { date: "Jul 13", value: 0.69 },
-      { date: "Jul 14", value: 0.72 },
-    ],
-  },
-];
 
 export const currencyFormatter = new Intl.NumberFormat("es-MX", {
   style: "currency",
@@ -95,12 +29,81 @@ export const currencyFormatter = new Intl.NumberFormat("es-MX", {
 export const formatPercent = (value: number) =>
   `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;
 
-export const useMarketPage = () => {
-  const [selectedAssetId, setSelectedAssetId] = useState<string>(
-    MOCK_ASSETS[0]?.id ?? ""
-  );
+const marketRepository = new MarketApiRepository();
+const subscribeToMarketUseCase = new SubscribeToMarketUseCase(
+  marketRepository
+);
 
-  const assets = MOCK_ASSETS;
+const COURSE_UUID = "7d2ad78c-b99c-4a61-b3b5-6ff9ccc7cc21";
+
+type AssetsState = Record<string, Asset>;
+
+const addSnapshotToState = (
+  prev: AssetsState,
+  snapshot: MarketSnapshot
+): AssetsState => {
+  const next: AssetsState = { ...prev };
+
+  snapshot.assets.forEach((asset) => {
+    const id = asset.symbol; 
+    const prevAsset = prev[id];
+
+    const historyPoint: AssetHistoryPoint = {
+      date: snapshot.timestamp.toLocaleTimeString("es-MX", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }),
+      value: asset.price,
+    };
+
+    const prevHistory = prevAsset?.history ?? [];
+    const history = [...prevHistory, historyPoint].slice(-100); 
+
+    const firstPrice = prevHistory[0]?.value ?? asset.price;
+    const change24h =
+      firstPrice > 0 ? ((asset.price - firstPrice) / firstPrice) * 100 : 0;
+
+    next[id] = {
+      id,
+      symbol: asset.symbol,
+      name: asset.name,
+      currentPrice: asset.price,
+      change24h,
+      allocation: prevAsset?.allocation ?? 0, 
+      history,
+    };
+  });
+
+  return next;
+};
+
+export const useMarketPage = () => {
+  const [assetsById, setAssetsById] = useState<AssetsState>({});
+  const [selectedAssetId, setSelectedAssetId] = useState<string>("");
+
+  useEffect(() => {
+    const unsubscribe = subscribeToMarketUseCase.execute(COURSE_UUID, {
+      onData: (snapshot) => {
+        setAssetsById((prev) => addSnapshotToState(prev, snapshot));
+      },
+      onError: (error) => {
+        console.error("[useMarketPage] market stream error:", error);
+      },
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const assets = useMemo(() => Object.values(assetsById), [assetsById]);
+
+  useEffect(() => {
+    if (!selectedAssetId && assets.length > 0) {
+      setSelectedAssetId(assets[0].id);
+    }
+  }, [assets, selectedAssetId]);
 
   const selectedAsset = useMemo(
     () => assets.find((asset) => asset.id === selectedAssetId) ?? null,
