@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// src/features/dashboard/components/side-bar/AppSidebar.tsx
+import React, { useState, useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Sidebar,
   type SidebarItem,
@@ -7,65 +8,16 @@ import {
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@app/hooks/useAuth";
 import { Button } from "@core/ui/Button";
-
-const useSelectedTeamId = () => {
-  return "123";
-};
+import { useSelectedTeam } from "@app/hooks/useSelectedTeam";
 
 export const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout } = useAuth();
   const { t } = useTranslation("auth");
-  const selectedTeamId = useSelectedTeamId();
+  const { selectedTeam } = useSelectedTeam();
 
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-
-  const items: SidebarItem[] = [
-    { type: "separator", label: "Principal" },
-    {
-      type: "button",
-      icon: "gravity-ui:compass",
-      label: "Explorar",
-      route: "/home",
-    },
-    {
-      type: "button",
-      icon: "gravity-ui:rectangles-4",
-      label: "Equipos",
-      route: "/teams",
-    },
-    {
-      type: "button",
-      icon: "hugeicons:video-01",
-      label: "Lecciones",
-      route: "/lessons",
-    },
-    { type: "separator", label: "Gestión" },
-    {
-      type: "button",
-      icon: "hugeicons:shopping-bag-01",
-      label: "Mercado",
-      route: selectedTeamId ? `/teams/${selectedTeamId}/market` : "/teams",
-    },
-    {
-      type: "button",
-      icon: "hugeicons:wallet-03",
-      label: "Portafolio",
-      route: selectedTeamId ? `/teams/${selectedTeamId}/portfolio` : "/teams",
-    },
-    {
-      type: "button",
-      icon: "gravity-ui:rectangles-4",
-      label: "Activos",
-      route: selectedTeamId ? `/teams/${selectedTeamId}/assets` : "/teams",
-    },
-    {
-      type: "button",
-      icon: "hugeicons:settings-02",
-      label: "Configuración",
-      route: selectedTeamId ? `/teams/${selectedTeamId}/settings` : "/teams",
-    },
-  ];
 
   const handleNavigate = (route: string) => navigate(route);
 
@@ -74,7 +26,6 @@ export const AppSidebar: React.FC = () => {
 
     const displayName = user.username || user.email;
     let displayRole = "Miembro";
-
     if (user.role === "professor")
       displayRole = t("signup.professor", "Profesor");
     if (user.role === "student")
@@ -101,6 +52,77 @@ export const AppSidebar: React.FC = () => {
     setShowLogoutDialog(false);
   };
 
+  const items: SidebarItem[] = useMemo(() => {
+    const baseItems: SidebarItem[] = [
+      { type: "separator", label: "Principal" },
+      {
+        type: "button",
+        icon: "gravity-ui:compass",
+        label: "Explorar",
+        route: "/home",
+      },
+      {
+        type: "button",
+        icon: "gravity-ui:rectangles-4",
+        label: "Equipos",
+        route: "/teams",
+      },
+      {
+        type: "button",
+        icon: "hugeicons:video-01",
+        label: "Lecciones",
+        route: "/lessons",
+      },
+    ];
+
+    if (selectedTeam) {
+      // Módulos hijos de Teams solo si hay equipo seleccionado
+      baseItems.push(
+        { type: "separator", label: "Equipo" },
+        {
+          type: "button",
+          icon: "hugeicons:discover-circle",
+          label: "Overview",
+          route: `/teams/${selectedTeam.publicId}/overview`,
+        },
+        {
+          type: "button",
+          icon: "hugeicons:shopping-bag-01",
+          label: "Mercado",
+          route: `/teams/${selectedTeam.publicId}/market`,
+        },
+        {
+          type: "button",
+          icon: "hugeicons:wallet-03",
+          label: "Portafolio",
+          route: `/teams/${selectedTeam.publicId}/portfolio`,
+        },
+        {
+          type: "button",
+          icon: "gravity-ui:rectangles-4",
+          label: "Activos",
+          route: `/teams/${selectedTeam.publicId}/assets`,
+        },
+        {
+          type: "button",
+          icon: "hugeicons:settings-02",
+          label: "Configuración",
+          route: `/teams/${selectedTeam.publicId}/settings`,
+        }
+      );
+    }
+
+    const currentPath = location.hash.startsWith("#")
+      ? location.hash.slice(1)
+      : location.pathname;
+
+    return baseItems.map((item) => {
+      if (item.type !== "button") return item;
+      const selected = item.route ? currentPath.startsWith(item.route) : false;
+      return { ...item, selected };
+    });
+  }, [location.hash, location.pathname, selectedTeam]);
+
   return (
     <>
       <Sidebar items={items} onNavigate={handleNavigate} profile={profile} />
@@ -122,7 +144,6 @@ export const AppSidebar: React.FC = () => {
               >
                 {t("common.cancel", "Cancelar")}
               </Button>
-
               <Button
                 variant="default"
                 className="bg-red-600 hover:bg-red-700 text-white"

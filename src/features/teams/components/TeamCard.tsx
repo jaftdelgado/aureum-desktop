@@ -1,3 +1,4 @@
+// src/features/teams/components/TeamCard.tsx
 import React from "react";
 
 interface TeamCardProps {
@@ -5,15 +6,20 @@ interface TeamCardProps {
   title: string;
   subtitle: string;
   isFree?: boolean;
+  onClick?: () => void;
 }
 
-export const TeamCard: React.FC<TeamCardProps> = ({
+const TeamCard: React.FC<TeamCardProps> = ({
   image,
   title,
   subtitle,
+  onClick,
 }) => {
   return (
-    <div className="bg-card rounded-xl overflow-hidden border border-outline transition-shadow cursor-pointer max-w-xs">
+    <div
+      className="bg-card rounded-xl overflow-hidden border border-outline transition-shadow cursor-pointer max-w-xs hover:shadow-lg"
+      onClick={onClick}
+    >
       <div className="relative aspect-[4/3] w-full">
         <img
           src={image || "https://placehold.co/600x400?text=Curso"}
@@ -31,3 +37,5 @@ export const TeamCard: React.FC<TeamCardProps> = ({
     </div>
   );
 };
+
+export default TeamCard;
