@@ -130,6 +130,8 @@ export class AuthApiRepository implements AuthRepository {
   async register(data: RegisterData): Promise<void> {
     let userId = "";
 
+    const roleToSend = data.accountType === "teacher" ? "professor" : "student";
+    
     if (!data.isGoogle) {
       if (!data.password) throw new Error("Password requerido");
       const { data: authData, error } = await supabase.auth.signUp({
