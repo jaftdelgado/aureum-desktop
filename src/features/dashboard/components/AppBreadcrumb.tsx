@@ -1,17 +1,25 @@
+// src/features/dashboard/components/AppBreadcrumb.tsx
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { BreadcrumbItem } from "./breadcrumb/BreadcrumbItem";
 import { useTranslation } from "react-i18next";
+import { useSelectedTeam } from "@app/hooks/useSelectedTeam";
 
 export const AppBreadcrumb: React.FC = () => {
   const { pathname } = useLocation();
   const { t } = useTranslation("dashboard");
+  const { selectedTeam } = useSelectedTeam();
 
   const pathnames = pathname.split("/").filter((x) => x);
   const ROOTS = ["home", "teams", "lessons"];
   const currentRoot = ROOTS.find((r) => pathnames[0] === r);
 
-  const formatName = (segment: string) => {
+  const formatName = (segment: string, index: number) => {
+    // Si es el teamId y tenemos un equipo seleccionado, usamos el nombre
+    if (segment === pathnames[1] && pathnames[0] === "teams" && selectedTeam) {
+      return selectedTeam.name;
+    }
+
     if (!isNaN(Number(segment))) return segment;
     const key = `breadcrumb.${segment}`;
     const translated = t(key);
@@ -43,7 +51,7 @@ export const AppBreadcrumb: React.FC = () => {
               to={isLast ? undefined : routeTo}
               isLast={isLast}
               isFirst={index === 0}
-              label={formatName(name)}
+              label={formatName(name, index)}
             />
           );
         })}
@@ -67,7 +75,7 @@ export const AppBreadcrumb: React.FC = () => {
             to={isLast ? undefined : routeTo}
             isLast={isLast}
             isFirst={false}
-            label={formatName(name)}
+            label={formatName(name, index)}
           />
         );
       })}
