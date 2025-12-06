@@ -62,6 +62,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const interval = setInterval(async () => {
       if (!user) return;
+      if (window.location.hash.includes("/auth")) return;
+      const { data: isAlive, error } = await supabase.rpc('is_session_alive');
+
+      if (isAlive === false || error) {
+        console.log("Sesión invalidada por inicio en otro dispositivo. Cerrando...");
+        await logout();
+      }
+    }, 10000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    if (window.location.hash.includes("/auth")) return;
+
+    const interval = setInterval(async () => {
       const { data: isAlive, error } = await supabase.rpc('is_session_alive');
 
       if (isAlive === false || error) {
@@ -71,10 +92,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }, 5000);
 
     return () => {
-      subscription.unsubscribe();
       clearInterval(interval);
     };
-  }, [user]);
+  }, [user]); 
 
   console.log("[AuthProvider] render:", { user, loading });
 
