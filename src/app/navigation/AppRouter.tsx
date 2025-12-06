@@ -49,7 +49,6 @@ const routes: AppRoute[] = [
   {
     path: "/auth",
     element: <AuthPage />,
-    type: "public",
   },
   {
     type: "private",
