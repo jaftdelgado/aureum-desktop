@@ -19,6 +19,8 @@ export interface RegisterData {
   isGoogle?: boolean;
 }
 
+const PRESERVED_KEYS = ["theme", "i18nextLng"];
+
 export class AuthApiRepository implements AuthRepository {
   private blobToBase64(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -83,8 +85,28 @@ export class AuthApiRepository implements AuthRepository {
   }
 
   async logout(): Promise<void> {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw new Error(error.message);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw new Error(error.message);
+    } catch (error) {
+      console.warn("Error al cerrar sesión en Supabase, limpiando localmente...", error);
+    } finally {
+      if (typeof sessionStorage !== "undefined") sessionStorage.clear();
+      if (typeof localStorage !== "undefined") {
+        const preferences: Record<string, string | null> = {};
+        PRESERVED_KEYS.forEach(key => {
+          preferences[key] = localStorage.getItem(key);
+        });
+
+        localStorage.clear();
+
+        PRESERVED_KEYS.forEach(key => {
+          if (preferences[key]) {
+            localStorage.setItem(key, preferences[key]!);
+          }
+        });
+      }
+    }
   }
 
   async getSession(): Promise<LoggedInUser | null> {
@@ -108,11 +130,20 @@ export class AuthApiRepository implements AuthRepository {
   async register(data: RegisterData): Promise<void> {
     let userId = "";
 
+    const roleToSend = data.accountType === "teacher" ? "professor" : "student";
+    
     if (!data.isGoogle) {
       if (!data.password) throw new Error("Password requerido");
       const { data: authData, error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
+        options: {
+          data: {
+            role: roleToSend, 
+            full_name: `${data.firstName} ${data.lastName}`.trim(),
+            username: data.username
+          }
+        }
       });
 
       if (error) throw new Error(error.message);
@@ -122,9 +153,11 @@ export class AuthApiRepository implements AuthRepository {
       const { data: sessionData } = await supabase.auth.getUser();
       if (!sessionData.user) throw new Error("No hay sesión de Google activa");
       userId = sessionData.user.id;
+      await supabase.auth.updateUser({
+        data: { role: roleToSend }
+      });
     }
 
-    const roleToSend = data.accountType === "teacher" ? "professor" : "student";
     const fullName = `${data.firstName} ${data.lastName}`.trim();
 
     const profilePayload = {
@@ -147,5 +180,22 @@ export class AuthApiRepository implements AuthRepository {
       }
       return false;
     }
+  }
+
+  async updateProfile(authId: string, data: { bio?: string }): Promise<void> {
+    await client.patch(`/api/users/profiles/${authId}`, data);
+  }
+
+  async uploadAvatar(authId: string, file: File): Promise<void> {
+    const formData = new FormData();
+    formData.append("file", file); 
+
+    await client.post(`/api/users/profiles/${authId}/avatar`, formData);
+  }
+
+  async deleteAccount(authId: string): Promise<void> {
+    await client.delete(`/api/users/profiles/${authId}`);
+    
+    await this.logout();
   }
 }

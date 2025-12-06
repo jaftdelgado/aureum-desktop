@@ -10,7 +10,7 @@
   },
   "signin": {
     "title": "Sign In",
-    "usernameOrEmail": "Email or Username",
+    "email": "Email",
     "password": "Password",
     "noAccount": "Don't have an account?",
     "createAccount": "Create Account",
@@ -19,9 +19,12 @@
     "googleFlowMessage": "Hi there! We just need a bit more info to finish up.",
     "googleFlowSubtitle": "Set up your profile to continue.",
     "errors": {
-      "identifierRequired": "Email is required",
+      "identifierRequired": "Email or username is required",
       "passwordRequired": "Password is required",
-      "invalidCredentials": "Invalid email or password"
+      "invalidCredentials": "Email or password is incorrect. Please try again.",
+      "emailNotConfirmed": "Please confirm your email address before signing in.",
+      "identifierMax": "Identifier is too long (254 characters)",
+      "passwordMax": "Password is too long (64 characters)"
     }
   },
   "signup": {
@@ -39,7 +42,7 @@
     "successTitle": "Account Created!",
     "successMsg": "Your profile has been successfully set up.",
     "goToLogin": "Go to Login",
-    "goToDashboard": "Go to Dashboard",
+    "googleFlowMessage":"We just need a bit more info to finish up",
     "alreadyHaveAccount": "Already have an account? Sign In",
     "strength":{
       "title":"Password Strength:",
@@ -81,6 +84,7 @@
   "sidebar": {
     "viewProfile": "View Profile",
     "changeLanguage": "Change Language",
+    "toggleTheme": "Switch Theme",
     "language": "Language"
   }
 }

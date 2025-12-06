@@ -3,7 +3,7 @@ import { AppBreadcrumb } from "@features/dashboard/components/AppBreadcrumb";
 
 export const TopBar: React.FC = () => {
   const action = (type: "minimize" | "maximize" | "close") => {
-    window.electronAPI.windowAction(type);
+    window.electronAPI?.windowAction(type);
   };
 
   return (

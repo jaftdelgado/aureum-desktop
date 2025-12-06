@@ -1,0 +1,15 @@
+{
+  "title": "Lessons Library",
+  "description": "Learn trading and investing with our exclusive videos.",
+  "loadingList": "Loading lessons...",
+  "emptyList": "No lessons found.",
+  "card": {
+    "watch": "Watch Lesson"
+  },
+  "player": {
+    "playingNow": "Playing now",
+    "close": "Close",
+    "description": "Description",
+    "loading": "LOADING..."
+  }
+}

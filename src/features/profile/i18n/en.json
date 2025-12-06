@@ -1,0 +1,34 @@
+{
+  "title": "My Profile",
+  "subtitle": "Manage your personal information",
+  "editProfile": "Edit Profile",
+  "labels": {
+    "fullName": "Full name",
+    "username": "Username",
+    "email": "Email",
+    "bio": "Biography",
+    "role": "Role",
+    "accountType": "Account type",
+    "joinedAt": "Member since"
+  },
+  "modals":{
+    "edit": {
+      "title": "Edit Profile",
+      "message": "Update your picture and biography",
+      "cancel": "Cancel",
+      "save": "Save changes"
+    }
+  },
+  "roles": {
+    "student": "Student",
+    "teacher": "Professor",
+    "admin": "Administrator"
+  },
+  "deleteAccount": {
+    "button": "Delete my account",
+    "title": "Are you sure?",
+    "message": "This action is permanent. Your profile will be deleted and data cannot be recovered.",
+    "confirm": "Yes, delete account",
+    "cancel": "Cancel"
+  }
+}

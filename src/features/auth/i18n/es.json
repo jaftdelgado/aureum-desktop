@@ -10,7 +10,7 @@
   },
   "signin": {
     "title": "Iniciar sesión",
-    "usernameOrEmail": "Correo electrónico o usuario",
+    "email": "Correo electrónico",
     "password": "Contraseña",
     "noAccount": "¿No tienes una cuenta?",
     "createAccount": "Crear cuenta",
@@ -19,9 +19,12 @@
     "googleFlowMessage": "¡Hola! Solo necesitamos unos datos más para terminar.",
     "googleFlowSubtitle": "Configura tu perfil para continuar.",
     "errors": {
-      "identifierRequired": "El correo es obligatorio",
+      "identifierRequired": "El correo o usuario es obligatorio",
       "passwordRequired": "La contraseña es obligatoria",
-      "invalidCredentials": "Correo o contraseña incorrectos"
+      "invalidCredentials": "El correo o la contraseña son incorrectos. Inténtalo de nuevo.",
+      "emailNotConfirmed": "Por favor confirma tu correo electrónico antes de ingresar.",
+      "identifierMax": "El usuario/correo es demasiado largo (254 caracteres)",
+      "passwordMax": "La contraseña es demasiado larga (64 caracteres)"
     }
   },
   "signup": {
@@ -39,7 +42,7 @@
     "successTitle": "¡Cuenta Creada!",
     "successMsg": "Tu perfil ha sido configurado correctamente.",
     "goToLogin": "Ir a Iniciar Sesión",
-    "goToDashboard": "Ir al Panel",
+    "googleFlowMessage":"Solo necesitamos unos datos más para terminar",
     "alreadyHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
     "strength": {
       "title": "Requisitos de seguridad:",
@@ -81,6 +84,7 @@
   "sidebar": {
     "viewProfile": "Ver perfil",
     "changeLanguage": "Cambiar idioma",
+    "toggleTheme": "Cambiar apariencia",
     "language": "Idioma"
   }
 }
