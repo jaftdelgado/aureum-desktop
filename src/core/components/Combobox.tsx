@@ -28,10 +28,10 @@ interface ComboboxProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  width?: string;
   searchable?: boolean;
   variant?: ComboboxVariant;
   size?: ComboboxSize;
+  width?: string;
 }
 
 export const Combobox: React.FC<ComboboxProps> = ({
@@ -39,10 +39,10 @@ export const Combobox: React.FC<ComboboxProps> = ({
   value,
   onChange,
   placeholder = "Select an option...",
-  width = "200px",
   searchable = false,
   variant = "primary",
   size = "md",
+  width = "w-36",
 }) => {
   const [open, setOpen] = React.useState(false);
   const selectedLabel = items.find((item) => item.value === value)?.label;
@@ -62,6 +62,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   const buttonClasses = cn(
     "inline-flex justify-between items-center rounded-xl transition-all duration-150 disabled:opacity-60 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primaryBtn text-body",
     sizeClasses[size],
+    width,
     variant === "primary"
       ? "bg-secondaryBtn text-primaryText hover:bg-secondaryHoverBtn"
       : "bg-transparent text-primaryText hover:bg-secondaryHoverBtn"
@@ -70,13 +71,11 @@ export const Combobox: React.FC<ComboboxProps> = ({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button
-          className={cn(buttonClasses, `w-[${width}]`)}
-          aria-expanded={open}
-        >
+        <button className={buttonClasses} aria-expanded={open}>
           <span className="text-body truncate">
             {selectedLabel || placeholder}
           </span>
+
           <Icon
             icon="lucide:chevrons-down"
             className="ml-2 shrink-0 opacity-50"
@@ -86,13 +85,15 @@ export const Combobox: React.FC<ComboboxProps> = ({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className={cn("p-0", `w-[${width}]`)}>
+      <PopoverContent className={cn("p-0", width)}>
         <Command className="text-body">
           {searchable && (
             <CommandInput placeholder={placeholder} className="text-body" />
           )}
+
           <CommandList className="text-body">
             <CommandEmpty className="text-body">No options found.</CommandEmpty>
+
             <CommandGroup>
               {items.map((item) => (
                 <CommandItem
@@ -102,7 +103,6 @@ export const Combobox: React.FC<ComboboxProps> = ({
                     onChange(currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
-                  className="text-body"
                 >
                   <Icon
                     icon="lucide:check"
@@ -113,6 +113,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
                     width={iconSizes[size]}
                     height={iconSizes[size]}
                   />
+
                   {item.label}
                 </CommandItem>
               ))}

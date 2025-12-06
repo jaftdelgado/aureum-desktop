@@ -1,6 +1,6 @@
 import React, { type ReactNode } from "react";
 
-type LabelVariant = "header" | "subtitle" | "body" | "small";
+type LabelVariant = "header" | "subtitle" | "headline" | "body" | "small";
 type LabelColor = "primary" | "secondary" | "destructive";
 
 interface LabelProps {
@@ -25,6 +25,7 @@ export const Label: React.FC<LabelProps> = ({
   const variantClasses: Record<LabelVariant, string> = {
     header: "text-h1 font-semibold leading-h1",
     subtitle: "text-subtitle font-medium leading-subtitle",
+    headline: "text-headline font-medium leading-body",
     body: "text-body font-normal leading-body",
     small: "text-small font-normal leading-small",
   };

@@ -20,6 +20,34 @@
     "title": "Configuración del simulador",
     "description": "Ajusta los parámetros y comportamientos del simulador según las necesidades del equipo.",
 
+    "sections": {
+      "marketBasics": "Conceptos básicos del mercado",
+      "marketBasicsDesc": "Configura los parámetros iniciales y fundamentales del simulador.",
+
+      "marketParams": "Parámetros del mercado",
+      "marketParamsDesc": "Ajusta el comportamiento general del mercado y su dinámica principal.",
+
+      "tradingRules": "Reglas de operación",
+      "tradingRulesDesc": "Define los límites y condiciones bajo los cuales los participantes podrán operar.",
+
+      "marketEvents": "Eventos del mercado",
+      "marketEventsDesc": "Controla la aparición e impacto de eventos inesperados dentro del simulador."
+    },
+
+    "options": {
+      "USD": "USD",
+      "EUR": "EUR",
+      "JPY": "JPY",
+
+      "Low": "Bajo",
+      "Medium": "Medio",
+      "High": "Alto",
+
+      "Slow": "Lento",
+      "Normal": "Normal",
+      "Fast": "Rápido"
+    },
+
     "settings": {
       "initialCash": "Capital inicial",
       "initialCashDesc": "Define la cantidad de dinero con la que los participantes comenzarán en el simulador.",

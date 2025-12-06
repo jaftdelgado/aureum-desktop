@@ -4,19 +4,21 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { type TabItem } from "@core/components/Tabs";
 
-const TeamSettingsPage: React.FC = () => {
+const TeamSettingsLayout: React.FC = () => {
   const { t } = useTranslation("teamSettings");
   const { teamId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Definir las tabs
   const tabs: TabItem[] = [
     { label: t("settings.teamInfo"), value: "teamInfo" },
     { label: t("settings.members"), value: "members" },
     { label: t("settings.simulator"), value: "simulator" },
   ];
 
-  const getCurrentTab = (): string => {
+  // Determinar tab seleccionada según la ruta
+  const getCurrentTab = () => {
     if (location.pathname.endsWith("/settings/members")) return "members";
     if (location.pathname.endsWith("/settings/simulator")) return "simulator";
     return "teamInfo";
@@ -24,10 +26,12 @@ const TeamSettingsPage: React.FC = () => {
 
   const [selectedTab, setSelectedTab] = useState(getCurrentTab());
 
+  // Actualizar tab cuando cambie la ruta
   useEffect(() => {
     setSelectedTab(getCurrentTab());
   }, [location.pathname]);
 
+  // Navegar cuando se cambia la tab
   const handleTabChange = (value: string) => {
     setSelectedTab(value);
 
@@ -52,6 +56,7 @@ const TeamSettingsPage: React.FC = () => {
         tabs={tabs}
         selectedTab={selectedTab}
         onTabChange={handleTabChange}
+        tabVariant="underline"
       />
 
       <div className="p-page-x py-page-y h-full w-full">
@@ -61,4 +66,4 @@ const TeamSettingsPage: React.FC = () => {
   );
 };
 
-export default TeamSettingsPage;
+export default TeamSettingsLayout;
