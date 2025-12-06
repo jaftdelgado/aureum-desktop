@@ -1,4 +1,3 @@
-// src/features/dashboard/components/side-bar/AppSidebar.tsx
 import React, { useState, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -18,6 +17,7 @@ export const AppSidebar: React.FC = () => {
   const { selectedTeam } = useSelectedTeam();
 
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleNavigate = (route: string) => navigate(route);
 
@@ -48,8 +48,13 @@ export const AppSidebar: React.FC = () => {
   const profile = getProfileData();
 
   const confirmLogout = async () => {
-    await logout();
-    setShowLogoutDialog(false);
+    setIsLoggingOut(true);
+    try {
+      await logout();
+    } finally {
+      setIsLoggingOut(false);
+      setShowLogoutDialog(false);
+    }
   };
 
   const items: SidebarItem[] = useMemo(() => {
@@ -76,7 +81,6 @@ export const AppSidebar: React.FC = () => {
     ];
 
     if (selectedTeam) {
-      // Módulos hijos de Teams solo si hay equipo seleccionado
       baseItems.push(
         { type: "separator", label: "Equipo" },
         {
@@ -141,6 +145,7 @@ export const AppSidebar: React.FC = () => {
               <Button
                 variant="default"
                 onClick={() => setShowLogoutDialog(false)}
+                disabled={isLoggingOut}
               >
                 {t("common.cancel", "Cancelar")}
               </Button>
@@ -149,7 +154,7 @@ export const AppSidebar: React.FC = () => {
                 className="bg-red-600 hover:bg-red-700 text-white"
                 onClick={confirmLogout}
               >
-                {t("common.confirm", "Confirmar")}
+                {isLoggingOut ? "Cerrando..." : t("common.confirm", "Confirmar")}
               </Button>
             </div>
           </div>
