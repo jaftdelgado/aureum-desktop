@@ -129,21 +129,12 @@ export class AuthApiRepository implements AuthRepository {
 
   async register(data: RegisterData): Promise<void> {
     let userId = "";
-
-    const roleToSend = data.accountType === "teacher" ? "professor" : "student";
     
     if (!data.isGoogle) {
       if (!data.password) throw new Error("Password requerido");
       const { data: authData, error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
-        options: {
-          data: {
-            role: roleToSend, 
-            full_name: `${data.firstName} ${data.lastName}`.trim(),
-            username: data.username
-          }
-        }
       });
 
       if (error) throw new Error(error.message);
@@ -153,11 +144,9 @@ export class AuthApiRepository implements AuthRepository {
       const { data: sessionData } = await supabase.auth.getUser();
       if (!sessionData.user) throw new Error("No hay sesión de Google activa");
       userId = sessionData.user.id;
-      await supabase.auth.updateUser({
-        data: { role: roleToSend }
-      });
     }
 
+    const roleToSend = data.accountType === "teacher" ? "professor" : "student";
     const fullName = `${data.firstName} ${data.lastName}`.trim();
 
     const profilePayload = {
