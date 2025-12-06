@@ -135,25 +135,28 @@ export class AuthApiRepository implements AuthRepository {
       const { data: authData, error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
+        options: {
+          data: {
+            full_name: `${data.firstName} ${data.lastName}`.trim(),
+            username: data.username
+          }
+        }
       });
-
       if (error) throw new Error(error.message);
-      if (!authData.user) throw new Error("Error al crear usuario en Auth");
-      userId = authData.user.id;
+      userId = authData.user!.id;
     } else {
       const { data: sessionData } = await supabase.auth.getUser();
       if (!sessionData.user) throw new Error("No hay sesión de Google activa");
       userId = sessionData.user.id;
+      
     }
 
-    const roleToSend = data.accountType === "teacher" ? "professor" : "student";
     const fullName = `${data.firstName} ${data.lastName}`.trim();
 
     const profilePayload = {
       auth_user_id: userId,
       username: data.username,
       full_name: fullName,
-      role: roleToSend,
     };
 
     await client.post("/api/users/profiles", profilePayload);
