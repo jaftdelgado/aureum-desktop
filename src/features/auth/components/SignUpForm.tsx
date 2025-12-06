@@ -18,13 +18,16 @@ interface SignUpFormProps {
   isGoogleFlow?: boolean; 
 }
 
-const GOOGLE_AUTH_DUMMY_PASS = "GOOGLE_AUTH_DUMMY_PASS";
+const GOOGLE_AUTH_DUMMY_PASS = "Google_Auth_Dummy_123!";
+
 const authRepo = new AuthApiRepository();
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = false }) => {
   const { t } = useTranslation("auth");
   const [showPassword, setShowPassword] = useState(false);
-  const [currentStep, setCurrentStep] = useState(isGoogleFlow ? 2 : 1);
+  
+  const [currentStep, setCurrentStep] = useState(1);
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
@@ -33,7 +36,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
     handleSubmit,
     trigger,
     setValue, 
-    watch, 
+    watch,
     setError,
     formState: { errors },
   } = useForm<SignUpFormData>({
@@ -61,16 +64,24 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           const email = user.email || "";
           const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
           
-          const nameParts = fullName.split(" ");
+          const nameParts = fullName.split(" ").filter(Boolean);
           const firstName = nameParts[0] || "";
           const lastName = nameParts.slice(1).join(" ") || "";
 
           setValue("email", email);
-          setValue("firstName", firstName);
-          setValue("lastName", lastName);
-
+          
           setValue("password", GOOGLE_AUTH_DUMMY_PASS);
           setValue("confirmPassword", GOOGLE_AUTH_DUMMY_PASS);
+
+          if (firstName.length >= 2 && lastName.length >= 2) {
+            setValue("firstName", firstName);
+            setValue("lastName", lastName);
+            setCurrentStep(2);
+          } else {
+            setValue("firstName", firstName);
+            if (lastName) setValue("lastName", lastName);
+            console.log("Faltan datos de nombre/apellido, solicitando al usuario...");
+          }
         }
       };
       
@@ -89,12 +100,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
       setCurrentStep(4);
     } catch (error: any) {
       const errorMessage = error.message || "";
-      if (
-        errorMessage.includes("already registered") || 
-        errorMessage.includes("already exists")
-      ) {
+      
+      if (errorMessage.includes("already registered") || errorMessage.includes("already exists")) {
         setCurrentStep(1);
-        
         setError("email", {
           type: "manual",
           message: t("signup.errors.emailAlreadyRegistered"),
@@ -120,14 +128,28 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
     }
 
     if (currentStep === 2 && isGoogleFlow) {
-        if (isValid) handleSubmit(onSubmit)();
+        if (isValid) {
+            handleSubmit(
+              onSubmit, 
+              (formErrors) => {
+                console.error("Errores de validación ocultos:", formErrors);
+                if (formErrors.firstName || formErrors.lastName) {
+                    setApiError("Por favor verifica tu nombre y apellido.");
+                    setCurrentStep(1);
+                }
+                if (formErrors.password) {
+                    setApiError("Error interno de validación (password). Contacta soporte.");
+                }
+              }
+            )();
+        }
         return;
     }
 
     if (isValid) setCurrentStep((prev) => prev + 1);
   };
 
-  const shouldHideBackButton = currentStep === 1 || (isGoogleFlow && currentStep === 2);
+  const shouldHideBackButton = isGoogleFlow && currentStep === 2 && !errors.firstName && !errors.lastName;
 
   return (
     <div className="w-full max-w-[400px] p-6 bg-surface rounded-xl border border-border">
@@ -136,7 +158,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
       </Label>
 
       {apiError && (
-        <div className="p-3 mb-4 text-sm bg-red-100 text-red-700 rounded-md border border-red-200">
+        <div className="p-3 mb-4 text-sm bg-red-100 text-red-700 rounded-md border border-red-200 animate-in fade-in slide-in-from-top-2">
           {apiError}
         </div>
       )}
@@ -147,7 +169,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           totalSteps={isGoogleFlow ? 2 : 3} 
           onNext={handleNext}
           onBack={() => {
-            if (isGoogleFlow && currentStep === 2) return;
+            if (shouldHideBackButton) return;
             setCurrentStep((prev) => prev - 1);
           }}
           isSubmitting={isSubmitting}
@@ -159,7 +181,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           }
           backLabel={t("common.back", "Atrás")}
           backButtonProps={{
-            className: shouldHideBackButton ? "invisible pointer-events-none" : "",
+            className: (currentStep === 1 || shouldHideBackButton) ? "invisible pointer-events-none" : "",
             disabled: isSubmitting
           }}
         >
@@ -186,7 +208,14 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                 name="email"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} type="email" label={t("signup.email", "Correo")} error={errors.email?.message} disabled={isGoogleFlow} autoComplete="email"/>
+                  <Input 
+                    {...field} 
+                    type="email" 
+                    label={t("signup.email", "Correo")} 
+                    error={errors.email?.message} 
+                    disabled={isGoogleFlow} 
+                    autoComplete="email"
+                  />
                 )}
               />
             </div>
@@ -207,7 +236,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                   <Input 
                     {...field} 
                     label={t("signup.username", "Nombre de Usuario")} 
-                    placeholder="usuario" 
+                    placeholder="@usuario" 
                     error={errors.username?.message}
                     autoComplete="username"
                   />
@@ -232,10 +261,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
             </div>
           )}
 
-          {/* PASO 3: Seguridad (Solo si NO es Google Flow) */}
+          {/* PASO 3: Seguridad */}
           {currentStep === 3 && !isGoogleFlow && (
             <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
-          
               <div className="flex flex-col gap-1">
                 <Controller
                   name="password"
@@ -263,7 +291,6 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                     />
                   )}
                 />
-            
                 {watchedPassword && watchedPassword.length > 0 && (
                   <PasswordStrength password={watchedPassword} />
                 )}
@@ -292,7 +319,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
           <h3 className="text-lg font-bold text-primary mb-2">{t("signup.successTitle", "¡Cuenta Creada!")}</h3>
           <p className="text-secondary text-sm mb-6">{t("signup.successMsg", "Tu perfil ha sido configurado correctamente.")}</p>
           <Button variant="default" onClick={onShowLogin} className="w-full">
-            {isGoogleFlow ? t("signup.goToDashboard") : t("signup.goToLogin")}
+            {t("signup.goToLogin")}
           </Button>
         </div>
       )}

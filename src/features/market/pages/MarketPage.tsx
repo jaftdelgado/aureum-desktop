@@ -1,9 +1,46 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+
+import { PageHeader } from "@core/components/PageHeader";
+
+import { useMarketPage } from "../hooks/useMarketPage";
+import { SelectedAssetPanel } from "../components/SelectedAssetPanel";
+import { AssetHistoryChart } from "../components/AssetHistoryChart";
+import { AssetsTable } from "../components/AssetsTable";
+import { MarketActions } from "../components/MarketActions";
 
 const MarketPage: React.FC = () => {
+  const { t } = useTranslation("market");
+  const { assets, selectedAsset, selectedAssetId, selectAsset } =
+    useMarketPage();
+
+  if (!selectedAsset) {
+    return (
+      <div className="p-page-x p-page-y">
+        {t("noAssets")}
+      </div>
+    );
+  }
+
   return (
-    <div className="p-4">
-      <h1>Market Page</h1>
+    <div className="flex h-full w-full flex-col">
+      <PageHeader title={t("title")} description={t("description")} />
+
+      <div className="flex-1 p-page-x pb-6 pt-4">
+        <div className="grid h-full grid-cols-5 grid-rows-5 gap-4">
+          <SelectedAssetPanel asset={selectedAsset} />
+
+          <AssetHistoryChart asset={selectedAsset} />
+
+          <AssetsTable
+            assets={assets}
+            selectedAssetId={selectedAssetId}
+            onSelectAsset={selectAsset}
+          />
+
+          <MarketActions />
+        </div>
+      </div>
     </div>
   );
 };

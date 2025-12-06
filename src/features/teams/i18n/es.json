@@ -1,4 +1,14 @@
 {
   "title": "Equipos",
-  "description": "Administra y gestiona los equipos de trabajo."
+  "subtitle": "Administra y gestiona los equipos de trabajo.",
+  "joinCourse": "Unirse a curso",
+  "createCourse": "Crear nuevo curso",
+  "joinModal": {
+    "title": "Unirse a un curso",
+    "message": "Ingresa el código de acceso proporcionado por tu profesor.",
+    "codeLabel": "Código del curso",
+    "codePlaceholder": "Ej. AB123XYZ",
+    "cancel": "Cancelar",
+    "join": "Unirse"
+  }
 }

@@ -50,18 +50,21 @@ export class HttpClient {
     }
 
     const authHeaders = await this.getAuthHeaders();
+    const isFormData = options.data instanceof FormData;
 
     const config: RequestInit = {
       ...options,
       headers: {
         ...authHeaders,
-        "Content-Type": "application/json",
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
         ...options.headers,
       },
     };
 
     if (options.data) {
-      config.body = JSON.stringify(options.data);
+      config.body = isFormData 
+        ? (options.data as FormData) 
+        : JSON.stringify(options.data);
     }
 
     try {
@@ -72,12 +75,19 @@ export class HttpClient {
         try {
           errorData = await response.json();
         } catch {
-          errorData = { message: response.statusText };
+          errorData = { detail: response.statusText };
         }
-        throw new HttpError(
-          response.status,
-          errorData.message || `Error HTTP ${response.status}`
-        );
+
+        let errorMessage = 
+          errorData.detail || 
+          errorData.message || 
+          `Error HTTP ${response.status}`;
+
+        if (typeof errorMessage === 'object') {
+            errorMessage = JSON.stringify(errorMessage);
+        }
+
+        throw new HttpError(response.status, errorMessage as string);
       }
 
       if (response.status === 204) return null as T;

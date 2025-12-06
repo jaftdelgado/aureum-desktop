@@ -19,4 +19,11 @@ export class TeamsApiRepository implements TeamsRepository {
     );
     return teams.map(mapTeamDTOToEntity);
   }
+
+  async joinTeam(accessCode: string, studentId: string): Promise<void> {
+    await client.post("/api/memberships/join", {
+      access_code: accessCode,
+      user_id: studentId, 
+    });
+  }
 }

@@ -1,0 +1,34 @@
+{
+  "title": "Mi Perfil",
+  "subtitle": "Gestiona tu información personal",
+  "editProfile": "Editar Perfil",
+  "labels": {
+    "fullName": "Nombre completo",
+    "username": "Usuario",
+    "email": "Correo electrónico",
+    "bio": "Biografía",
+    "role": "Rol",
+    "joinedAt": "Miembro desde",
+    "changePhoto": "Cambiar foto"
+  },
+  "modals": {
+    "edit": {
+      "title": "Editar Perfil",
+      "message": "Actualiza tu foto y biografía.",
+      "cancel": "Cancelar",
+      "save": "Guardar Cambios"
+    }
+  },
+  "roles": {
+    "student": "Estudiante",
+    "professor": "Profesor",
+    "admin": "Administrador"
+  },
+  "deleteAccount": {
+    "button": "Eliminar mi cuenta",
+    "title": "¿Estás seguro?",
+    "message": "Esta acción es permanente. Se eliminará tu perfil y no podrás recuperar tus datos.",
+    "confirm": "Sí, eliminar cuenta",
+    "cancel": "Cancelar"
+  }
+}
