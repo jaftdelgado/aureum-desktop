@@ -38,7 +38,7 @@ function PopoverContent({
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.15 }}
           className={cn(
-            "bg-panel text-body text-primaryText z-50 w-72 rounded-xl border p-4 outline-hidden",
+            "bg-card text-body text-primaryText z-50 w-72 rounded-xl border p-4 outline-hidden",
             className
           )}
         >
