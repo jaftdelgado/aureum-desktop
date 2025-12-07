@@ -8,7 +8,7 @@ export interface InputProps
   label?: string;
   error?: string;
   size?: "sm" | "md" | "lg";
-  endContent?: React.ReactNode; 
+  endContent?: React.ReactNode;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -17,7 +17,7 @@ export const Input: React.FC<InputProps> = ({
   label,
   error,
   size = "md",
-  endContent, 
+  endContent,
   ...props
 }) => {
   const sizeClasses: Record<NonNullable<InputProps["size"]>, string> = {
@@ -44,12 +44,12 @@ export const Input: React.FC<InputProps> = ({
           aria-describedby={error ? `${props.id}-error` : undefined}
           className={cn(
             "w-full text-body rounded-xl outline-none transition-all duration-150",
-            "bg-input text-primaryText placeholder:text-secondaryText",
+            "bg-secondaryBtn text-primaryText placeholder:text-secondaryText",
             "border focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn",
             "disabled:pointer-events-none disabled:opacity-60",
-            endContent ? "pr-10" : "", 
-            error 
-              ? "border-red-500 focus:border-red-500 focus:ring-red-500/50" 
+            endContent ? "pr-10" : "",
+            error
+              ? "border-red-500 focus:border-red-500 focus:ring-red-500/50"
               : "border-outline hover:border-outline/80",
             sizeClasses[size],
             className
@@ -64,9 +64,8 @@ export const Input: React.FC<InputProps> = ({
         )}
       </div>
 
-
       {error && (
-        <div 
+        <div
           id={`${props.id}-error`}
           className="flex items-center gap-1.5 mt-1.5 ml-1 animate-in slide-in-from-top-1 fade-in duration-200"
         >

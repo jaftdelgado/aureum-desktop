@@ -37,11 +37,12 @@
     "options": {
       "USD": "USD",
       "EUR": "EUR",
-      "JPY": "JPY",
+      "MXN": "MXN",
 
       "Low": "Bajo",
       "Medium": "Medio",
       "High": "Alto",
+      "Disabled": "Desact.",
 
       "Slow": "Lento",
       "Normal": "Normal",

@@ -10,7 +10,6 @@ interface PageHeaderProps {
   tabs?: TabItem[];
   selectedTab?: string;
   onTabChange?: (value: string) => void;
-  tabVariant?: "underline" | "pill";
   className?: string;
 }
 
