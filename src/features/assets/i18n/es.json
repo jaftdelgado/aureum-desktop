@@ -1,0 +1,34 @@
+{
+  "assetCategory": {
+    "Tech": "Tecnología",
+    "Healthcare": "Salud",
+    "Finance": "Finanzas",
+    "Energy": "Energía",
+    "Consumer-Discretionary": "Consumo Discrecional",
+    "Consumer-Staples": "Productos Básicos",
+    "Industrials": "Industria",
+    "Materials": "Materiales",
+    "Communications": "Comunicaciones",
+    "Real-Estate": "Bienes Raíces",
+    "Utilities": "Servicios Públicos",
+    "Layer1": "Capa 1",
+    "Layer2": "Capa 2",
+    "DeFi": "Finanzas Descentralizadas",
+    "Stablecoin": "Stablecoin",
+    "Gaming": "Videojuegos",
+    "AI-BigData": "IA & Big Data",
+    "Infrastructure": "Infraestructura",
+    "Meme": "Meme",
+    "ETF-Index": "ETF Índice",
+    "ETF-Sector": "ETF Sector",
+    "ETF-Bonds": "ETF Bonos",
+    "ETF-Commodities": "ETF Commodities",
+    "ETF-Thematic": "ETF Temático",
+    "ETF-International": "ETF Internacional"
+  },
+  "assetType": {
+    "Stock": "Acción",
+    "Crypto": "Cripto",
+    "ETF": "ETF"
+  }
+}
