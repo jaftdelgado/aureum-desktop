@@ -1,8 +1,7 @@
-// src/features/team-settings/pages/SimulatorSettings.tsx
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { Combobox, type ComboboxItem } from "@core/components/Combobox";
+import { Combobox } from "@core/components/Combobox";
 import { Switch } from "@core/ui/Switch";
 
 import {
@@ -10,70 +9,80 @@ import {
   SettingsSection,
 } from "@features/team-settings/components/ui/SettingsControl";
 
+import { InputGroup, InputGroupInput } from "@core/components/InputGroup";
 import FormLayout from "@core/layout/FormLayout";
+
+import { useMarketConfig } from "@features/team-settings/hooks/useMarketConfig";
+import { defaultMarketConfig } from "@features/team-settings/constants/marketConfigDefaults";
+import { useConfigFormState } from "@features/team-settings/hooks/useConfigFormState";
+
+import {
+  toCurrency,
+  toVolatility,
+  toThickSpeed,
+  toTransactionFee,
+} from "@features/team-settings/utils/configCasters";
+
+import {
+  getCurrencyOptions,
+  getSimpleOptions,
+  getThickSpeedOptions,
+} from "@features/team-settings/constants/simulatorOptions";
+
+import { useSelectedTeam } from "@app/hooks/useSelectedTeam";
 
 const SimulatorSettings: React.FC = () => {
   const { t } = useTranslation("teamSettings");
+  const { selectedTeam } = useSelectedTeam();
 
-  const [initialCash, setInitialCash] = useState(100000);
-  const [currency, setCurrency] = useState("USD");
+  const teamPublicId = selectedTeam?.publicId ?? "";
+  const { data: config, isLoading } = useMarketConfig(teamPublicId);
 
-  const [marketVolatility, setMarketVolatility] = useState("Medium");
-  const [marketLiquidity, setMarketLiquidity] = useState("Medium");
-  const [thickSpeed, setThickSpeed] = useState("Normal");
+  const { formState, setField } = useConfigFormState(
+    config ?? defaultMarketConfig
+  );
 
-  const [transactionFee, setTransactionFee] = useState("Low");
-  const [allowShortSelling, setAllowShortSelling] = useState(false);
+  if (!teamPublicId) {
+    return (
+      <div className="p-4 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded">
+        ⚠️ No hay equipo seleccionado
+      </div>
+    );
+  }
 
-  const [eventFrequency, setEventFrequency] = useState("Medium");
-  const [dividendImpact, setDividendImpact] = useState("Medium");
-  const [crashImpact, setCrashImpact] = useState("Medium");
-
-  const currencyOptions: ComboboxItem[] = [
-    { value: "USD", label: t("simulator.options.USD") },
-    { value: "EUR", label: t("simulator.options.EUR") },
-    { value: "JPY", label: t("simulator.options.JPY") },
-  ];
-
-  const simpleOptions: ComboboxItem[] = [
-    { value: "Low", label: t("simulator.options.Low") },
-    { value: "Medium", label: t("simulator.options.Medium") },
-    { value: "High", label: t("simulator.options.High") },
-  ];
-
-  const thickSpeedOptions: ComboboxItem[] = [
-    { value: "Slow", label: t("simulator.options.Slow") },
-    { value: "Normal", label: t("simulator.options.Normal") },
-    { value: "Fast", label: t("simulator.options.Fast") },
-  ];
+  const currencyOptions = getCurrencyOptions(t);
+  const simpleOptions = getSimpleOptions(t);
+  const thickSpeedOptions = getThickSpeedOptions(t);
 
   const sections = [
     {
       title: t("simulator.sections.marketBasics"),
       description: t("simulator.sections.marketBasicsDesc"),
       content: (
-        <SettingsSection controlWidth="140px">
+        <SettingsSection controlWidth="140px" isLoading={isLoading}>
           <SettingsControl
             title={t("simulator.settings.initialCash")}
             description={t("simulator.settings.initialCashDesc")}
             control={
-              <input
-                type="number"
-                value={initialCash}
-                onChange={(e) => setInitialCash(Number(e.target.value))}
-                className="border rounded px-2 py-1 w-full text-sm"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  value={formState.initialCash}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setField("initialCash", Number(e.target.value))
+                  }
+                  placeholder={t("simulator.settings.initialCash")}
+                />
+              </InputGroup>
             }
           />
-
           <SettingsControl
             title={t("simulator.settings.currency")}
             description={t("simulator.settings.currencyDesc")}
             control={
               <Combobox
                 items={currencyOptions}
-                value={currency}
-                onChange={setCurrency}
+                value={formState.currency}
+                onChange={(v) => setField("currency", toCurrency(v))}
               />
             }
           />
@@ -85,39 +94,37 @@ const SimulatorSettings: React.FC = () => {
       title: t("simulator.sections.marketParams"),
       description: t("simulator.sections.marketParamsDesc"),
       content: (
-        <SettingsSection controlWidth="140px">
+        <SettingsSection controlWidth="140px" isLoading={isLoading}>
           <SettingsControl
             title={t("simulator.settings.marketVolatility")}
             description={t("simulator.settings.marketVolatilityDesc")}
             control={
               <Combobox
                 items={simpleOptions}
-                value={marketVolatility}
-                onChange={setMarketVolatility}
+                value={formState.marketVolatility}
+                onChange={(v) => setField("marketVolatility", toVolatility(v))}
               />
             }
           />
-
           <SettingsControl
             title={t("simulator.settings.marketLiquidity")}
             description={t("simulator.settings.marketLiquidityDesc")}
             control={
               <Combobox
                 items={simpleOptions}
-                value={marketLiquidity}
-                onChange={setMarketLiquidity}
+                value={formState.marketLiquidity}
+                onChange={(v) => setField("marketLiquidity", toVolatility(v))}
               />
             }
           />
-
           <SettingsControl
             title={t("simulator.settings.thickSpeed")}
             description={t("simulator.settings.thickSpeedDesc")}
             control={
               <Combobox
                 items={thickSpeedOptions}
-                value={thickSpeed}
-                onChange={setThickSpeed}
+                value={formState.thickSpeed}
+                onChange={(v) => setField("thickSpeed", toThickSpeed(v))}
               />
             }
           />
@@ -129,26 +136,27 @@ const SimulatorSettings: React.FC = () => {
       title: t("simulator.sections.tradingRules"),
       description: t("simulator.sections.tradingRulesDesc"),
       content: (
-        <SettingsSection controlWidth="140px">
+        <SettingsSection controlWidth="140px" isLoading={isLoading}>
           <SettingsControl
             title={t("simulator.settings.transactionFee")}
             description={t("simulator.settings.transactionFeeDesc")}
             control={
               <Combobox
                 items={simpleOptions}
-                value={transactionFee}
-                onChange={setTransactionFee}
+                value={formState.transactionFee}
+                onChange={(v) =>
+                  setField("transactionFee", toTransactionFee(v))
+                }
               />
             }
           />
-
           <SettingsControl
             title={t("simulator.settings.allowShortSelling")}
             description={t("simulator.settings.allowShortSellingDesc")}
             control={
               <Switch
-                checked={allowShortSelling}
-                onCheckedChange={setAllowShortSelling}
+                checked={formState.allowShortSelling}
+                onCheckedChange={(v) => setField("allowShortSelling", v)}
               />
             }
           />
@@ -160,39 +168,37 @@ const SimulatorSettings: React.FC = () => {
       title: t("simulator.sections.marketEvents"),
       description: t("simulator.sections.marketEventsDesc"),
       content: (
-        <SettingsSection controlWidth="160px">
+        <SettingsSection controlWidth="160px" isLoading={isLoading}>
           <SettingsControl
             title={t("simulator.settings.eventFrequency")}
             description={t("simulator.settings.eventFrequencyDesc")}
             control={
               <Combobox
                 items={simpleOptions}
-                value={eventFrequency}
-                onChange={setEventFrequency}
+                value={formState.eventFrequency}
+                onChange={(v) => setField("eventFrequency", toVolatility(v))}
               />
             }
           />
-
           <SettingsControl
             title={t("simulator.settings.dividendImpact")}
             description={t("simulator.settings.dividendImpactDesc")}
             control={
               <Combobox
                 items={simpleOptions}
-                value={dividendImpact}
-                onChange={setDividendImpact}
+                value={formState.dividendImpact}
+                onChange={(v) => setField("dividendImpact", toVolatility(v))}
               />
             }
           />
-
           <SettingsControl
             title={t("simulator.settings.crashImpact")}
             description={t("simulator.settings.crashImpactDesc")}
             control={
               <Combobox
                 items={simpleOptions}
-                value={crashImpact}
-                onChange={setCrashImpact}
+                value={formState.crashImpact}
+                onChange={(v) => setField("crashImpact", toVolatility(v))}
               />
             }
           />
@@ -201,7 +207,7 @@ const SimulatorSettings: React.FC = () => {
     },
   ];
 
-  return <FormLayout sections={sections} />;
+  return <FormLayout sections={sections} isLoading={isLoading} />;
 };
 
 export default SimulatorSettings;

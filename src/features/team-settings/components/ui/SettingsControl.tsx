@@ -1,13 +1,14 @@
 import React from "react";
-
+import { Skeleton } from "@core/ui/Skeleton";
 
 interface SettingsControlProps {
   title: string;
   description?: string;
   control?: React.ReactNode; 
-  controlWidth?: string; 
+  controlWidth?: string;
   isFirst?: boolean;
   isLast?: boolean;
+  isLoading?: boolean;
 }
 
 export const SettingsControl: React.FC<SettingsControlProps> = ({
@@ -17,6 +18,7 @@ export const SettingsControl: React.FC<SettingsControlProps> = ({
   controlWidth = "140px",
   isFirst = false,
   isLast = false,
+  isLoading = false,
 }) => {
   const borderTop = isFirst ? "" : "border-t border-outline";
   const roundedTop = isFirst ? "rounded-t-xl" : "";
@@ -31,20 +33,32 @@ export const SettingsControl: React.FC<SettingsControlProps> = ({
         ${borderTop} ${roundedTop} ${roundedBottom}
       `}
     >
-      <div className="flex flex-col pr-4"> 
-        <span className="text-body text-primaryText">{title}</span>
-
-        {description && (
-          <span className="text-small text-secondaryText">{description}</span>
+      <div className="flex flex-col flex-1 pr-4"> 
+        {isLoading ? (
+          <>
+            <Skeleton className="h-4 w-32 mb-2" />
+            {description !== undefined && <Skeleton className="h-3 w-48" />}
+          </>
+        ) : (
+          <>
+            <span className="text-body text-primaryText">{title}</span>
+            {description && (
+              <span className="text-small text-secondaryText">{description}</span>
+            )}
+          </>
         )}
       </div>
 
-      {control && (
+      {(isLoading || control) && (
         <div
           className="flex items-center ml-4 md:ml-0 justify-end"
           style={{ width: controlWidth }}
         >
-          {control}
+          {isLoading ? (
+            <Skeleton className="h-8 w-full" />
+          ) : (
+            control
+          )}
         </div>
       )}
     </div>
@@ -55,7 +69,8 @@ interface SettingsSectionProps {
   title?: string;
   children: React.ReactNode; 
   className?: string;
-  controlWidth?: string; 
+  controlWidth?: string;
+  isLoading?: boolean; 
 }
 
 export const SettingsSection: React.FC<SettingsSectionProps> = ({
@@ -63,6 +78,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
   children,
   className = "",
   controlWidth,
+  isLoading = false,
 }) => {
   const arrayChildren = React.Children.toArray(children);
 
@@ -75,6 +91,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
       isFirst: index === 0,
       isLast: index === arrayChildren.length - 1,
       controlWidth: childProps.controlWidth ?? controlWidth,
+      isLoading: childProps.isLoading ?? isLoading,
     });
   });
 
@@ -82,7 +99,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
     <div className={`w-full flex flex-col ${className}`}>
       {title && <h3 className="text-body font-semibold mb-2">{title}</h3>}
 
-      <div className="flex flex-col shadow-sm rounded-xl"> {/* Agregué shadow/rounded opcional al contenedor */}
+      <div className="flex flex-col shadow-sm rounded-xl">
         {childrenWithProps}
       </div>
     </div>
