@@ -4,7 +4,7 @@ import { Skeleton } from "@core/ui/Skeleton";
 interface SettingsControlProps {
   title: string;
   description?: string;
-  control: React.ReactNode;
+  control?: React.ReactNode; 
   controlWidth?: string;
   isFirst?: boolean;
   isLast?: boolean;
@@ -33,7 +33,7 @@ export const SettingsControl: React.FC<SettingsControlProps> = ({
         ${borderTop} ${roundedTop} ${roundedBottom}
       `}
     >
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 pr-4"> 
         {isLoading ? (
           <>
             <Skeleton className="h-4 w-32 mb-2" />
@@ -43,30 +43,34 @@ export const SettingsControl: React.FC<SettingsControlProps> = ({
           <>
             <span className="text-body text-primaryText">{title}</span>
             {description && (
-              <span className="text-small text-secondaryText">
-                {description}
-              </span>
+              <span className="text-small text-secondaryText">{description}</span>
             )}
           </>
         )}
       </div>
 
-      <div
-        className="flex items-center ml-4 md:ml-0 justify-end"
-        style={{ width: controlWidth }}
-      >
-        {isLoading ? <Skeleton className="h-8 w-full" /> : control}
-      </div>
+      {(isLoading || control) && (
+        <div
+          className="flex items-center ml-4 md:ml-0 justify-end"
+          style={{ width: controlWidth }}
+        >
+          {isLoading ? (
+            <Skeleton className="h-8 w-full" />
+          ) : (
+            control
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
 interface SettingsSectionProps {
   title?: string;
-  children: React.ReactElement<SettingsControlProps>[];
+  children: React.ReactNode; 
   className?: string;
   controlWidth?: string;
-  isLoading?: boolean;
+  isLoading?: boolean; 
 }
 
 export const SettingsSection: React.FC<SettingsSectionProps> = ({
@@ -76,14 +80,18 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
   controlWidth,
   isLoading = false,
 }) => {
-  const childrenWithProps = React.Children.map(children, (child, index) => {
+  const arrayChildren = React.Children.toArray(children);
+
+  const childrenWithProps = arrayChildren.map((child, index) => {
     if (!React.isValidElement(child)) return child;
 
-    return React.cloneElement(child, {
+    const childProps = child.props as Partial<SettingsControlProps>;
+
+    return React.cloneElement(child as React.ReactElement<any>, {
       isFirst: index === 0,
-      isLast: index === children.length - 1,
-      controlWidth: child.props.controlWidth ?? controlWidth,
-      isLoading: child.props.isLoading ?? isLoading,
+      isLast: index === arrayChildren.length - 1,
+      controlWidth: childProps.controlWidth ?? controlWidth,
+      isLoading: childProps.isLoading ?? isLoading,
     });
   });
 
@@ -91,7 +99,9 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
     <div className={`w-full flex flex-col ${className}`}>
       {title && <h3 className="text-body font-semibold mb-2">{title}</h3>}
 
-      <div className="flex flex-col">{childrenWithProps}</div>
+      <div className="flex flex-col shadow-sm rounded-xl">
+        {childrenWithProps}
+      </div>
     </div>
   );
 };

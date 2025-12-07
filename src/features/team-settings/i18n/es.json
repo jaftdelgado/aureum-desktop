@@ -1,7 +1,6 @@
 {
   "title": "Configuración",
   "description": "Administra las preferencias del equipo seleccionado, actualiza su información, gestiona a los participantes y configura el simulador.",
-
   "settings": {
     "teamInfo": "Información del equipo",
     "teamInfoDesc": "Modifica el nombre, imagen y descripción del equipo.",
@@ -10,73 +9,58 @@
     "simulator": "Simulador",
     "simulatorDesc": "Configura el comportamiento del motor del simulador."
   },
-
   "members": {
     "title": "Configuración de participantes",
-    "description": "Gestiona los miembros del equipo: invita nuevos participantes o elimina los existentes."
+    "description": "Gestiona los miembros del equipo: invita nuevos participantes o elimina los existentes.",
+    "removeMember": "Eliminar",
+    "adminSection": "Administrador del equipo",
+    "adminSectionDesc": "El profesor o líder responsable de este equipo.",
+    "classmatesSection": "Compañeros de equipo",
+    "classmatesSectionDesc": "Lista de otros estudiantes en este equipo.",
+    "studentsList": "Lista de estudiantes",
+    "studentsListDesc": "Gestiona el acceso de los estudiantes actualmente inscritos."
   },
-
   "simulator": {
     "title": "Configuración del simulador",
     "description": "Ajusta los parámetros y comportamientos del simulador según las necesidades del equipo.",
-
     "sections": {
       "marketBasics": "Conceptos básicos del mercado",
       "marketBasicsDesc": "Configura los parámetros iniciales y fundamentales del simulador.",
-
       "marketParams": "Parámetros del mercado",
       "marketParamsDesc": "Ajusta el comportamiento general del mercado y su dinámica principal.",
-
       "tradingRules": "Reglas de operación",
       "tradingRulesDesc": "Define los límites y condiciones bajo los cuales los participantes podrán operar.",
-
       "marketEvents": "Eventos del mercado",
       "marketEventsDesc": "Controla la aparición e impacto de eventos inesperados dentro del simulador."
     },
-
     "options": {
       "USD": "USD",
       "EUR": "EUR",
       "MXN": "MXN",
-
-      "Low": "Bajo",
-      "Medium": "Medio",
-      "High": "Alto",
       "Disabled": "Desact.",
-
       "Slow": "Lento",
       "Normal": "Normal",
       "Fast": "Rápido"
     },
-
     "settings": {
       "initialCash": "Capital inicial",
       "initialCashDesc": "Define la cantidad de dinero con la que los participantes comenzarán en el simulador.",
-
       "currency": "Divisa del mercado",
       "currencyDesc": "Selecciona la moneda utilizada para todas las transacciones dentro del simulador.",
-
       "marketVolatility": "Volatilidad del mercado",
       "marketVolatilityDesc": "Determina la frecuencia y amplitud de los cambios en los precios de los activos.",
-
       "marketLiquidity": "Liquidez del mercado",
       "marketLiquidityDesc": "Controla qué tan fácil es comprar o vender activos sin afectar significativamente sus precios.",
-
       "thickSpeed": "Velocidad de simulación",
       "thickSpeedDesc": "Ajusta la rapidez con la que se procesan los cambios y eventos dentro del mercado simulado.",
-
       "transactionFee": "Comisión por transacción",
       "transactionFeeDesc": "Establece el costo de cada operación realizada por los participantes.",
-
       "eventFrequency": "Frecuencia de eventos",
       "eventFrequencyDesc": "Determina la cantidad y regularidad de sucesos inesperados que afectan al mercado.",
-
       "dividendImpact": "Impacto de dividendos",
       "dividendImpactDesc": "Define cómo los dividendos afectan los precios de los activos dentro del simulador.",
-
       "crashImpact": "Impacto de crash",
       "crashImpactDesc": "Configura la severidad de caídas bruscas y repentinas en el mercado.",
-
       "allowShortSelling": "Permitir venta en corto",
       "allowShortSellingDesc": "Habilita o deshabilita la posibilidad de vender activos que los participantes no poseen."
     }
