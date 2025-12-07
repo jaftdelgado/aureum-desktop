@@ -14,14 +14,14 @@
 }
 
 .dark {
-  --bg: #101010;
-  --outline: #2d2d2d;
+  --bg: #111111;
+  --outline: #202020;
 
   --primary-text: #ededed;
   --secondary-text: #626265;
   --destructive: #d93025;
 
-  --card: #3c3c3c;
+  --card: #141414;
   --primary-btn: #ededed;
   --primary-hover-btn: #cccccc;
   --secondary-btn: #262626;

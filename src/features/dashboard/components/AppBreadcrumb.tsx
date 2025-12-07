@@ -14,7 +14,7 @@ export const AppBreadcrumb: React.FC = () => {
   const ROOTS = ["home", "teams", "lessons"];
   const currentRoot = ROOTS.find((r) => pathnames[0] === r);
 
-  const formatName = (segment: string, index: number) => {
+  const formatName = (segment: string) => {
     // Si es el teamId y tenemos un equipo seleccionado, usamos el nombre
     if (segment === pathnames[1] && pathnames[0] === "teams" && selectedTeam) {
       return selectedTeam.name;
@@ -51,7 +51,7 @@ export const AppBreadcrumb: React.FC = () => {
               to={isLast ? undefined : routeTo}
               isLast={isLast}
               isFirst={index === 0}
-              label={formatName(name, index)}
+              label={formatName(name)}
             />
           );
         })}
@@ -75,7 +75,7 @@ export const AppBreadcrumb: React.FC = () => {
             to={isLast ? undefined : routeTo}
             isLast={isLast}
             isFirst={false}
-            label={formatName(name, index)}
+            label={formatName(name)}
           />
         );
       })}

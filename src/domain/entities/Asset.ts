@@ -1,0 +1,27 @@
+// src/domain/entities/Asset.ts
+export interface AssetCategory {
+  categoryId: number;
+  name: string;
+}
+
+export interface Asset {
+  assetId: number;
+  publicId?: string;
+  assetName: string;
+  assetSymbol: string;
+  assetType: string;
+  basePrice: number;
+
+  volatility?: number;
+  drift?: number | null;
+  maxPrice?: number | null;
+  minPrice?: number | null;
+  dividendYield?: number | null;
+  liquidity?: number | null;
+  assetPicUrl?: string | null;
+
+  category: AssetCategory | null;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
