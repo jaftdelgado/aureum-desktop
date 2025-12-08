@@ -3,8 +3,9 @@ import type { PublicProfileDto } from "./profile.dto";
 import { mapPublicProfileToDomain } from "./profile.mappers";
 import { blobToBase64 } from "@core/utils/fileUtils";
 import type { TeamMember } from "@domain/entities/TeamMember";
+import type { ProfileRepository } from "@domain/repositories/ProfileRepository";
 
-export class ProfileApiRepository {
+export class ProfileApiRepository implements ProfileRepository {
   
   async getPublicProfile(userId: string): Promise<TeamMember | null> {
     try {

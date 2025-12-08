@@ -3,14 +3,13 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@core/ui/Button";
 import GoogleLogo from "@features/auth/resources/svg/google.svg";
 import { useOAuthLogin } from "@features/auth/hooks/useOAuthLogin";
-import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
-import { supabase } from "@infra/external/http/supabase";
+import { DI } from "@app/di/container";
+import { GetSessionUseCase } from "@domain/use-cases/auth/GetSessionUseCase";
+import { CheckProfileExistsUseCase } from "@domain/use-cases/auth/CheckProfileExistsUseCase";
 
 interface GoogleSignInProps {
   onMissingProfile?: () => void;
 }
-
-const authRepo = new AuthApiRepository();
 
 const GoogleSignIn: React.FC<GoogleSignInProps> = ({ onMissingProfile }) => {
   const { t } = useTranslation("auth");
@@ -22,10 +21,12 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({ onMissingProfile }) => {
       setChecking(true);
       await loginWithGoogle();
       
-      const { data: { user } } = await supabase.auth.getUser();
+      const getSession = new GetSessionUseCase(DI.authRepository);
+      const user = await getSession.execute();
       
       if (user) {
-        const exists = await authRepo.checkProfileExists(user.id);
+        const checkProfile = new CheckProfileExistsUseCase(DI.authRepository);
+        const exists = await checkProfile.execute(user.id);
         
         if (!exists && onMissingProfile) {
           onMissingProfile();
