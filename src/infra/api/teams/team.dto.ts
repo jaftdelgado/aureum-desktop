@@ -15,3 +15,10 @@ export interface TeamDTO {
   access_code: string;
   created_at: string;
 }
+
+export interface StudentDto {
+  id: string;
+  full_name: string;
+  email: string;
+  avatar_url?: string;
+}

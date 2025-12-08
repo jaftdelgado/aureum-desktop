@@ -1,5 +1,5 @@
 import type { TeamsRepository } from "../../repositories/TeamsRepository";
-import type { StudentDto } from "@infra/api/teams/team.dto";
+import type { TeamMember } from "@domain/entities/TeamMember";
 
 export class GetTeamMembersUseCase {
   private readonly teamsRepository;
@@ -7,7 +7,7 @@ export class GetTeamMembersUseCase {
     this.teamsRepository=teamsRepository;
   }
 
-  async execute(teamId: string): Promise<StudentDto[]> {
+  async execute(teamId: string): Promise<TeamMember[]> {
     return await this.teamsRepository.getTeamStudents(teamId);
   }
 }
