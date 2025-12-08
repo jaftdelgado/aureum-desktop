@@ -53,6 +53,7 @@
       "symbol": "One symbol or special character"
     },
     "errors": {
+      "checkName": "Please, verify your first and last name.",
       "firstNameRequired": "First name is required",
       "lastNameRequired": "Last name is required",
       "nameLength": "Must be between 2 and 50 characters",

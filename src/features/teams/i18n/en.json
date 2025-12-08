@@ -9,6 +9,14 @@
     "codeLabel": "Course Code",
     "codePlaceholder": "Ex. AB123XYZ",
     "cancel": "Cancel",
-    "join": "Join"
+    "join": "Join",
+    "joining": "Joining",
+    "success": "You have join to the course!"
+  },
+  "errors": {
+    "generic": "Problems joining the course.",
+    "invalidCode": "Invalid access code.",
+    "alreadyMember": "You are already member.",
+    "required": "The access code is required."
   }
 }

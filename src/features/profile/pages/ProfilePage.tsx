@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Label } from "@core/ui/Label";
 import { Button } from "@core/ui/Button";
@@ -6,15 +6,14 @@ import { Separator } from "@core/ui/Separator";
 import { useProfilePage } from "../hooks/useProfilePage";
 import { EditProfileDialog } from "../components/EditProfileDialog";
 import { DeleteAccountDialog } from "../components/DeleteAccountDialog";
-import { DI } from "@app/di/container";
-import { compressImage } from "@core/utils/fileUtils";
 
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation("profile");
-  const { user } = useProfilePage();
+  
+  const { user, actions, loadingStates } = useProfilePage();
+  
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   if (!user) return null;
 
@@ -26,39 +25,16 @@ const ProfilePage: React.FC = () => {
 
   const handleSaveChanges = async (newBio: string, newFile: File | null) => {
     try {
-      if (newBio !== user.bio) {
-        await DI.profileRepository.updateProfile(user.id, { bio: newBio });
-      }
-      if (newFile) {
-        const compressedFile = await compressImage(newFile, 500, 0.8);
-        
-        const fileToSend = new File([compressedFile], newFile.name, { type: "image/jpeg" });
-
-        await DI.profileRepository.uploadAvatar(user.id, fileToSend);
-      }
-      
-      window.location.reload();
-      
+      await actions.updateProfile(newBio, newFile);
+      setIsEditOpen(false);
     } catch (error) {
-      console.error("Error actualizando perfil:", error);
-      alert("Hubo un error al guardar los cambios.");
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    setIsDeleting(true);
-    try {
-      await DI.profileRepository.deleteAccount(user.id);
-      window.location.reload();
-    } catch (error) {
-      console.error("Error eliminando cuenta:", error);
-      setIsDeleting(false);
-      setIsDeleteOpen(false);
+      alert(t("errors.saveFailed"));
     }
   };
 
   return (
     <div className="w-full h-full flex flex-col">
+      
       <div className="flex flex-col gap-2 mb-0">
         <div className="flex items-center justify-between w-full pr-8 pl-10"> 
           <div className="flex flex-col gap-1">
@@ -77,9 +53,8 @@ const ProfilePage: React.FC = () => {
         <Separator />
       </div>
 
-
       <div className="flex flex-col items-center mt-0 max-w-md mx-auto w-full">
-        <div className="flex flex-col items-center gap-2 mb-2">
+         <div className="flex flex-col items-center gap-2 mb-2">
           <img
             src={user.avatarUrl}
             alt={user.fullName}
@@ -147,8 +122,8 @@ const ProfilePage: React.FC = () => {
       <DeleteAccountDialog
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
-        onConfirm={handleDeleteAccount}
-        isDeleting={isDeleting}
+        onConfirm={actions.deleteAccount} 
+        isDeleting={loadingStates.isDeleting} 
       />
     </div>
   );
