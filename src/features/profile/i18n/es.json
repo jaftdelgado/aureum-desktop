@@ -16,6 +16,7 @@
       "title": "Editar Perfil",
       "message": "Actualiza tu foto y biografía.",
       "cancel": "Cancelar",
+      "saving": "Guardando...",
       "save": "Guardar Cambios"
     }
   },
@@ -29,6 +30,10 @@
     "title": "¿Estás seguro?",
     "message": "Esta acción es permanente. Se eliminará tu perfil y no podrás recuperar tus datos.",
     "confirm": "Sí, eliminar cuenta",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "deleting": "Eliminando..."
+  },
+  "errors": {
+    "saveFailed": "Hubo un error al guardar los cambios."
   }
 }

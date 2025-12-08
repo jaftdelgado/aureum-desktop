@@ -1,16 +1,9 @@
-// hook/useTeamsList.ts
 import { useQuery } from "@tanstack/react-query";
 import { GetStudentTeamsUseCase } from "@domain/use-cases/teams/GetStudentTeamsUseCase";
 import { GetProfessorTeamsUseCase } from "@domain/use-cases/teams/GetProfessorTeamsUseCase";
-import { TeamsApiRepository } from "@infra/api/teams/TeamsApiRepository";
 import type { Team } from "@domain/entities/Team";
 import { useAuth } from "@app/hooks/useAuth";
-
-const teamsRepository = new TeamsApiRepository();
-const getTeamsByProfessorUseCase = new GetProfessorTeamsUseCase(
-  teamsRepository
-);
-const getTeamsByStudentUseCase = new GetStudentTeamsUseCase(teamsRepository);
+import { DI } from "@app/di/container"; 
 
 export const useTeamsList = () => {
   const { user } = useAuth();
@@ -24,10 +17,12 @@ export const useTeamsList = () => {
       if (!user) return [];
 
       if (role === "professor") {
-        return getTeamsByProfessorUseCase.execute(user.id);
+        const getProfessorTeams = new GetProfessorTeamsUseCase(DI.teamsRepository);
+        return getProfessorTeams.execute(user.id);
       }
       if (role === "student") {
-        return getTeamsByStudentUseCase.execute(user.id);
+        const getStudentTeams = new GetStudentTeamsUseCase(DI.teamsRepository);
+        return getStudentTeams.execute(user.id);
       }
       return [];
     },

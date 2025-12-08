@@ -9,6 +9,14 @@
     "codeLabel": "Código del curso",
     "codePlaceholder": "Ej. AB123XYZ",
     "cancel": "Cancelar",
-    "join": "Unirse"
+    "join": "Unirse",
+    "joining": "Uniéndose...",
+    "success": "¡Te has unido al curso exitosamente!"
+  },
+  "errors": {
+    "generic": "Ocurrió un error al intentar unirse.",
+    "invalidCode": "Código de curso no válido.",
+    "alreadyMember": "Ya eres miembro de este curso.",
+    "required": "El código es requerido."
   }
 }
