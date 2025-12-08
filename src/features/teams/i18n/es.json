@@ -18,5 +18,10 @@
     "invalidCode": "Código de curso no válido.",
     "alreadyMember": "Ya eres miembro de este curso.",
     "required": "El código es requerido."
+  },
+  "emptyState": "No tienes cursos registrados aún.",
+  "card": {
+    "defaultImageText": "Curso",
+    "noDescription": "Sin descripción"
   }
 }
