@@ -50,7 +50,7 @@ export const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({
             onClick={onConfirm}
             disabled={isDeleting}
           >
-            {isDeleting ? "Eliminando..." : t("deleteAccount.confirm")}
+            {isDeleting ? t("deleteAccount.deleting") : t("deleteAccount.confirm")}
           </Button>
         </DialogFooter>
       </DialogContent>

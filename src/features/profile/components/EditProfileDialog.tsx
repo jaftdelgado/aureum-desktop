@@ -92,10 +92,10 @@ export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
               placeholder="Cuéntanos sobre ti..."
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              maxLength={160}
+              maxLength={120}
             />
             <div className="text-xs text-right text-secondaryText">
-              {bio?.length}/160
+              {bio?.length}/120
             </div>
           </div>
         </div>
@@ -105,7 +105,7 @@ export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
             {t("modals.edit.cancel")}
           </Button>
           <Button variant="default" onClick={handleSave} disabled={isSaving}>
-            {isSaving ? "Guardando..." : t("modals.edit.save")}
+            {isSaving ? t("modals.edit.saving") : t("modals.edit.save")}
           </Button>
         </DialogFooter>
       </DialogContent>

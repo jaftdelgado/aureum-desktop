@@ -16,7 +16,8 @@
       "title": "Edit Profile",
       "message": "Update your picture and biography",
       "cancel": "Cancel",
-      "save": "Save changes"
+      "save": "Save changes",
+      "saving": "Saving"
     }
   },
   "roles": {
@@ -29,6 +30,10 @@
     "title": "Are you sure?",
     "message": "This action is permanent. Your profile will be deleted and data cannot be recovered.",
     "confirm": "Yes, delete account",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "deleting": "Deleting"
+  },
+  "errors": {
+    "saveFailed": "There was a mistake saving the changes."
   }
 }

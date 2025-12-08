@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@app/hooks/useAuth";
-import { TeamsApiRepository } from "@infra/api/teams/TeamsApiRepository";
 import { JoinTeamUseCase } from "@domain/use-cases/teams/JoinTeamUseCase";
 import { useTeamsList } from "./useTeamsList";
-
-const teamsRepo = new TeamsApiRepository();
-const joinTeamUseCase = new JoinTeamUseCase(teamsRepo);
+import { DI } from "@app/di/container";
+import { useTranslation } from "react-i18next";
 
 export const useTeamsPage = () => {
+  const { t } = useTranslation("teams");
   const { user } = useAuth();
   const { data: teams, isLoading } = useTeamsList();
   const queryClient = useQueryClient();
@@ -39,9 +38,11 @@ export const useTeamsPage = () => {
     setSuccessMsg(null);
 
     try {
+      const joinTeamUseCase = new JoinTeamUseCase(DI.teamsRepository);
+      
       await joinTeamUseCase.execute(joinCode, user.id);
       
-      setSuccessMsg("¡Te has unido al curso exitosamente!");
+      setSuccessMsg(t("joinModal.success"));
       
       await queryClient.invalidateQueries({ queryKey: ["teams", user.id] });
 
@@ -50,13 +51,13 @@ export const useTeamsPage = () => {
       }, 1500);
 
     } catch (error: any) {
-      console.error("Error al unirse:", error);
-      let msg = "Ocurrió un error al intentar unirse.";
       
-      if (error.message?.includes("404")) msg = "Código de curso no válido.";
-      if (error.message?.includes("409")) msg = "Ya eres miembro de este curso.";
+      let msgKey = "joinModal.errors.generic";
       
-      setJoinError(msg);
+      if (error.message?.includes("404")) msgKey = "joinModal.errors.invalidCode";
+      if (error.message?.includes("409")) msgKey = "joinModal.errors.alreadyMember";
+      
+      setJoinError(t(msgKey));
     } finally {
       setIsJoining(false);
     }
