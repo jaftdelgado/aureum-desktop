@@ -11,7 +11,7 @@ export const PasswordStrength: React.FC<PasswordStrengthProps> = ({ password = "
   const { t } = useTranslation("auth");
 
   const requirements = [
-    { id: "length", label: t("signup.strength.length"), regex: /.{10,}/ },
+    { id: "length", label: t("signup.strength.length"), regex: /.{8,}/ },
     { id: "upper", label: t("signup.strength.uppercase"), regex: /[A-Z]/ },
     { id: "lower", label: t("signup.strength.lowercase"), regex: /[a-z]/ },
     { id: "number", label: t("signup.strength.number"), regex: /\d/ },

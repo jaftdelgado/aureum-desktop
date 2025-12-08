@@ -1,3 +1,11 @@
+export interface TeamMembershipDto {
+  membershipid: number;
+  publicid: string; 
+  teamid: string;
+  userid: string;
+  joinedat: string;
+}
+
 export interface TeamDTO {
   public_id: string;
   professor_id: string | null;

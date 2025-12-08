@@ -2,12 +2,13 @@ import { supabase } from "@infra/external/http/supabase";
 import type { AuthRepository } from "@domain/repositories/AuthRepository";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 import { client } from "@infra/api/http/client";
-import { mapUserDTOToLoggedInUser } from "@infra/external/auth/auth.mappers";
+import { mapUserDTOToLoggedInUser, mapSessionToUser} from "@infra/external/auth/auth.mappers";
 import type {
   LoggedInUserDTO,
   UserProfileDTO,
 } from "@infra/external/auth/auth.dto";
 import { HttpError } from "@infra/api/http/client";
+import type { SocialUser } from "@domain/entities/SocialUser";
 
 export interface RegisterData {
   email: string;
@@ -187,4 +188,82 @@ export class AuthApiRepository implements AuthRepository {
     
     await this.logout();
   }
+
+  async checkSessionAlive(): Promise<boolean> {
+    try {
+      const { data, error } = await supabase.rpc('is_session_alive');
+      if (error || data === false) return false;
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async getPendingSocialUser(): Promise<SocialUser | null> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) return null;
+
+      const email = user.email || "";
+      const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
+      
+      const nameParts = fullName.split(" ").filter(Boolean);
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      return { email, firstName, lastName };
+    } catch (error) {
+      console.warn("Error obteniendo datos de usuario social:", error);
+      return null;
+    }
+  }
+
+  async loginWithGoogle(): Promise<void> {
+    const isElectron = typeof window !== 'undefined' && !!(window as any).electronAPI;
+    let redirectTo = window.location.origin;     
+    if (isElectron) {
+        redirectTo = "aureum://auth/callback";
+    } else if (import.meta.env.DEV) {
+        redirectTo = "http://localhost:5173/";
+    }
+    
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { 
+        redirectTo,
+        skipBrowserRedirect: true, 
+      },
+    });
+    if (error) throw new Error(error.message);
+    if (data?.url) {
+        if (isElectron) {
+            window.open(data.url, '_blank'); 
+        } else {
+            window.location.href = data.url;
+        }
+    }
+  }
+
+  onAuthStateChange(callback: (user: LoggedInUser | null) => void): () => void {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'TOKEN_REFRESHED') return;
+      if (session?.user) {
+        const user = mapSessionToUser(session.user);
+        callback(user);
+      } else {
+        callback(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }
+
+  async setSession(accessToken: string, refreshToken: string): Promise<void> {
+  const { error } = await supabase.auth.setSession({
+    access_token: accessToken,
+    refresh_token: refreshToken
+  });
+  if (error) throw new Error(error.message);
+}
 }
