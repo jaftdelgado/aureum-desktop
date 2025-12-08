@@ -8,5 +8,19 @@
     "settings": "Settings",
     "settingsSimulator": "Simulator",
     "portfolio": "Portfolio"
+  },
+  "sidebar": {
+    "menu": {
+      "main": "Main",
+      "explore": "Explore",
+      "teams": "Teams",
+      "lessons": "Lessons",
+      "team": "Team",
+      "overview": "Overview",
+      "market": "Market",
+      "portfolio": "Portfolio",
+      "assets": "Assets",
+      "settings": "Settings"
+    }
   }
 }

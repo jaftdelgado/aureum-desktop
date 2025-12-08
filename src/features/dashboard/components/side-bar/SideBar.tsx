@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { SidebarFooter } from "@features/dashboard/components/side-bar/SidebarFooter";
+import { SidebarFooter, type SidebarFooterProps } from "@features/dashboard/components/side-bar/SidebarFooter";
 import { SidebarButton } from "@features/dashboard/components/side-bar/SidebarButton";
 import { SidebarHeader } from "@features/dashboard/components/side-bar/SidebarHeader";
 
@@ -22,13 +22,7 @@ interface SidebarProps {
   items: SidebarItem[];
   onNavigate?: (route: string) => void;
   className?: string;
-  profile?: {
-    name: string;
-    role: string;
-    avatarUrl: string;
-    onProfileClick?: () => void;
-    onLogout?: () => void;
-  };
+  profile?: SidebarFooterProps; 
   bottomActions?: React.ReactNode;
 }
 
@@ -61,7 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     >
       <SidebarHeader />
 
-      <nav className="flex flex-col gap-1 flex-1">
+      <nav className="flex flex-col gap-0.5 flex-1">
         {items.map((item, index) =>
           item.type === "separator" ? (
             renderSeparator(item.label, `sep-${index}`)
@@ -81,15 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-outline/30">
         {bottomActions && <div className="mb-1">{bottomActions}</div>}
 
-        {profile && (
-          <SidebarFooter
-            name={profile.name}
-            role={profile.role}
-            avatarUrl={profile.avatarUrl}
-            onProfileClick={profile.onProfileClick}
-            onLogout={profile.onLogout}
-          />
-        )}
+        {profile && <SidebarFooter {...profile} />}
       </div>
     </aside>
   );
