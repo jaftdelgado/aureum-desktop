@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Cargando..."
+  },
   "title": "Configuración",
   "description": "Administra las preferencias del equipo seleccionado, actualiza su información, gestiona a los participantes y configura el simulador.",
   "settings": {
@@ -21,7 +24,7 @@
     "studentsListDesc": "Gestiona el acceso de los estudiantes actualmente inscritos.",
     "confirmDelete": "¿Estás seguro de eliminar a este miembro?",
     "professorFallback": "Profesor",
-    "loading": "Cargando estudiantes...",
+    "loading": "Cargando...",
     "adminNotFound": "Admin no encontrado",
     "noClassmates": "No hay otros compañeros en este equipo.",
     "removeAria": "Eliminar a {{name}}"

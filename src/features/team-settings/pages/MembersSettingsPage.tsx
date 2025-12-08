@@ -37,7 +37,7 @@ const MembersSettingsPage: React.FC = () => {
       <div className="flex flex-col items-center gap-2">
         <div className="w-5 h-5 border-2 border-primaryText border-t-transparent rounded-full animate-spin"></div>
         <span className="text-sm text-secondaryText animate-pulse">
-          {t("members.loading", "Cargando estudiantes...")}
+          {t("members.loading", "Cargando...")}
         </span>
       </div>
     </div>
@@ -110,7 +110,7 @@ const MembersSettingsPage: React.FC = () => {
         content: (
           <SettingsSection controlWidth="full">
             {loading ? (
-               <div className="p-4 text-sm text-secondaryText">{t("common.loading")}</div>
+                <LoadingState />
             ) : adminMember ? (
               <MemberItem
                 name={adminMember.name}
