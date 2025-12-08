@@ -34,12 +34,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      const getSessionUseCase = new GetSessionUseCase(DI.authRepository);
+      const getSessionUseCase = new GetSessionUseCase(DI.authRepository, DI.profileRepository);
       try {
         let sessionUser = await getSessionUseCase.execute();
-        if (sessionUser) {
-           sessionUser = await refreshUserProfile(sessionUser);
-        }
 
         setUser(sessionUser);
         if (sessionUser && window.location.hash.includes("access_token")) {
