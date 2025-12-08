@@ -18,7 +18,11 @@ export const useLoginForm = () => {
     if (reason === "NETWORK_ERROR") {
       setErrorMsg("NETWORK_ERROR"); 
       sessionStorage.removeItem("logout_reason"); 
+    }else if (reason === "SERVER_ERROR") {
+      setErrorMsg("SERVER_ERROR");
     }
+
+    if (reason) sessionStorage.removeItem("logout_reason");
   }, []);
 
   const handleSubmit = async (data: LoginFormData) => {
