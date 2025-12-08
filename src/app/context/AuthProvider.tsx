@@ -130,6 +130,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleServerError = () => {
+      console.warn("Servidor inalcanzable. Cerrando sesión...");
+      logout("SERVER_ERROR");
+    };
+
+    window.addEventListener("server-disconnect", handleServerError);
+
+    return () => {
+      window.removeEventListener("server-disconnect", handleServerError);
+    };
+  }, []);
+  
   return (
     <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
