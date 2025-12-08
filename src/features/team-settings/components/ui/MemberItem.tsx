@@ -1,10 +1,11 @@
 import React from "react";
 import { Button } from "@core/ui/Button";
+import { useTranslation } from "react-i18next";
 
 interface MemberItemProps {
-  avatarUrl?: string; // Hacemos opcional
+  avatarUrl?: string; 
   name: string;
-  role: string;
+  role: "professor" | "student";
   onRemove?: () => void;
 }
 
@@ -14,10 +15,14 @@ export const MemberItem: React.FC<MemberItemProps> = ({
   role,
   onRemove,
 }) => {
+  const { t } = useTranslation("teamSettings");
   const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff`;
   
   const imageSource = avatarUrl && avatarUrl.length > 0 ? avatarUrl : defaultAvatar;
 
+  const roleLabel = role === "professor" 
+    ? t("roles.professor", "Profesor") 
+    : t("roles.student", "Estudiante");
   return (
     <li className="flex items-center justify-between p-3 bg-surface border border-outline rounded-xl hover:bg-surface-hover transition-colors">
       <div className="flex items-center gap-3 overflow-hidden">
@@ -32,7 +37,7 @@ export const MemberItem: React.FC<MemberItemProps> = ({
             {name}
           </span>
           <span className="text-xs text-secondaryText truncate capitalize">
-            {role === "professor" ? "Profesor" : "Estudiante"}
+            {roleLabel}
           </span>
         </div>
       </div>
@@ -44,7 +49,7 @@ export const MemberItem: React.FC<MemberItemProps> = ({
           iconOnly="lucide:trash-2"
           onClick={onRemove}
           className="shrink-0 ml-2"
-          aria-label={`Eliminar ${name}`}
+          aria-label={t("members.removeAria", { name })}
         />
       )}
     </li>
