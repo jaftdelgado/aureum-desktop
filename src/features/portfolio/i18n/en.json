@@ -1,4 +1,50 @@
 {
-    "title": "Portfolio",
-    "description": "Consult the financial asset portfolio, view current balance, monitor positions, and review transaction history."
+  "title": "Portfolio",
+  "description": "Manage your investments and analyze your performance.",
+  "selectTeam": "Select a team.",
+  "loading": "Loading portfolio...",
+  "assetNotFound": "Selected asset information not found.",
+  "myAssets": {
+    "title": "My Assets",
+    "subtitle": "Click on an asset to view its movements"
+  },
+  "table": {
+    "symbol": "Symbol",
+    "asset": "Asset",
+    "quantity": "Quantity",
+    "average": "Average",
+    "currentValue": "Current Value",
+    "pnlCurrency": "P/L ($)",
+    "pnlPercent": "P/L (%)"
+  },
+  "empty": {
+    "generic": "You don't have assets in this course.",
+    "withTeam": "You don't have assets"
+  },
+  "history": {
+    "title": "History of {{symbol}}",
+    "close": "Close",
+    "empty": "No movements recorded.",
+    "type": {
+      "buy": "BUY",
+      "sell": "SELL"
+    },
+    "price": "Price",
+    "quantity": "Quantity",
+    "totalOperation": "Total Amount",
+    "pnl": "Profit/Loss"
+  },
+  "chart": {
+    "title": "Asset Performance",
+    "subtitle": "Profit and Loss (P&L) Distribution",
+    "totalPnl": "Unrealized Total PnL",
+    "tooltip": {
+      "profit": "PROFIT",
+      "loss": "LOSS",
+      "quantity": "Quantity:",
+      "avgPrice": "Avg Price:",
+      "currentPrice": "Current Price:",
+      "netPnl": "Net PnL:"
+    }
+  }
 }

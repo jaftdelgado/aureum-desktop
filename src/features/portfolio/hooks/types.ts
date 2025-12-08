@@ -22,5 +22,6 @@ export interface HistoryItem {
   price: number;
   totalAmount: number;
   type: string; 
+  realizedPnl: number;
   date: string;
 }
