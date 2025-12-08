@@ -7,6 +7,7 @@ import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
 import { GetSessionUseCase } from "@domain/use-cases/auth/GetSessionUseCase";
 import { LogoutUseCase } from "@domain/use-cases/auth/LogoutUseCase";
 import { supabase } from "@infra/external/http/supabase";
+import { CheckSessionAliveUseCase } from "@domain/use-cases/auth/CheckSessionAliveUseCase";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -83,10 +84,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     if (window.location.hash.includes("/auth")) return;
 
     const interval = setInterval(async () => {
-      const { data: isAlive, error } = await supabase.rpc('is_session_alive');
+      if (!user) return;
+  if (window.location.hash.includes("/auth")) return;
+      const authRepo = new AuthApiRepository();
+      const checkSessionUseCase = new CheckSessionAliveUseCase(authRepo);
+      
+      const isAlive = await checkSessionUseCase.execute();
 
-      if (isAlive === false || error) {
-        console.log("Sesión invalidada por inicio en otro dispositivo. Cerrando...");
+      if (!isAlive) {
+        console.log("Sesión invalidada. Cerrando...");
         await logout();
       }
     }, 5000);
