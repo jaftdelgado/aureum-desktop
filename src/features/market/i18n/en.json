@@ -1,6 +1,7 @@
 {
   "title": "Market",
   "description": "Analyze your team assets and place trades.",
+  "loadingList": "Loading market...",
   "noAssets": "No assets available.",
   "selectedAsset": {
     "label": "Selected asset",

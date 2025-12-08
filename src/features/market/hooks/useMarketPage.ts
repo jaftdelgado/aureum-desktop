@@ -34,8 +34,6 @@ const subscribeToMarketUseCase = new SubscribeToMarketUseCase(
   marketRepository
 );
 
-const COURSE_UUID = "7d2ad78c-b99c-4a61-b3b5-6ff9ccc7cc21";
-
 type AssetsState = Record<string, Asset>;
 
 const addSnapshotToState = (
@@ -78,24 +76,28 @@ const addSnapshotToState = (
   return next;
 };
 
-export const useMarketPage = () => {
+export const useMarketPage = (courseId: string) => {
   const [assetsById, setAssetsById] = useState<AssetsState>({});
   const [selectedAssetId, setSelectedAssetId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = subscribeToMarketUseCase.execute(COURSE_UUID, {
+    setIsLoading(true);
+    const unsubscribe = subscribeToMarketUseCase.execute(courseId, {
       onData: (snapshot) => {
         setAssetsById((prev) => addSnapshotToState(prev, snapshot));
+        setIsLoading(false);
       },
       onError: (error) => {
         console.error("[useMarketPage] market stream error:", error);
+        setIsLoading(false);
       },
     });
 
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [courseId]);
 
   const assets = useMemo(() => Object.values(assetsById), [assetsById]);
 
@@ -119,5 +121,6 @@ export const useMarketPage = () => {
     selectedAsset,
     selectedAssetId,
     selectAsset,
+    isLoading,
   };
 };
