@@ -1,6 +1,7 @@
 {
   "title": "Mercado",
   "description": "Analiza los activos del equipo y realiza operaciones.",
+  "loadingList": "Cargando mercado...",
   "noAssets": "No hay activos disponibles.",
   "selectedAsset": {
     "label": "Activo seleccionado",
