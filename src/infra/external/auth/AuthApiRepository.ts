@@ -1,79 +1,25 @@
 import { supabase } from "@infra/external/http/supabase";
 import type { AuthRepository } from "@domain/repositories/AuthRepository";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
-import { client } from "@infra/api/http/client";
 import { mapUserDTOToLoggedInUser, mapSessionToUser} from "@infra/external/auth/auth.mappers";
-import type {
-  LoggedInUserDTO,
-  UserProfileDTO,
-} from "@infra/external/auth/auth.dto";
-import { HttpError } from "@infra/api/http/client";
 import type { SocialUser } from "@domain/entities/SocialUser";
 import type { RegisterData } from "@domain/entities/RegisterData";
 
 const PRESERVED_KEYS = ["theme", "i18nextLng"];
 
 export class AuthApiRepository implements AuthRepository {
-  private blobToBase64(blob: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  }
-
-  private async fetchProfile(
-    authId: string
-  ): Promise<UserProfileDTO | undefined> {
-    try {
-      const profile = await client.get<UserProfileDTO>(
-        `/api/users/profiles/${authId}`
-      );
-
-      if (profile && profile.profile_pic_id) {
-        try {
-          const imageBlob = await client.getBlob(
-            `/api/users/profiles/${authId}/avatar`
-          );
-
-          const base64Image = await this.blobToBase64(imageBlob);
-          profile.profile_pic_id = base64Image;
-        } catch (imageError) {
-          console.warn(
-            "No se pudo descargar la imagen del perfil:",
-            imageError
-          );
-          profile.profile_pic_id = undefined;
-        }
-      }
-
-      return profile;
-    } catch (error) {
-      console.warn(`No se pudo cargar el perfil para ${authId}`, error);
-      return undefined;
-    }
-  }
 
   async login(email: string, password: string): Promise<LoggedInUser> {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw new Error(error.message);
     if (!data.user) throw new Error("No se pudo iniciar sesión");
 
-    const authDto: LoggedInUserDTO = {
+    return mapUserDTOToLoggedInUser({
       id: data.user.id,
       email: data.user.email,
       created_at: data.user.created_at,
       avatar_url: data.user.user_metadata?.avatar_url || null,
-    };
-
-    const profileDto = await this.fetchProfile(data.user.id);
-
-    return mapUserDTOToLoggedInUser(authDto, profileDto);
+    }, undefined); 
   }
 
   async logout(): Promise<void> {
@@ -102,24 +48,19 @@ export class AuthApiRepository implements AuthRepository {
   }
 
   async getSession(): Promise<LoggedInUser | null> {
-    const { data } = await supabase.auth.getSession();
-    const user = data.session?.user;
+  const { data } = await supabase.auth.getSession();
+  const user = data.session?.user;
+  if (!user) return null;
 
-    if (!user) return null;
-
-    const authDto: LoggedInUserDTO = {
+  return mapUserDTOToLoggedInUser({
       id: user.id,
       email: user.email,
       created_at: user.created_at,
       avatar_url: user.user_metadata?.avatar_url || null,
-    };
+  }, undefined);
+}
 
-    const profileDto = await this.fetchProfile(user.id);
-
-    return mapUserDTOToLoggedInUser(authDto, profileDto);
-  }
-
-  async register(data: RegisterData): Promise<void> {
+  async register(data: RegisterData): Promise<string> { 
     let userId = "";
     
     if (!data.isGoogle) {
@@ -134,51 +75,12 @@ export class AuthApiRepository implements AuthRepository {
       userId = authData.user.id;
     } else {
       const { data: sessionData } = await supabase.auth.getUser();
-      if (!sessionData.user) throw new Error("No hay sesión de Google activa");
+      if (!sessionData.user) throw new Error("No hay sesión activa");
       userId = sessionData.user.id;
     }
-
-    const roleToSend = data.accountType === "teacher" ? "professor" : "student";
-    const fullName = `${data.firstName} ${data.lastName}`.trim();
-
-    const profilePayload = {
-      auth_user_id: userId,
-      username: data.username,
-      full_name: fullName,
-      role: roleToSend,
-    };
-
-    await client.post("/api/users/profiles", profilePayload);
-  }
-
-  async checkProfileExists(authId: string): Promise<boolean> {
-    try {
-      await client.get(`/api/users/profiles/${authId}`);
-      return true;
-    } catch (error: any) {
-      if (error instanceof HttpError && error.status === 404) {
-        return false; 
-      }
-      throw error;
-    }
-  }
-
-  async updateProfile(authId: string, data: { bio?: string }): Promise<void> {
-    await client.patch(`/api/users/profiles/${authId}`, data);
-  }
-
-  async uploadAvatar(authId: string, file: File): Promise<void> {
-    const formData = new FormData();
-    formData.append("file", file); 
-
-    await client.post(`/api/users/profiles/${authId}/avatar`, formData);
-  }
-
-  async deleteAccount(authId: string): Promise<void> {
-    await client.delete(`/api/users/profiles/${authId}`);
     
-    await this.logout();
-  }
+    return userId;  
+}
 
   async checkSessionAlive(): Promise<boolean> {
     try {
@@ -251,10 +153,21 @@ export class AuthApiRepository implements AuthRepository {
   }
 
   async setSession(accessToken: string, refreshToken: string): Promise<void> {
-  const { error } = await supabase.auth.setSession({
-    access_token: accessToken,
-    refresh_token: refreshToken
-  });
-  if (error) throw new Error(error.message);
-}
+    const { error } = await supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken
+    });
+    if (error) throw new Error(error.message);
+  }
+
+  async deleteAuthUser(): Promise<void> {
+    const { error } = await supabase.rpc('delete_own_user');
+    
+    if (error) {
+      console.error("Error crítico: No se pudo hacer rollback del usuario", error);
+      throw new Error("No se pudo revertir la creación del usuario.");
+    }
+    
+    await this.logout();
+  }
 }

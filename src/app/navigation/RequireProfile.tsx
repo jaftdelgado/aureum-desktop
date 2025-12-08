@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@app/hooks/useAuth";
 import { useTranslation } from "react-i18next";
-import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
 import { CheckProfileExistsUseCase } from "@domain/use-cases/auth/CheckProfileExistsUseCase";
+import { DI } from "@app/di/container";
 
 interface RequireProfileProps {
   children: React.ReactNode;
 }
-
-const authRepo = new AuthApiRepository();
 
 export const RequireProfile: React.FC<RequireProfileProps> = ({ children }) => {
   const { t } = useTranslation("auth");
@@ -21,7 +19,7 @@ export const RequireProfile: React.FC<RequireProfileProps> = ({ children }) => {
       if (!user) return;
       
       try {
-        const checkProfileUseCase = new CheckProfileExistsUseCase(authRepo);
+        const checkProfileUseCase = new CheckProfileExistsUseCase(DI.profileRepository);
         
         const exists = await checkProfileUseCase.execute(user.id);
         setHasProfile(exists);
@@ -32,7 +30,11 @@ export const RequireProfile: React.FC<RequireProfileProps> = ({ children }) => {
     };
 
     if (!authLoading) {
-      check();
+      if (user?.role) {
+         setHasProfile(true); 
+      } else {
+         check();
+      }
     }
   }, [user, authLoading]);
 
