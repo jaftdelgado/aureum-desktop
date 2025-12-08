@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "@app/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
+import { CheckProfileExistsUseCase } from "@domain/use-cases/auth/CheckProfileExistsUseCase";
 
 interface RequireProfileProps {
   children: React.ReactNode;
@@ -20,7 +21,9 @@ export const RequireProfile: React.FC<RequireProfileProps> = ({ children }) => {
       if (!user) return;
       
       try {
-        const exists = await authRepo.checkProfileExists(user.id);
+        const checkProfileUseCase = new CheckProfileExistsUseCase(authRepo);
+        
+        const exists = await checkProfileUseCase.execute(user.id);
         setHasProfile(exists);
       } catch (error) {
         console.error("Error verificando perfil en guardia:", error);

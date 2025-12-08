@@ -8,6 +8,7 @@ import type {
   UserProfileDTO,
 } from "@infra/external/auth/auth.dto";
 import { HttpError } from "@infra/api/http/client";
+import type { SocialUser } from "@domain/entities/SocialUser";
 
 export interface RegisterData {
   email: string;
@@ -186,5 +187,35 @@ export class AuthApiRepository implements AuthRepository {
     await client.delete(`/api/users/profiles/${authId}`);
     
     await this.logout();
+  }
+
+  async checkSessionAlive(): Promise<boolean> {
+    try {
+      const { data, error } = await supabase.rpc('is_session_alive');
+      if (error || data === false) return false;
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async getPendingSocialUser(): Promise<SocialUser | null> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) return null;
+
+      const email = user.email || "";
+      const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
+      
+      const nameParts = fullName.split(" ").filter(Boolean);
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      return { email, firstName, lastName };
+    } catch (error) {
+      console.warn("Error obteniendo datos de usuario social:", error);
+      return null;
+    }
   }
 }
