@@ -2,7 +2,7 @@ import { supabase } from "@infra/external/http/supabase";
 import type { AuthRepository } from "@domain/repositories/AuthRepository";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 import { client } from "@infra/api/http/client";
-import { mapUserDTOToLoggedInUser } from "@infra/external/auth/auth.mappers";
+import { mapUserDTOToLoggedInUser, mapSessionToUser} from "@infra/external/auth/auth.mappers";
 import type {
   LoggedInUserDTO,
   UserProfileDTO,
@@ -218,4 +218,52 @@ export class AuthApiRepository implements AuthRepository {
       return null;
     }
   }
+
+  async loginWithGoogle(): Promise<void> {
+    const isElectron = typeof window !== 'undefined' && !!(window as any).electronAPI;
+    let redirectTo = window.location.origin;     
+    if (isElectron) {
+        redirectTo = "aureum://auth/callback";
+    } else if (import.meta.env.DEV) {
+        redirectTo = "http://localhost:5173/";
+    }
+    
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { 
+        redirectTo,
+        skipBrowserRedirect: true, 
+      },
+    });
+    if (error) throw new Error(error.message);
+    if (data?.url) {
+        if (isElectron) {
+            window.open(data.url, '_blank'); 
+        } else {
+            window.location.href = data.url;
+        }
+    }
+  }
+
+  onAuthStateChange(callback: (user: LoggedInUser | null) => void): () => void {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'TOKEN_REFRESHED') return;
+      if (session?.user) {
+        const user = mapSessionToUser(session.user);
+        callback(user);
+      } else {
+        callback(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }
+
+  async setSession(accessToken: string, refreshToken: string): Promise<void> {
+  const { error } = await supabase.auth.setSession({
+    access_token: accessToken,
+    refresh_token: refreshToken
+  });
+  if (error) throw new Error(error.message);
+}
 }
