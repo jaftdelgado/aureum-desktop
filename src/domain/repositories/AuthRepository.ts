@@ -1,3 +1,4 @@
+import type { RegisterData } from "@domain/entities/RegisterData";
 import type { SocialUser } from "../entities/SocialUser";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 
@@ -6,7 +7,7 @@ export interface AuthRepository {
   logout(): Promise<void>;
   getSession(): Promise<LoggedInUser | null>;
   setSession(accessToken: string, refreshToken: string): Promise<void>;
-  register(data: any): Promise<void>;
+  register(data: RegisterData): Promise<void>;
   checkProfileExists(authId: string): Promise<boolean>;
   checkSessionAlive(): Promise<boolean>;
   getPendingSocialUser(): Promise<SocialUser | null>;

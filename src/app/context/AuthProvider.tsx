@@ -90,7 +90,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
   }, [user]); 
 
-  console.log("[AuthProvider] render:", { user, loading });
+  useEffect(() => {
+    const isElectron = typeof window !== 'undefined' && !!(window as any).electronAPI;
+
+    if (isElectron && (window as any).electronAPI) {
+       const removeListener = (window as any).electronAPI.onAuthToken(async (url: string) => {
+          const hashIndex = url.indexOf("#");
+          if (hashIndex !== -1) {
+            const params = new URLSearchParams(url.substring(hashIndex + 1));
+            const accessToken = params.get("access_token");
+            const refreshToken = params.get("refresh_token");
+
+            if (accessToken && refreshToken) {
+                try {
+                  await DI.authRepository.setSession(accessToken, refreshToken);
+                  window.location.reload();
+              } catch (error) {
+                  console.error("Error setting session from Electron:", error);
+              }
+          }
+          }
+       });
+      return () => {
+         if (removeListener && typeof removeListener === 'function') {
+            removeListener();
+         }
+       };
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading, logout }}>
