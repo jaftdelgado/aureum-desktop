@@ -1,49 +1,91 @@
 {
+  "common": {
+    "loading": "Loading..."
+  },
+  "title": "Settings",
+  "description": "Manage selected team preferences, update its information, manage members, and configure the simulator.",
   "settings": {
-    "title": "Settings",
-    "description": "Manage the preferences of the selected team, update its information, manage participants, and configure the simulator.",
     "teamInfo": "Team Information",
-    "teamInfoDesc": "Modify the team's name, image, and description.",
+    "teamInfoDesc": "Modify the team name, image, and description.",
     "members": "Members",
-    "membersDesc": "Manage team members: invite or remove them.",
-    "simulator": {
-      "mainTitle": "Simulator",
-      "mainDesc": "Configure the behavior of the simulator engine.",
-      "title": "Simulator Settings",
-      "description": "Adjust the parameters and behaviors of the simulator according to the team's needs.",
-      "settings": {
-        "initialCash": "Initial Cash",
-        "initialCashDesc": "Set the amount of money participants will start with in the simulator.",
-        "currency": "Market Currency",
-        "currencyDesc": "Select the currency used for all transactions within the simulator.",
-        "marketVolatility": "Market Volatility",
-        "marketVolatilityDesc": "Determine the frequency and magnitude of changes in asset prices.",
-        "marketLiquidity": "Market Liquidity",
-        "marketLiquidityDesc": "Control how easy it is to buy or sell assets without significantly affecting their prices.",
-        "thickSpeed": "Simulation Speed",
-        "thickSpeedDesc": "Adjust how quickly changes and events are processed within the simulated market.",
-        "transactionFee": "Transaction Fee",
-        "transactionFeeDesc": "Set the cost of each operation performed by participants.",
-        "eventFrequency": "Event Frequency",
-        "eventFrequencyDesc": "Determine the quantity and regularity of unexpected events affecting the market.",
-        "dividendImpact": "Dividend Impact",
-        "dividendImpactDesc": "Define how dividends affect asset prices within the simulator.",
-        "crashImpact": "Crash Impact",
-        "crashImpactDesc": "Configure the severity of sudden and sharp market crashes.",
-        "allowShortSelling": "Allow Short Selling",
-        "allowShortSellingDesc": "Enable or disable the ability to sell assets that participants do not own."
-      }
-    }
+    "membersDesc": "Manage team members: invite or remove.",
+    "simulator": "Simulator",
+    "simulatorDesc": "Configure the simulator engine behavior."
   },
   "members": {
-    "title": "Participants Settings",
+    "title": "Members Settings",
     "description": "Manage team members: invite new participants or remove existing ones.",
     "removeMember": "Remove",
     "adminSection": "Team Administrator",
     "adminSectionDesc": "The professor or leader responsible for this team.",
     "classmatesSection": "Teammates",
     "classmatesSectionDesc": "List of other students in this team.",
-    "studentsList": "Student List",
-    "studentsListDesc": "Manage access for currently enrolled students."
+    "studentsList": "Students List",
+    "studentsListDesc": "Manage access for currently enrolled students.",
+    "confirmDelete": "Are you sure you want to remove this member?",
+    "professorFallback": "Professor",
+    "loading": "Loading...",
+    "adminNotFound": "Admin not found",
+    "noClassmates": "There are no other classmates in this team.",
+    "removeAria": "Remove {{name}}"
+  },
+  "roles": {
+    "professor": "Professor",
+    "student": "Student"
+  },
+  "errors": {
+    "generic": "An unexpected error occurred."
+  },
+  "deleteMember": {
+    "title": "Remove Member",
+    "message": "Are you sure you want to remove {{name}} from this team?",
+    "confirm": "Remove",
+    "cancel": "Cancel",
+    "deleting": "Removing..."
+  },
+  "simulator": {
+    "title": "Simulator Settings",
+    "description": "Adjust simulator parameters and behaviors according to team needs.",
+    "sections": {
+      "marketBasics": "Market Basics",
+      "marketBasicsDesc": "Configure initial and fundamental simulator parameters.",
+      "marketParams": "Market Parameters",
+      "marketParamsDesc": "Adjust general market behavior and its main dynamics.",
+      "tradingRules": "Trading Rules",
+      "tradingRulesDesc": "Define limits and conditions under which participants can trade.",
+      "marketEvents": "Market Events",
+      "marketEventsDesc": "Control the occurrence and impact of unexpected events within the simulator."
+    },
+    "options": {
+      "USD": "USD",
+      "EUR": "EUR",
+      "MXN": "MXN",
+      "Disabled": "Disabled",
+      "Slow": "Slow",
+      "Normal": "Normal",
+      "Fast": "Fast"
+    },
+    "settings": {
+      "initialCash": "Initial Capital",
+      "initialCashDesc": "Define the amount of money participants will start with in the simulator.",
+      "currency": "Market Currency",
+      "currencyDesc": "Select the currency used for all transactions within the simulator.",
+      "marketVolatility": "Market Volatility",
+      "marketVolatilityDesc": "Determine the frequency and amplitude of asset price changes.",
+      "marketLiquidity": "Market Liquidity",
+      "marketLiquidityDesc": "Control how easy it is to buy or sell assets without significantly affecting their prices.",
+      "thickSpeed": "Simulation Speed",
+      "thickSpeedDesc": "Adjust the speed at which changes and events are processed within the simulated market.",
+      "transactionFee": "Transaction Fee",
+      "transactionFeeDesc": "Set the cost for each operation performed by participants.",
+      "eventFrequency": "Event Frequency",
+      "eventFrequencyDesc": "Determine the quantity and regularity of unexpected events affecting the market.",
+      "dividendImpact": "Dividend Impact",
+      "dividendImpactDesc": "Define how dividends affect asset prices within the simulator.",
+      "crashImpact": "Crash Impact",
+      "crashImpactDesc": "Configure the severity of sudden and sharp market drops.",
+      "allowShortSelling": "Allow Short Selling",
+      "allowShortSellingDesc": "Enable or disable the ability to sell assets that participants do not own."
+    }
   }
 }
