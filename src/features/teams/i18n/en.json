@@ -18,5 +18,10 @@
     "invalidCode": "Invalid access code.",
     "alreadyMember": "You are already member.",
     "required": "The access code is required."
+  },
+  "emptyState": "You don't have any courses yet.",
+  "card": {
+    "defaultImageText": "Course",
+    "noDescription": "No description"
   }
 }
