@@ -8,13 +8,19 @@
 }
 
 html {
-  @apply font-geist;
+  @apply font-geist antialiased;
   letter-spacing: -0.5px;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 input,
 textarea {
-  @apply text-body;
+  @apply text-body antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .drag-region {

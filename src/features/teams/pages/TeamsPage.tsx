@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import TeamCard from "@features/teams/components/TeamCard";
 import { Button } from "@core/ui/Button";
-import { Separator } from "@core/ui/Separator";
+import { PageHeader } from "@core/components/PageHeader";
 import { useTeamsPage } from "../hooks/useTeamsPage";
 import type { Team } from "@domain/entities/Team";
 import { JoinTeamModal } from "../components/JoinTeamModal";
@@ -37,38 +37,36 @@ const TeamsPage: React.FC = () => {
 
   return (
     <div className="w-full h-full flex flex-col">
-      <div className="flex flex-col gap-2 mb-6">
-        <div className="flex items-center justify-between w-full pr-8 pl-10">
-          <div className="flex flex-col gap-1">
-            <p className="text-2xl font-semibold text-primary">{t("title")}</p>
-            <p className="text-body text-secondaryText">{t("subtitle")}</p>
-          </div>
-
-          <div className="flex gap-3">
+      <PageHeader
+        title={t("title")}
+        description={t("subtitle")}
+        actions={
+          <div className="flex gap-2">
             {user?.role === "student" && (
-              <Button onClick={handleOpenModal}>{t("joinCourse")}</Button>
+              <Button onClick={handleOpenModal} icon="lucide:arrow-up-right">
+                {t("joinCourse")}
+              </Button>
             )}
+
             {user?.role === "professor" && (
               <Button
                 variant="default"
+                icon="lucide:plus"
                 onClick={() => console.log("Crear curso")}
               >
                 {t("createCourse")}
               </Button>
             )}
           </div>
-        </div>
-
-        <Separator />
-      </div>
+        }
+      />
 
       <div className="p-page-x">
         {isLoading ? (
-          <div className="flex items-center justify-center h-40">
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-              <p className="text-secondaryText text-sm">Cargando equipos...</p>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-6">
+            {[1, 2, 3, 4].map((i) => (
+              <TeamCard key={i} loading />
+            ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-6">
@@ -77,6 +75,7 @@ const TeamsPage: React.FC = () => {
                 <p>No tienes cursos registrados aún.</p>
               </div>
             )}
+
             {teams?.map((team: Team) => (
               <TeamCard
                 key={team.publicId}
@@ -93,6 +92,7 @@ const TeamsPage: React.FC = () => {
         )}
       </div>
 
+      {/* Modal */}
       <JoinTeamModal
         isOpen={showJoinModal}
         joinCode={joinCode}

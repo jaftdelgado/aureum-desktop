@@ -154,7 +154,9 @@ export const AppSidebar: React.FC = () => {
                 className="bg-red-600 hover:bg-red-700 text-white"
                 onClick={confirmLogout}
               >
-                {isLoggingOut ? "Cerrando..." : t("common.confirm", "Confirmar")}
+                {isLoggingOut
+                  ? "Cerrando..."
+                  : t("common.confirm", "Confirmar")}
               </Button>
             </div>
           </div>
