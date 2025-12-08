@@ -4,6 +4,7 @@ import type { UserProfileDTO } from "@infra/external/auth/auth.dto";
 
 export interface ProfileRepository {
   getPublicProfile(userId: string): Promise<TeamMember | null>;
+  getProfile(userId: string): Promise<UserProfileDTO | null>;
   getProfile(userId: string): Promise<UserProfileDTO | null>;  
   checkProfileExists(authId: string): Promise<boolean>;
   updateProfile(authId: string, data: { bio?: string }): Promise<void>;
