@@ -18,7 +18,27 @@
     "classmatesSection": "Compañeros de equipo",
     "classmatesSectionDesc": "Lista de otros estudiantes en este equipo.",
     "studentsList": "Lista de estudiantes",
-    "studentsListDesc": "Gestiona el acceso de los estudiantes actualmente inscritos."
+    "studentsListDesc": "Gestiona el acceso de los estudiantes actualmente inscritos.",
+    "confirmDelete": "¿Estás seguro de eliminar a este miembro?",
+    "professorFallback": "Profesor",
+    "loading": "Cargando estudiantes...",
+    "adminNotFound": "Admin no encontrado",
+    "noClassmates": "No hay otros compañeros en este equipo.",
+    "removeAria": "Eliminar a {{name}}"
+  },
+  "roles": {
+    "professor": "Profesor",
+    "student": "Estudiante"
+  },
+  "errors": {
+    "generic": "Ocurrió un error inesperado."
+  },
+  "deleteMember": {
+    "title": "Eliminar miembro",
+    "message": "¿Estás seguro de que deseas eliminar a {{name}} de este equipo?",
+    "confirm": "Eliminar",
+    "cancel": "Cancelar",
+    "deleting": "Eliminando..."
   },
   "simulator": {
     "title": "Configuración del simulador",
