@@ -67,7 +67,7 @@ export const useSignUpForm = (onShowLogin: () => void, isGoogleFlow: boolean) =>
     setApiError(null);
     
     try {
-      const registerUseCase = new RegisterUseCase(DI.authRepository);
+      const registerUseCase = new RegisterUseCase(DI.authRepository, DI.profileRepository);
       
       await registerUseCase.execute({
         ...data,

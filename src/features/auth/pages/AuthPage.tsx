@@ -7,10 +7,8 @@ import { ThemeToggleButton } from "@app/components/ThemeToggleButton";
 import LoginForm from "../components/LoginForm";
 import SignUpForm from "../components/SignUpForm";
 import { useAuth } from "@app/hooks/useAuth"; 
-import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
 import { CheckProfileExistsUseCase } from "@domain/use-cases/auth/CheckProfileExistsUseCase";
-
-const authRepo = new AuthApiRepository();
+import { DI } from "@app/di/container";
 
 const AuthPage: React.FC = () => {
   const { t } = useTranslation("auth");
@@ -26,7 +24,7 @@ const AuthPage: React.FC = () => {
       if (user && !showRegister) {
         setCheckingProfile(true);
         try {
-          const checkProfileUseCase = new CheckProfileExistsUseCase(authRepo);
+          const checkProfileUseCase = new CheckProfileExistsUseCase(DI.profileRepository);
           
           const exists = await checkProfileUseCase.execute(user.id);
           if (exists) {
