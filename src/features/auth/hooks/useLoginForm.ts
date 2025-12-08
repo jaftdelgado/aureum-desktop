@@ -33,7 +33,7 @@ export const useLoginForm = () => {
     }
 
     try {
-      const loginUseCase = new LoginUseCase(DI.authRepository);
+      const loginUseCase = new LoginUseCase(DI.authRepository, DI.profileRepository);
       const user = await loginUseCase.execute(data.email, data.password);
       setUser(user); 
     } catch (error: any) {
