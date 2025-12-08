@@ -5,10 +5,8 @@ import { Button } from "@core/ui/Button";
 import { Separator } from "@core/ui/Separator";
 import { useProfilePage } from "../hooks/useProfilePage";
 import { EditProfileDialog } from "../components/EditProfileDialog";
-import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
 import { DeleteAccountDialog } from "../components/DeleteAccountDialog";
-
-const authRepo = new AuthApiRepository();
+import { DI } from "@app/di/container";
 
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation("profile");
@@ -28,10 +26,10 @@ const ProfilePage: React.FC = () => {
   const handleSaveChanges = async (newBio: string, newFile: File | null) => {
     try {
       if (newBio !== user.bio) {
-        await authRepo.updateProfile(user.id, { bio: newBio });
+        await DI.profileRepository.updateProfile(user.id, { bio: newBio });
       }
       if (newFile) {
-        await authRepo.uploadAvatar(user.id, newFile);
+        await DI.profileRepository.uploadAvatar(user.id, newFile);
       }
       
       window.location.reload();
@@ -45,7 +43,7 @@ const ProfilePage: React.FC = () => {
   const handleDeleteAccount = async () => {
     setIsDeleting(true);
     try {
-      await authRepo.deleteAccount(user.id);
+      await DI.profileRepository.deleteAccount(user.id);
       window.location.reload();
     } catch (error) {
       console.error("Error eliminando cuenta:", error);

@@ -6,7 +6,6 @@ import { GetSessionUseCase } from "@domain/use-cases/auth/GetSessionUseCase";
 import { LogoutUseCase } from "@domain/use-cases/auth/LogoutUseCase";
 import { CheckSessionAliveUseCase } from "@domain/use-cases/auth/CheckSessionAliveUseCase";
 import { DI } from "@app/di/container";
-import { EnrichSessionUserUseCase } from "@domain/use-cases/auth/EnrichSessionUserUseCase";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -15,11 +14,6 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<LoggedInUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  const refreshUserProfile = async (baseUser: LoggedInUser) => {
-    const enrichUseCase = new EnrichSessionUserUseCase(DI.profileRepository);
-    return await enrichUseCase.execute(baseUser);
-  };
 
   const logout = async () => {
     try {
@@ -53,8 +47,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const unsubscribe = DI.authRepository.onAuthStateChange(async (updatedUser) => {
       if (updatedUser) {
-        const fullUser = await refreshUserProfile(updatedUser);
-        setUser(fullUser);
+        setUser(prev => prev?.id === updatedUser.id ? prev : updatedUser);
       } else {
         setUser(null);
       }
