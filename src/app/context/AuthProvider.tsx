@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<LoggedInUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const logout = async () => {
+  const logout = async (reason?: string) => {
     try {
       const logoutUseCase = new LogoutUseCase(DI.authRepository);
       await logoutUseCase.execute();
@@ -23,6 +23,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.error("Error al cerrar sesión:", error);
     } finally {
       setUser(null);
+      if (reason) {
+        sessionStorage.setItem("logout_reason", reason);
+      }
     }
   };
 
@@ -66,6 +69,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const interval = setInterval(async () => {
       if (!user) return;
+      if (!navigator.onLine) return;
       const checkSessionUseCase = new CheckSessionAliveUseCase(DI.authRepository);
       const isAlive = await checkSessionUseCase.execute();
 
@@ -107,6 +111,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
          }
        };
     }
+  }, []);
+
+  useEffect(() => {
+    const handleOffline = () => {
+      console.warn("Conexión perdida. Cerrando sesión...");
+      logout("NETWORK_ERROR");
+    };
+
+    window.addEventListener("offline", handleOffline);
+
+    if (!navigator.onLine) {
+      handleOffline();
+    }
+
+    return () => {
+      window.removeEventListener("offline", handleOffline);
+    };
   }, []);
 
   return (

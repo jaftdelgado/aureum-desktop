@@ -19,6 +19,7 @@
     "googleFlowMessage": "¡Hola! Solo necesitamos unos datos más para terminar.",
     "googleFlowSubtitle": "Configura tu perfil para continuar.",
     "errors": {
+      "networkError": "Sesión cerrada por pérdida de conexión a internet.",
       "identifierRequired": "El correo o usuario es obligatorio",
       "passwordRequired": "La contraseña es obligatoria",
       "invalidCredentials": "El correo o la contraseña son incorrectos. Inténtalo de nuevo.",

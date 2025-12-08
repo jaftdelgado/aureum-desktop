@@ -135,7 +135,7 @@ export const Button: React.FC<ButtonProps> = ({
       )}
 
       {!isIconOnly && children && isTextChild && (
-        <span className="text-body truncate overflow-hidden whitespace-nowrap">
+        <span className="truncate overflow-hidden whitespace-nowrap">
           {children}
         </span>
       )}
