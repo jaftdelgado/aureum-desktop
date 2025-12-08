@@ -9,16 +9,7 @@ import type {
 } from "@infra/external/auth/auth.dto";
 import { HttpError } from "@infra/api/http/client";
 import type { SocialUser } from "@domain/entities/SocialUser";
-
-export interface RegisterData {
-  email: string;
-  password?: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  accountType: "student" | "teacher";
-  isGoogle?: boolean;
-}
+import type { RegisterData } from "@domain/entities/RegisterData";
 
 const PRESERVED_KEYS = ["theme", "i18nextLng"];
 
@@ -166,9 +157,9 @@ export class AuthApiRepository implements AuthRepository {
       return true;
     } catch (error: any) {
       if (error instanceof HttpError && error.status === 404) {
-        return false;
+        return false; 
       }
-      return false;
+      throw error;
     }
   }
 
