@@ -53,6 +53,7 @@
       "symbol": "Un símbolo o carácter especial"
     },
     "errors": {
+      "checkName": "Por favor, verifica tu nombre y apellido.",
       "firstNameRequired": "El nombre es requerido",
       "lastNameRequired": "El apellido es requerido",
       "nameLength": "Debe tener entre 2 y 50 caracteres",
