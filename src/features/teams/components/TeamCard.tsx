@@ -28,7 +28,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
           <Skeleton className="absolute inset-0 w-full h-full" />
         ) : (
           <img
-            src={image || "https://placehold.co/600x400?text=Curso"}
+            src={image || "https://placehold.co/600x400/1e1e1e/FFF"}
             alt={title}
             className="absolute inset-0 w-full h-full object-cover"
           />

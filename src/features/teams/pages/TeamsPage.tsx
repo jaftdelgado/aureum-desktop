@@ -35,6 +35,11 @@ const TeamsPage: React.FC = () => {
     navigate(`/teams/${team.publicId}/overview`);
   };
 
+  const getPlaceholderImage = () => {
+    const text = t("card.defaultImageText", "Curso");
+    return `https://placehold.co/600x400/1e1e1e/FFF?text=${text}`;
+  };
+
   return (
     <div className="w-full h-full flex flex-col">
       <PageHeader
@@ -72,7 +77,7 @@ const TeamsPage: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-6">
             {teams?.length === 0 && (
               <div className="col-span-full text-center py-10 opacity-60">
-                <p>No tienes cursos registrados aún.</p>
+                <p className="text-lg font-medium">{t("emptyState")}</p>
               </div>
             )}
 
@@ -81,10 +86,10 @@ const TeamsPage: React.FC = () => {
                 key={team.publicId}
                 image={
                   team.teamPic ||
-                  "https://placehold.co/600x400/1e1e1e/FFF?text=Curso"
+                  getPlaceholderImage()
                 }
                 title={team.name}
-                subtitle={team.description || "Sin descripción"}
+                subtitle={team.description || t("card.noDescription")}
                 onClick={() => handleTeamClick(team)}
               />
             ))}
