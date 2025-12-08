@@ -6,6 +6,12 @@ interface RequestOptions extends RequestInit {
   params?: Record<string, string>;
 }
 
+const triggerServerDisconnect = () => {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("server-disconnect"));
+  }
+};
+
 export class HttpError extends Error {
   public status: number;
   constructor(status: number, message: string) {
@@ -70,6 +76,13 @@ export class HttpClient {
     try {
       const response = await fetch(url, config);
 
+      if (response.status >= 500) {
+        console.error(`Server Error ${response.status}:`, response.statusText);
+        triggerServerDisconnect();
+        
+        throw new HttpError(response.status, "Server Unavailable");
+      }
+
       if (!response.ok) {
         let errorData;
         try {
@@ -93,6 +106,12 @@ export class HttpClient {
       if (response.status === 204) return null as T;
       return await response.json();
     } catch (error) {
+      if (error instanceof TypeError && error.message === "Failed to fetch") {
+        if (navigator.onLine) {
+           console.error("Network Error (Server Unreachable)");
+           triggerServerDisconnect();
+        }
+      }
       console.error(
         `[HttpClient] Error en ${options.method || "GET"} ${url}:`,
         error

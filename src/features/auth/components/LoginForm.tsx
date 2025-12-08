@@ -48,7 +48,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onShowRegister, onGoogleMissingPr
                 : errorMsg === "EMAIL_NOT_CONFIRMED"
                 ? t("signin.errors.emailNotConfirmed")
                 : errorMsg === "NETWORK_ERROR"  
-                ? t("signin.errors.networkError", "Se perdió la conexión a Internet.")
+                ? t("signin.errors.networkError")
+                : errorMsg === "SERVER_ERROR" 
+                ? t("signin.errors.serverError")
               : errorMsg}
             </span>
           </div>
