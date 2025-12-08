@@ -1,7 +1,7 @@
 import { client } from "@infra/api/http/client";
 import type { PublicProfileDto } from "./profile.dto";
 import { mapPublicProfileToDomain } from "./profile.mappers";
-import { blobToBase64 } from "@core/utils/fileUtils";
+import { blobToBase64, compressImage } from "@core/utils/fileUtils";
 import type { TeamMember } from "@domain/entities/TeamMember";
 import type { ProfileRepository } from "@domain/repositories/ProfileRepository";
 import type { UserProfileDTO } from "@infra/external/auth/auth.dto"; 
@@ -17,7 +17,10 @@ export class ProfileApiRepository implements ProfileRepository {
       if (dto.profile_pic_id) { 
         try {
           const imageBlob = await client.getBlob(`/api/users/profiles/${userId}/avatar`);
-          avatarBase64 = await blobToBase64(imageBlob);
+          
+          const smallBlob = await compressImage(imageBlob, 150, 0.8); 
+          
+          avatarBase64 = await blobToBase64(smallBlob);
         } catch (error) {
           console.warn(`Error fetching avatar for ${userId}`, error);
         }
@@ -42,7 +45,10 @@ export class ProfileApiRepository implements ProfileRepository {
       if (profile && profile.profile_pic_id) {
         try {
           const imageBlob = await client.getBlob(`/api/users/profiles/${authId}/avatar`);
-          const base64Image = await blobToBase64(imageBlob);
+          
+          const smallBlob = await compressImage(imageBlob, 150, 0.8); 
+          
+          const base64Image = await blobToBase64(smallBlob);
           profile.profile_pic_id = base64Image;
         } catch (imageError) {
           console.warn("No se pudo descargar avatar:", imageError);

@@ -7,6 +7,7 @@ import { useProfilePage } from "../hooks/useProfilePage";
 import { EditProfileDialog } from "../components/EditProfileDialog";
 import { DeleteAccountDialog } from "../components/DeleteAccountDialog";
 import { DI } from "@app/di/container";
+import { compressImage } from "@core/utils/fileUtils";
 
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation("profile");
@@ -29,7 +30,11 @@ const ProfilePage: React.FC = () => {
         await DI.profileRepository.updateProfile(user.id, { bio: newBio });
       }
       if (newFile) {
-        await DI.profileRepository.uploadAvatar(user.id, newFile);
+        const compressedFile = await compressImage(newFile, 500, 0.8);
+        
+        const fileToSend = new File([compressedFile], newFile.name, { type: "image/jpeg" });
+
+        await DI.profileRepository.uploadAvatar(user.id, fileToSend);
       }
       
       window.location.reload();
