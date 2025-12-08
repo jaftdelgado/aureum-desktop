@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 import { createSignUpSchema, type SignUpFormData } from "../schemas/signUpSchema";
-import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
 import { RegisterUseCase } from "@domain/use-cases/auth/RegisterUseCase";
 import { GetSocialUserUseCase } from "@domain/use-cases/auth/GetSocialUserUseCase";
+import { DI } from "@app/di/container";
 
 const GOOGLE_AUTH_DUMMY_PASS = "Google_Auth_Dummy_123!";
 
@@ -40,11 +40,9 @@ export const useSignUpForm = (onShowLogin: () => void, isGoogleFlow: boolean) =>
   useEffect(() => {
     if (isGoogleFlow) {
       const loadData = async () => {
-        const repo = new AuthApiRepository();
-        const getSocialUser = new GetSocialUserUseCase(repo);
-        
+        const getSocialUser = new GetSocialUserUseCase(DI.authRepository);
         const socialUser = await getSocialUser.execute();
-
+        
         if (socialUser) {
           setValue("email", socialUser.email);
           setValue("password", GOOGLE_AUTH_DUMMY_PASS);
@@ -69,8 +67,7 @@ export const useSignUpForm = (onShowLogin: () => void, isGoogleFlow: boolean) =>
     setApiError(null);
     
     try {
-      const repo = new AuthApiRepository();
-      const registerUseCase = new RegisterUseCase(repo);
+      const registerUseCase = new RegisterUseCase(DI.authRepository);
       
       await registerUseCase.execute({
         ...data,

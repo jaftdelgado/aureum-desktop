@@ -1,14 +1,13 @@
-import { supabase } from "@infra/external/http/supabase";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { DI } from "@app/di/container";
 
 export const useOAuthLogin = () => {
+  const [loading, setLoading] = useState(false);
   const isElectron = typeof window !== 'undefined' && !!window.electronAPI;
 
   useEffect(() => {
     if (isElectron && window.electronAPI) {
        window.electronAPI.onAuthToken(async (url: string) => {
-          console.log("Token recibido en renderer:", url);
-
           const hashIndex = url.indexOf("#");
           if (hashIndex !== -1) {
             const params = new URLSearchParams(url.substring(hashIndex + 1));
@@ -16,44 +15,29 @@ export const useOAuthLogin = () => {
             const refreshToken = params.get("refresh_token");
 
             if (accessToken && refreshToken) {
-                const { error } = await supabase.auth.setSession({
-                    access_token: accessToken,
-                    refresh_token: refreshToken
-                });
-
-                if (error) {
-                    console.error("Error setting session:", error.message);
-                } else {
-                    window.location.reload();
-                }
-            }
+                try {
+                  await DI.authRepository.setSession(accessToken, refreshToken);
+                  window.location.reload();
+              } catch (error) {
+                  console.error("Error setting session:", error);
+              }
+          }
           }
        });
     }
   }, [isElectron]);
 
   const loginWithGoogle = async () => {
-    let redirectTo = window.location.origin;     
-    if (isElectron) {
-        redirectTo = "aureum://auth/callback";
-    } else if (import.meta.env.DEV) {
-        redirectTo = "http://localhost:5173/";
-    }
-
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { 
-        redirectTo,
-        skipBrowserRedirect: isElectron 
-      },
-    });
-
-    if (error) throw new Error(error.message);
-
-    if (isElectron && data?.url) {
-        window.open(data.url, '_blank'); 
+    setLoading(true);
+    try {
+      await DI.authRepository.loginWithGoogle();
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
-  return { loginWithGoogle };
+  return { loginWithGoogle, loading };
 };
