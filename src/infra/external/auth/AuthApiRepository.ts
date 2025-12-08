@@ -29,7 +29,15 @@ export class AuthApiRepository implements AuthRepository {
     } catch (error) {
       console.warn("Error al cerrar sesión en Supabase, limpiando localmente...", error);
     } finally {
-      if (typeof sessionStorage !== "undefined") sessionStorage.clear();
+      if (typeof sessionStorage !== "undefined") {
+        const existingReason = sessionStorage.getItem("logout_reason");
+        
+        sessionStorage.clear();
+        
+        if (existingReason) {
+          sessionStorage.setItem("logout_reason", existingReason);
+        }
+      }
       if (typeof localStorage !== "undefined") {
         const preferences: Record<string, string | null> = {};
         PRESERVED_KEYS.forEach(key => {

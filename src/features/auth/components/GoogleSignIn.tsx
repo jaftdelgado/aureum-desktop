@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@core/ui/Button";
-import GoogleLogo from "@features/auth/resources/svg/google.svg";
+import { Icon } from "@iconify/react";
 import { useOAuthLogin } from "@features/auth/hooks/useOAuthLogin";
 import { DI } from "@app/di/container";
 import { GetSessionUseCase } from "@domain/use-cases/auth/GetSessionUseCase";
@@ -47,10 +47,12 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({ onMissingProfile }) => {
     <Button
       variant="secondary"
       type="button"
+      size="lg"
       alignText="center"
       onClick={handleClick}
       disabled={checking}
-      iconNode={<img src={GoogleLogo} alt="Google Logo" className="w-5 h-5" />}
+      className="w-full text-sm font-medium" 
+      iconNode={<Icon icon="logos:google-icon" width={18} height={18} />}
     >
       {checking ? t("common.loading") : t("signin.continueWithGoogle")}
     </Button>

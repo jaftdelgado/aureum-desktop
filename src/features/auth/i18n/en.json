@@ -19,6 +19,7 @@
     "googleFlowMessage": "Hi there! We just need a bit more info to finish up.",
     "googleFlowSubtitle": "Set up your profile to continue.",
     "errors": {
+      "networkError": "Session closed due to loss of internet connection.",
       "identifierRequired": "Email or username is required",
       "passwordRequired": "Password is required",
       "invalidCredentials": "Email or password is incorrect. Please try again.",
