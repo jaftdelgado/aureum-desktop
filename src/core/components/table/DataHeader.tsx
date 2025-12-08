@@ -39,67 +39,45 @@ export default function DataHeader<T>({
     });
 
   return (
-    <thead className="bg-card border-b border-outline">
-      <tr>
-        {selectable && (
-          <th
-            className={`px-3 ${denseClass} text-body text-secondaryText font-medium whitespace-nowrap border-b border-outline`}
-            style={{
-              width: "48px",
-              minWidth: "48px",
-              boxSizing: "border-box",
-            }}
-          >
-            <div className="flex items-center justify-center">
-              <Checkbox
-                checked={allSelected}
-                onChange={onToggleSelectAll}
-                size="sm"
+    <tr className="bg-card border-b border-outline">
+      {selectable && (
+        <th
+          className={`px-3 ${denseClass} text-body text-secondaryText font-medium whitespace-nowrap border-r border-outline`}
+          style={{ width: "48px", minWidth: "48px" }}
+        >
+          <div className="flex items-center justify-center">
+            <Checkbox
+              checked={allSelected}
+              onChange={onToggleSelectAll}
+              size="sm"
+            />
+          </div>
+        </th>
+      )}
+
+      {columns.map((col, colIndex) => (
+        <th
+          key={String(col.key)}
+          className={`px-3 ${denseClass} text-secondaryText font-medium whitespace-nowrap border-r border-outline ${
+            col.sortable ? "cursor-pointer select-none" : ""
+          }`}
+          style={{
+            width: col.width ?? "auto",
+            minWidth: col.width ?? "80px",
+          }}
+          onClick={() => col.sortable && onSort(col)}
+        >
+          <div className="flex items-center text-body justify-between overflow-hidden whitespace-nowrap">
+            <span className="truncate">{col.header}</span>
+            {col.sortable && (
+              <Icon
+                icon="lucide:chevrons-up-down"
+                className="w-4 h-4 flex-shrink-0 ml-2"
               />
-            </div>
-          </th>
-        )}
-
-        {columns.map((col, colIndex) => {
-          const isFirst = colIndex === 0;
-          const isLast = colIndex === columns.length - 1;
-
-          let marginClass = "";
-          if (selectable && isFirst) {
-            marginClass = "ml-2";
-          } else if (isFirst) {
-            marginClass = "ml-2";
-          }
-          if (isLast) {
-            marginClass += " mr-2";
-          }
-
-          return (
-            <th
-              key={String(col.key)}
-              className={`px-3 ${denseClass} text-body text-secondaryText font-medium whitespace-nowrap border-b border-outline border-l ${marginClass} ${
-                col.sortable ? "cursor-pointer select-none" : ""
-              }`}
-              style={{
-                width: col.width ?? "auto",
-                minWidth: col.width ?? "80px",
-                boxSizing: "border-box",
-              }}
-              onClick={() => col.sortable && onSort(col)}
-            >
-              <div className="flex items-center justify-between overflow-hidden whitespace-nowrap">
-                <span className="truncate">{col.header}</span>
-                {col.sortable && (
-                  <Icon
-                    icon="lucide:chevrons-up-down"
-                    className="text-secondaryText w-4 h-4 flex-shrink-0 ml-2"
-                  />
-                )}
-              </div>
-            </th>
-          );
-        })}
-      </tr>
-    </thead>
+            )}
+          </div>
+        </th>
+      ))}
+    </tr>
   );
 }

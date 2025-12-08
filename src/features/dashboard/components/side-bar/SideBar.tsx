@@ -57,7 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`flex flex-col w-60 h-full bg-panel text-white p-4 border-r border-outline ${className}`}
+      className={`flex flex-col w-60 h-full bg-sidebarBg text-white p-4 border-r border-outline ${className}`}
     >
       <SidebarHeader />
 

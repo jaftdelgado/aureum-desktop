@@ -46,6 +46,7 @@ const TeamSettingsLayout: React.FC = () => {
 
   return (
     <div className="w-full h-full flex flex-col">
+      <div id="page-top-sentinel" className="h-px w-full" />
       <PageHeader
         title={t("title")}
         description={t("description")}
