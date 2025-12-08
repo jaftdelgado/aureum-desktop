@@ -1,4 +1,50 @@
 {
-    "title": "Portafolio",
-    "description": "Consulta el portafolio de activos financieros, visualiza el saldo actual, monitorea las posiciones y revisa el historial de movimientos."
+  "title": "Portafolio",
+  "description": "Gestiona tus inversiones y analiza tu rendimiento.",
+  "selectTeam": "Selecciona un equipo.",
+  "loading": "Cargando portafolio...",
+  "assetNotFound": "No se encontró la información del activo seleccionado.",
+  "myAssets": {
+    "title": "Mis Activos",
+    "subtitle": "Haz clic en un activo para ver sus movimientos"
+  },
+  "table": {
+    "symbol": "Símbolo",
+    "asset": "Activo",
+    "quantity": "Cantidad",
+    "average": "Promedio",
+    "currentValue": "Valor Actual",
+    "pnlCurrency": "P/L ($)",
+    "pnlPercent": "P/L (%)"
+  },
+  "empty": {
+    "generic": "No tienes activos en este curso.",
+    "withTeam": "No tienes activos"
+  },
+  "history": {
+    "title": "Historial de {{symbol}}",
+    "close": "Cerrar",
+    "empty": "No hay movimientos registrados.",
+    "type": {
+      "buy": "COMPRA",
+      "sell": "VENTA"
+    },
+    "price": "Precio",
+    "quantity": "Cantidad",
+    "totalOperation": "Total Operación",
+    "pnl": "Ganancia/Pérdida"
+  },
+  "chart": {
+    "title": "Rendimiento por Activo",
+    "subtitle": "Distribución de Ganancias y Pérdidas (P&L)",
+    "totalPnl": "PnL Total No Realizado",
+    "tooltip": {
+      "profit": "GANANCIA",
+      "loss": "PÉRDIDA",
+      "quantity": "Cantidad:",
+      "avgPrice": "Precio Promedio:",
+      "currentPrice": "Precio Actual:",
+      "netPnl": "PnL Neto:"
+    }
+  }
 }
