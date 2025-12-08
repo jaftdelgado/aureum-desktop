@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@app/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { LoginUseCase } from "@domain/use-cases/auth/LoginUseCase";
@@ -13,6 +13,14 @@ export const useLoginForm = () => {
   
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
+  useEffect(() => {
+    const reason = sessionStorage.getItem("logout_reason");
+    if (reason === "NETWORK_ERROR") {
+      setErrorMsg("NETWORK_ERROR"); 
+      sessionStorage.removeItem("logout_reason"); 
+    }
+  }, []);
+
   const handleSubmit = async (data: LoginFormData) => {
     setLoading(true);
     setErrorMsg(null);
@@ -23,8 +31,8 @@ export const useLoginForm = () => {
     if (!result.success) {
       const formattedErrors: Record<string, string> = {};
       result.error.issues.forEach((issue: { path: { toString: () => string | number; }[]; message: string; }) => {
-        if (issue.path[0]) {
-          formattedErrors[issue.path[0].toString()] = issue.message;
+      if (issue.path[0]) {
+        formattedErrors[issue.path[0].toString()] = issue.message;
         }
       });
       setFieldErrors(formattedErrors);
@@ -32,25 +40,25 @@ export const useLoginForm = () => {
       return;
     }
 
-    try {
-      const loginUseCase = new LoginUseCase(DI.authRepository, DI.profileRepository);
-      const user = await loginUseCase.execute(data.email, data.password);
-      setUser(user); 
-    } catch (error: any) {
-      const message = error.message || "";
-      console.error("Login error:", message);
+      try {
+        const loginUseCase = new LoginUseCase(DI.authRepository, DI.profileRepository);
+        const user = await loginUseCase.execute(data.email, data.password);
+        setUser(user); 
+      } catch (error: any) {
+        const message = error.message || "";
+        console.error("Login error:", message);
 
-      if (message.includes("Invalid login credentials")) {
-        setErrorMsg("INVALID_CREDENTIALS");
-      } else if (message.includes("Email not confirmed")) {
-        setErrorMsg("EMAIL_NOT_CONFIRMED");
-      } else {
-        setErrorMsg(message); 
+        if (message.includes("Invalid login credentials")) {
+          setErrorMsg("INVALID_CREDENTIALS");
+        } else if (message.includes("Email not confirmed")) {
+          setErrorMsg("EMAIL_NOT_CONFIRMED");
+        } else {
+          setErrorMsg(message); 
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
   return {
     loading,
