@@ -107,7 +107,7 @@ export const useSignUpForm = (onShowLogin: () => void, isGoogleFlow: boolean) =>
         if (isValid) {
             handleSubmit(onSubmit, (formErrors) => {
                 if (formErrors.firstName || formErrors.lastName) {
-                    setApiError("Por favor verifica tu nombre y apellido.");
+                    setApiError(t("signup.errors.checkName"));
                     setCurrentStep(1);
                 }
             })();
