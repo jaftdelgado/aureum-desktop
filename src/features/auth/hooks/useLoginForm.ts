@@ -1,12 +1,9 @@
 import { useState} from "react";
 import { useAuth } from "@app/hooks/useAuth";
 import { useTranslation } from "react-i18next";
-import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
 import { LoginUseCase } from "@domain/use-cases/auth/LoginUseCase";
 import { createLoginSchema, type LoginFormData } from "../schemas/loginSchema";
-
-const authRepo = new AuthApiRepository();
-const loginUseCase = new LoginUseCase(authRepo);
+import { DI } from "@app/di/container";
 
 export const useLoginForm = () => {
   const { t } = useTranslation("auth");
@@ -36,6 +33,7 @@ export const useLoginForm = () => {
     }
 
     try {
+      const loginUseCase = new LoginUseCase(DI.authRepository);
       const user = await loginUseCase.execute(data.email, data.password);
       setUser(user); 
     } catch (error: any) {

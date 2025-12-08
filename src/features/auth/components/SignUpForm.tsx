@@ -1,155 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { Controller } from "react-hook-form";
 import { Input } from "@core/ui/Input";
 import { Label } from "@core/ui/Label";
 import { Stepper } from "@core/ui/Stepper"; 
 import { ToggleSelection } from "@core/ui/ToggleSelection"; 
 import { Button } from "@core/ui/Button";
-import { AuthApiRepository } from "@infra/external/auth/AuthApiRepository";
-import { createSignUpSchema, type SignUpFormData } from "../schemas/signUpSchema";
-import { supabase } from "@infra/external/http/supabase"; 
 import { PasswordStrength } from "./PasswordStrength";
 import { Icon } from "@iconify/react";
+import { useSignUpForm } from "../hooks/useSignUpForm"; // 👇 Importamos el hook
 
 interface SignUpFormProps {
   onShowLogin: () => void;
   isGoogleFlow?: boolean; 
 }
 
-const GOOGLE_AUTH_DUMMY_PASS = "Google_Auth_Dummy_123!";
-
-const authRepo = new AuthApiRepository();
-
 const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = false }) => {
-  const { t } = useTranslation("auth");
-  const [showPassword, setShowPassword] = useState(false);
-  
-  const [currentStep, setCurrentStep] = useState(1);
-  
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [apiError, setApiError] = useState<string | null>(null);
-
   const {
+    t,
     control,
-    handleSubmit,
-    trigger,
-    setValue, 
+    errors,
+    apiError,
+    currentStep,
+    setCurrentStep,
+    isSubmitting,
+    showPassword,
+    togglePassword,
+    handleNext,
     watch,
-    setError,
-    formState: { errors },
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(createSignUpSchema((key) => t(key))),
-    defaultValues: {
-      accountType: "student",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      firstName: "",
-      lastName: "",
-      username: ""
-    }
-  });
+    shouldHideBackButton
+  } = useSignUpForm(onShowLogin, isGoogleFlow);
 
   const watchedPassword = watch("password");
-  const togglePassword = () => setShowPassword(!showPassword);
-
-  useEffect(() => {
-    if (isGoogleFlow) {
-      const loadGoogleData = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (user) {
-          const email = user.email || "";
-          const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "";
-          
-          const nameParts = fullName.split(" ").filter(Boolean);
-          const firstName = nameParts[0] || "";
-          const lastName = nameParts.slice(1).join(" ") || "";
-
-          setValue("email", email);
-          
-          setValue("password", GOOGLE_AUTH_DUMMY_PASS);
-          setValue("confirmPassword", GOOGLE_AUTH_DUMMY_PASS);
-
-          if (firstName.length >= 2 && lastName.length >= 2) {
-            setValue("firstName", firstName);
-            setValue("lastName", lastName);
-            setCurrentStep(2);
-          } else {
-            setValue("firstName", firstName);
-            if (lastName) setValue("lastName", lastName);
-            console.log("Faltan datos de nombre/apellido, solicitando al usuario...");
-          }
-        }
-      };
-      
-      loadGoogleData();
-    }
-  }, [isGoogleFlow, setValue]);
-
-  const onSubmit = async (data: SignUpFormData) => {
-    setIsSubmitting(true);
-    setApiError(null);
-    try {
-      await authRepo.register({
-        ...data,
-        isGoogle: isGoogleFlow,
-      });
-      setCurrentStep(4);
-    } catch (error: any) {
-      const errorMessage = error.message || "";
-      
-      if (errorMessage.includes("already registered") || errorMessage.includes("already exists")) {
-        setCurrentStep(1);
-        setError("email", {
-          type: "manual",
-          message: t("signup.errors.emailAlreadyRegistered"),
-        });
-      } else {
-        setApiError(errorMessage);
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleNext = async () => {
-    let isValid = false;
-    
-    if (currentStep === 1) isValid = await trigger(["firstName", "lastName", "email"]);
-    if (currentStep === 2) isValid = await trigger(["username", "accountType"]);
-    
-    if (currentStep === 3) {
-        isValid = await trigger(["password", "confirmPassword"]);
-        if (isValid) handleSubmit(onSubmit)();
-        return;
-    }
-
-    if (currentStep === 2 && isGoogleFlow) {
-        if (isValid) {
-            handleSubmit(
-              onSubmit, 
-              (formErrors) => {
-                console.error("Errores de validación ocultos:", formErrors);
-                if (formErrors.firstName || formErrors.lastName) {
-                    setApiError("Por favor verifica tu nombre y apellido.");
-                    setCurrentStep(1);
-                }
-                if (formErrors.password) {
-                    setApiError("Error interno de validación (password). Contacta soporte.");
-                }
-              }
-            )();
-        }
-        return;
-    }
-
-    if (isValid) setCurrentStep((prev) => prev + 1);
-  };
-
-  const shouldHideBackButton = isGoogleFlow && currentStep === 2 && !errors.firstName && !errors.lastName;
 
   return (
     <div className="w-full max-w-[400px] p-6 bg-surface rounded-xl border border-border">

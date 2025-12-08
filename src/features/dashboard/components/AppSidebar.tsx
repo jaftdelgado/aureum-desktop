@@ -153,6 +153,7 @@ export const AppSidebar: React.FC = () => {
                 variant="default"
                 className="bg-red-600 hover:bg-red-700 text-white"
                 onClick={confirmLogout}
+                disabled ={isLoggingOut}
               >
                 {isLoggingOut
                   ? "Cerrando..."

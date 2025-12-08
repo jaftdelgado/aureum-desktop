@@ -1,11 +1,15 @@
-// src/domain/repositories/AuthRepository.ts
-import type { RegisterData } from "@infra/external/auth/AuthApiRepository";
+import type { SocialUser } from "../entities/SocialUser";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 
 export interface AuthRepository {
   login(email: string, password: string): Promise<LoggedInUser>;
   logout(): Promise<void>;
   getSession(): Promise<LoggedInUser | null>;
-  register(data: RegisterData): Promise<void>;
+  setSession(accessToken: string, refreshToken: string): Promise<void>;
+  register(data: any): Promise<void>;
   checkProfileExists(authId: string): Promise<boolean>;
+  checkSessionAlive(): Promise<boolean>;
+  getPendingSocialUser(): Promise<SocialUser | null>;
+  loginWithGoogle(): Promise<void>;
+  onAuthStateChange(callback: (user: LoggedInUser | null) => void): () => void;
 }

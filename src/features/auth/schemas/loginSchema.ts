@@ -6,12 +6,12 @@ export const createLoginSchema = (t: (key: string) => string) => {
       .string()
       .trim() 
       .min(1, { message: t("signin.errors.identifierRequired") })
-      .max(254, { message: t("signin.errors.identifierMax") }), // Validación: Longitud
+      .max(254, { message: t("signin.errors.identifierMax") }), 
 
     password: z
       .string()
       .min(1, { message: t("signin.errors.passwordRequired") })
-      .max(64, { message: t("signin.errors.passwordMax") }), // Validación: Longitud
+      .max(64, { message: t("signin.errors.passwordMax") }), 
   });
 };
 
