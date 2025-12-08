@@ -21,11 +21,11 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({ onMissingProfile }) => {
       setChecking(true);
       await loginWithGoogle();
       
-      const getSession = new GetSessionUseCase(DI.authRepository);
+      const getSession = new GetSessionUseCase(DI.authRepository, DI.profileRepository);
       const user = await getSession.execute();
       
       if (user) {
-        const checkProfile = new CheckProfileExistsUseCase(DI.authRepository);
+        const checkProfile = new CheckProfileExistsUseCase(DI.profileRepository);
         const exists = await checkProfile.execute(user.id);
         
         if (!exists && onMissingProfile) {
