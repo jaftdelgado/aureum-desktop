@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Loading..."
+  },
   "title": "Settings",
   "description": "Manage selected team preferences, update its information, manage members, and configure the simulator.",
   "settings": {
@@ -21,7 +24,7 @@
     "studentsListDesc": "Manage access for currently enrolled students.",
     "confirmDelete": "Are you sure you want to remove this member?",
     "professorFallback": "Professor",
-    "loading": "Loading students...",
+    "loading": "Loading...",
     "adminNotFound": "Admin not found",
     "noClassmates": "There are no other classmates in this team.",
     "removeAria": "Remove {{name}}"
