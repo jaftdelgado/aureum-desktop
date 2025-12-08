@@ -4,6 +4,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
   windowAction: (action) => ipcRenderer.send("window-action", action),
 
   onAuthToken: (callback) => {
-    ipcRenderer.on("supabase-auth-token", (_event, url) => callback(url));
+    const handler = (_event, url) => callback(url);
+    
+    ipcRenderer.on("supabase-auth-token", handler);
+    
+    return () => ipcRenderer.removeListener("supabase-auth-token", handler);
   },
 });

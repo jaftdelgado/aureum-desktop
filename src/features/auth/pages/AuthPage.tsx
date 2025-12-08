@@ -36,7 +36,7 @@ const AuthPage: React.FC = () => {
             setShowRegister(true);
           }
         } catch (error) {
-          console.error("Error verificando perfil:", error);
+          await logout();
         } finally {
           setCheckingProfile(false);
         }
@@ -46,7 +46,7 @@ const AuthPage: React.FC = () => {
     if (!authLoading) {
       verifyProfile();
     }
-  }, [user, authLoading, navigate, showRegister]);
+  }, [user, authLoading, navigate, showRegister, logout]);
 
   const handleShowRegister = async () => {
     if (user) {
