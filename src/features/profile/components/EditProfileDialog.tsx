@@ -89,7 +89,7 @@ export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
             <Label>{t("labels.bio")}</Label>
             <textarea
               className="flex min-h-[80px] w-full rounded-lg border border-input bg-surface px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
-              placeholder="Cuéntanos sobre ti..."
+              placeholder={t("modals.edit.bioPlaceholder")}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               maxLength={120}
