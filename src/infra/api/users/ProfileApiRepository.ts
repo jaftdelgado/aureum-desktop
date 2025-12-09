@@ -32,7 +32,12 @@ export class ProfileApiRepository implements ProfileRepository {
         avatarUrl: avatarBase64 
       };
       
-    } catch (error) {
+    } catch (error: any) {
+      if (error.status === 404 || error.message?.includes("Not Found")) {
+        console.warn(`Perfil no encontrado para usuario ${userId}, omitiendo.`);
+        return null; 
+      }
+      
       console.error(`Error fetching public profile for ${userId}:`, error);
       return null;
     }
