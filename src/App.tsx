@@ -8,6 +8,7 @@ import { supabase } from "@infra/external/http/supabase";
 import "@core/design/theme.css";
 import "@core/design/text-sizes.css";
 import "@core/design/design-tokens.css";
+import { Toaster } from "@core/ui/Toaster";
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -25,6 +26,7 @@ const App: React.FC = () => {
       <QueryProvider>
         <SelectedTeamProvider>
           <AppRouter />
+          <Toaster position="bottom-right" />
         </SelectedTeamProvider>
       </QueryProvider>
     </AuthProvider>
