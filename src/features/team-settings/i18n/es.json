@@ -1,6 +1,8 @@
 {
   "common": {
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "copied": "Copiado",
+    "copy": "Copiar"
   },
   "title": "Configuración",
   "description": "Administra las preferencias del equipo seleccionado, actualiza su información, gestiona a los participantes y configura el simulador.",
@@ -27,7 +29,10 @@
     "loading": "Cargando...",
     "adminNotFound": "Admin no encontrado",
     "noClassmates": "No hay otros compañeros en este equipo.",
-    "removeAria": "Eliminar a {{name}}"
+    "removeAria": "Eliminar a {{name}}",
+    "removeSuccess": "Miembro eliminado",
+    "removeSuccessDesc": "El estudiante ha sido removido del equipo exitosamente.",
+    "removeFailed": "No se pudo eliminar al miembro. Intenta nuevamente."
   },
   "roles": {
     "professor": "Profesor",

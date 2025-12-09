@@ -11,7 +11,8 @@
     "cancel": "Cancel",
     "join": "Join",
     "joining": "Joining",
-    "success": "You have join to the course!"
+    "success": "You have join to the course!",
+    "successDesc": "You now have access to the course content."
   },
   "errors": {
     "generic": "An unexpected error occurred.",
