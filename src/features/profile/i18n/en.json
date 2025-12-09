@@ -17,7 +17,8 @@
       "message": "Update your picture and biography",
       "cancel": "Cancel",
       "save": "Save changes",
-      "saving": "Saving"
+      "saving": "Saving",
+      "bioPlaceholder": "Tell us about yourself..."
     }
   },
   "roles": {
