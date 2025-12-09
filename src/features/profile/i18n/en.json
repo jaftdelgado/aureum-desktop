@@ -41,6 +41,8 @@
   "errors": {
     "saveFailed": "Error saving changes",
     "tryAgain": "Could not save changes. Please try again.",
-    "deleteFailed": "Could not delete account. Please try again later."
+    "deleteFailed": "Could not delete account. Please try again later.",
+    "fileTooLarge": "File is too large (Max 2MB).",
+    "invalidFileType": "Unsupported format. Only images (JPG, PNG) are allowed."
   }
 }
