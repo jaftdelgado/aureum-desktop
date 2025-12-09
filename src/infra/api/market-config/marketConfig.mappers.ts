@@ -35,6 +35,6 @@ export const mapMarketConfigEntityToDTO = (
   dividend_impact: entity.dividendImpact,
   crash_impact: entity.crashImpact,
   allow_short_selling: entity.allowShortSelling,
-  created_at: entity.createdAt.toISOString(),
-  updated_at: entity.updatedAt.toISOString(),
+  created_at: entity.createdAt?.toISOString(),
+  updated_at: entity.updatedAt?.toISOString(),
 });
