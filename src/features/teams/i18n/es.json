@@ -14,7 +14,8 @@
     "success": "¡Te has unido al curso exitosamente!"
   },
   "errors": {
-    "generic": "Ocurrió un error al intentar unirse.",
+    "generic": "Ocurrió un error inesperado.",
+    "createFailed": "No se pudo crear el curso. Intenta nuevamente.",
     "invalidCode": "Código de curso no válido.",
     "alreadyMember": "Ya eres miembro de este curso.",
     "required": "El código es requerido."
@@ -23,5 +24,19 @@
   "card": {
     "defaultImageText": "Curso",
     "noDescription": "Sin descripción"
+  },
+  "createModal": {
+    "title": "Crear nuevo curso",
+    "message": "Configura los detalles básicos de tu nuevo equipo de trabajo.",
+    "uploadImage": "Subir imagen de portada",
+    "nameLabel": "Nombre del curso",
+    "namePlaceholder": "Ej. Finanzas Corporativas 2025",
+    "descLabel": "Descripción",
+    "descPlaceholder": "Breve descripción del objetivo del curso...",
+    "cancel": "Cancelar",
+    "create": "Crear Curso",
+    "creating": "Creando...",
+    "success": "Curso creado exitosamente",
+    "successDesc": "El curso \"{{name}}\" ha sido creado exitosamente, recuerda configurarlo!."
   }
 }

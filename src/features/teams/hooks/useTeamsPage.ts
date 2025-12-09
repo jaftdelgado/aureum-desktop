@@ -5,13 +5,15 @@ import { JoinTeamUseCase } from "@domain/use-cases/teams/JoinTeamUseCase";
 import { useTeamsList } from "./useTeamsList";
 import { DI } from "@app/di/container";
 import { useTranslation } from "react-i18next";
+import { CreateTeamUseCase } from "@domain/use-cases/teams/CreateTeamUseCase";
+import { toast } from "sonner";
 
 export const useTeamsPage = () => {
   const { t } = useTranslation("teams");
   const { user } = useAuth();
   const { data: teams, isLoading } = useTeamsList();
   const queryClient = useQueryClient();
-
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [joinCode, setJoinCode] = useState("");
   const [isJoining, setIsJoining] = useState(false);
@@ -24,6 +26,34 @@ export const useTeamsPage = () => {
     setJoinError(null);
     setSuccessMsg(null);
     setShowJoinModal(true);
+  };
+
+  const handleCreateCourse = async (data: { name: string; description: string; image: File | null }) => {
+    if (!user) return;
+
+    try {
+      const createUseCase = new CreateTeamUseCase(DI.teamsRepository);
+      
+      await createUseCase.execute({
+        professorId: user.id,
+        name: data.name,
+        description: data.description,
+        image: data.image
+      });
+
+      await queryClient.invalidateQueries({ queryKey: ["teams", user.id] });
+      
+      toast.success(t("createModal.success"), {
+        description: t("createModal.successDesc", { name: data.name }),
+      });
+
+    } catch (error) {
+      console.error("Error creating team:", error);
+      toast.error(t("errors.generic"), {
+        description: t("errors.createFailed")
+      });
+      throw error; 
+    }
   };
 
   const handleCloseModal = () => {
@@ -78,5 +108,10 @@ export const useTeamsPage = () => {
     handleOpenModal,
     handleCloseModal,
     handleJoinCourse,
+
+    showCreateModal,
+    setShowCreateModal,
+    handleCreateCourse,
+    t
   };
 };

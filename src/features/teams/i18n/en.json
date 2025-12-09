@@ -14,14 +14,29 @@
     "success": "You have join to the course!"
   },
   "errors": {
-    "generic": "Problems joining the course.",
+    "generic": "An unexpected error occurred.",
     "invalidCode": "Invalid access code.",
     "alreadyMember": "You are already member.",
-    "required": "The access code is required."
+    "required": "The access code is required.",
+    "createFailed": "Could not create the course. Please try again."
   },
   "emptyState": "You don't have any courses yet.",
   "card": {
     "defaultImageText": "Course",
     "noDescription": "No description"
+  },
+  "createModal": {
+    "title": "Create New Course",
+    "message": "Configure the basic details for your new team.",
+    "uploadImage": "Upload Cover Image",
+    "nameLabel": "Course Name",
+    "namePlaceholder": "Ex. Corporate Finance 2025",
+    "descLabel": "Description",
+    "descPlaceholder": "Brief description of the course objective...",
+    "cancel": "Cancel",
+    "create": "Create Course",
+    "creating": "Creating...",
+    "success": "Course created successfully",
+    "successDesc": "The course \"{{name}}\" has been created, remember select your preferences."
   }
 }
