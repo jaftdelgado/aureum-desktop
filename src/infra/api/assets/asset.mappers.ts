@@ -2,7 +2,10 @@
 import type { AssetDTO, PaginatedResultDTO } from "@infra/api/assets/asset.dto";
 import type { Asset } from "@domain/entities/Asset";
 
-export const mapAssetDTOToEntity = (dto: AssetDTO): Asset => ({
+export const mapAssetDTOToEntity = (
+  dto: AssetDTO,
+  selectedAssetIds: string[] = []
+): Asset => ({
   assetId: dto.assetId,
   publicId: dto.publicId,
   assetName: dto.assetName,
@@ -24,11 +27,13 @@ export const mapAssetDTOToEntity = (dto: AssetDTO): Asset => ({
     : null,
   createdAt: new Date(dto.createdAt),
   updatedAt: new Date(dto.updatedAt),
+  isSelected: selectedAssetIds.includes(dto.publicId),
 });
 
 export const mapPaginatedAssetsDTOToEntity = (
-  dto: PaginatedResultDTO<AssetDTO>
+  dto: PaginatedResultDTO<AssetDTO>,
+  selectedAssetIds: string[] = []
 ) => ({
-  data: dto.data.map(mapAssetDTOToEntity),
+  data: dto.data.map((asset) => mapAssetDTOToEntity(asset, selectedAssetIds)),
   meta: dto.meta,
 });

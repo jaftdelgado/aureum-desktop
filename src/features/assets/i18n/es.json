@@ -1,4 +1,6 @@
 {
+  "title": "Activos Financieros",
+  "description": "Gestiona tu mercado simulado, añade activos y explora todos los activos disponibles.",
   "assetCategory": {
     "Tech": "Tecnología",
     "Healthcare": "Salud",
@@ -13,7 +15,7 @@
     "Utilities": "Servicios Públicos",
     "Layer1": "Capa 1",
     "Layer2": "Capa 2",
-    "DeFi": "Finanzas Descentralizadas",
+    "DeFi": "Fin. Descentralizadas",
     "Stablecoin": "Stablecoin",
     "Gaming": "Videojuegos",
     "AI-BigData": "IA & Big Data",

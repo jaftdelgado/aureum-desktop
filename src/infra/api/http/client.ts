@@ -3,7 +3,7 @@ import { ENV } from "@app/config/env";
 
 interface RequestOptions extends RequestInit {
   data?: unknown;
-  params?: Record<string, string>;
+  params?: Record<string, string | string[]>;
 }
 
 const triggerServerDisconnect = () => {
@@ -19,11 +19,6 @@ export class HttpError extends Error {
     this.status = status;
     this.name = "HttpError";
   }
-}
-
-interface RequestOptions extends RequestInit {
-  data?: unknown;
-  params?: Record<string, string>;
 }
 
 export class HttpClient {
@@ -46,14 +41,28 @@ export class HttpClient {
     return headers;
   }
 
-  async request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+  private buildUrl(
+    endpoint: string,
+    params?: Record<string, string | string[]>
+  ): string {
     const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+    const url = new URL(`${this.baseUrl}${cleanEndpoint}`);
 
-    let url = `${this.baseUrl}${cleanEndpoint}`;
-    if (options.params) {
-      const query = new URLSearchParams(options.params).toString();
-      url += `?${query}`;
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((v) => url.searchParams.append(key, v));
+        } else if (value !== undefined && value !== null) {
+          url.searchParams.append(key, value);
+        }
+      });
     }
+
+    return url.toString();
+  }
+
+  async request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+    const url = this.buildUrl(endpoint, options.params);
 
     const authHeaders = await this.getAuthHeaders();
     const isFormData = options.data instanceof FormData;
@@ -68,8 +77,8 @@ export class HttpClient {
     };
 
     if (options.data) {
-      config.body = isFormData 
-        ? (options.data as FormData) 
+      config.body = isFormData
+        ? (options.data as FormData)
         : JSON.stringify(options.data);
     }
 
@@ -79,7 +88,7 @@ export class HttpClient {
       if (response.status >= 500) {
         console.error(`Server Error ${response.status}:`, response.statusText);
         triggerServerDisconnect();
-        
+
         throw new HttpError(response.status, "Server Unavailable");
       }
 
@@ -91,13 +100,13 @@ export class HttpClient {
           errorData = { detail: response.statusText };
         }
 
-        let errorMessage = 
-          errorData.detail || 
-          errorData.message || 
+        let errorMessage =
+          errorData.detail ||
+          errorData.message ||
           `Error HTTP ${response.status}`;
 
-        if (typeof errorMessage === 'object') {
-            errorMessage = JSON.stringify(errorMessage);
+        if (typeof errorMessage === "object") {
+          errorMessage = JSON.stringify(errorMessage);
         }
 
         throw new HttpError(response.status, errorMessage as string);
@@ -108,8 +117,8 @@ export class HttpClient {
     } catch (error) {
       if (error instanceof TypeError && error.message === "Failed to fetch") {
         if (navigator.onLine) {
-           console.error("Network Error (Server Unreachable)");
-           triggerServerDisconnect();
+          console.error("Network Error (Server Unreachable)");
+          triggerServerDisconnect();
         }
       }
       console.error(
@@ -139,7 +148,7 @@ export class HttpClient {
 
   get<T>(
     endpoint: string,
-    params?: Record<string, string>,
+    params?: Record<string, string | string[]>,
     options?: RequestOptions
   ) {
     return this.request<T>(endpoint, { ...options, method: "GET", params });

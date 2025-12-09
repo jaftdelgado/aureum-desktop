@@ -2,12 +2,14 @@ import React, { type ReactNode } from "react";
 
 type LabelVariant = "header" | "subtitle" | "headline" | "body" | "small";
 type LabelColor = "primary" | "secondary" | "destructive";
+type LabelWeight = "thin" | "light" | "normal" | "medium" | "semibold" | "bold";
 
 interface LabelProps {
   children: ReactNode;
   variant?: LabelVariant;
   color?: LabelColor;
   className?: string;
+  weight?: LabelWeight;
 }
 
 export const Label: React.FC<LabelProps> = ({
@@ -15,6 +17,7 @@ export const Label: React.FC<LabelProps> = ({
   variant = "body",
   color = "primary",
   className = "",
+  weight,
 }) => {
   const colorClasses: Record<LabelColor, string> = {
     primary: "text-primaryText",
@@ -30,7 +33,22 @@ export const Label: React.FC<LabelProps> = ({
     small: "text-small font-normal leading-small",
   };
 
-  const classes = [variantClasses[variant], colorClasses[color], className]
+  const weightClasses: Record<LabelWeight, string> = {
+    thin: "font-thin",
+    light: "font-light",
+    normal: "font-normal",
+    medium: "font-medium",
+    semibold: "font-semibold",
+    bold: "font-bold",
+  };
+
+  const variantBaseClass = variantClasses[variant];
+
+  const finalVariantClass = weight
+    ? variantBaseClass.replace(/font-\w+/g, weightClasses[weight])
+    : variantBaseClass;
+
+  const classes = [finalVariantClass, colorClasses[color], className]
     .filter(Boolean)
     .join(" ");
 

@@ -13,7 +13,10 @@ import {
 import type { Asset } from "@domain/entities/Asset";
 
 export class AssetApiRepository implements AssetRepository {
-  async getAssets(query: GetAssetsQueryDTO): Promise<{
+  async getAssets(
+    query: GetAssetsQueryDTO,
+    selectedAssetIds: string[] = []
+  ): Promise<{
     data: Asset[];
     meta: {
       totalItems: number;
@@ -23,22 +26,24 @@ export class AssetApiRepository implements AssetRepository {
       currentPage: number;
     };
   }> {
-    const params: Record<string, string> = Object.fromEntries(
-      Object.entries(query)
-        .filter(([_, v]) => v !== undefined && v !== null)
-        .map(([k, v]) => [k, String(v)])
+    const params: Record<string, string | string[]> = Object.fromEntries(
+      Object.entries(query).filter(([_, v]) => v != null)
     );
+
+    if (selectedAssetIds.length) params.selectedAssetIds = selectedAssetIds;
 
     const response = await client.get<PaginatedResultDTO<AssetDTO>>(
       "/api/assets",
       params
     );
-
-    return mapPaginatedAssetsDTOToEntity(response);
+    return mapPaginatedAssetsDTOToEntity(response, selectedAssetIds);
   }
 
-  async getAssetById(id: number): Promise<Asset> {
+  async getAssetById(
+    id: number,
+    selectedAssetIds: string[] = []
+  ): Promise<Asset> {
     const response = await client.get<AssetDTO>(`/api/assets/${id}`);
-    return mapAssetDTOToEntity(response);
+    return mapAssetDTOToEntity(response, selectedAssetIds);
   }
 }
