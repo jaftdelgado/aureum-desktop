@@ -42,4 +42,5 @@ export interface GetAssetsQueryDTO {
   categoryId?: number;
   orderByBasePrice?: "ASC" | "DESC";
   orderByAssetName?: "ASC" | "DESC";
+  selectedAssetIds?: string[];
 }

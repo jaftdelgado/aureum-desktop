@@ -24,4 +24,6 @@ export interface Asset {
 
   createdAt: Date;
   updatedAt: Date;
+
+  isSelected?: boolean;
 }

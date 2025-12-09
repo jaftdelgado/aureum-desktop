@@ -9,7 +9,10 @@ export class GetAssetsUseCase {
     this.assetRepository = assetRepository;
   }
 
-  async execute(query: Record<string, unknown>): Promise<{
+  async execute(
+    query: Record<string, unknown>,
+    selectedAssetIds: string[] = []
+  ): Promise<{
     data: Asset[];
     meta: {
       totalItems: number;
@@ -19,6 +22,6 @@ export class GetAssetsUseCase {
       currentPage: number;
     };
   }> {
-    return this.assetRepository.getAssets(query);
+    return this.assetRepository.getAssets(query, selectedAssetIds);
   }
 }

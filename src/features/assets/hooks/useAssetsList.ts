@@ -1,4 +1,3 @@
-// src/features/assets/hooks/useAssetsList.ts
 import { useQuery } from "@tanstack/react-query";
 import type { Asset } from "@domain/entities/Asset";
 import { useAssetsFilters } from "./useAssetsFilters";
@@ -19,11 +18,22 @@ export interface PaginatedResult<T> {
 const assetRepository = new AssetApiRepository();
 const getAssetsUseCase = new GetAssetsUseCase(assetRepository);
 
-export const useAssetsList = () => {
+export const useAssetsList = (
+  selectedAssetIds: string[] = [],
+  options?: { enabled?: boolean }
+) => {
   const { page, perPage, search, sortKey, sortDir } = useAssetsFilters();
 
   return useQuery<PaginatedResult<Asset>, Error>({
-    queryKey: ["assets", page, perPage, search, sortKey, sortDir],
+    queryKey: [
+      "assets",
+      page,
+      perPage,
+      search,
+      sortKey,
+      sortDir,
+      selectedAssetIds,
+    ],
     queryFn: async () => {
       const dto: {
         page: number;
@@ -31,14 +41,17 @@ export const useAssetsList = () => {
         search?: string;
         orderByAssetName?: "asc" | "desc";
         orderByBasePrice?: "asc" | "desc";
+        selectedAssetIds?: string[];
       } = { page, limit: perPage };
 
       if (search) dto.search = search;
       if (sortKey === "assetName") dto.orderByAssetName = sortDir ?? undefined;
       if (sortKey === "basePrice") dto.orderByBasePrice = sortDir ?? undefined;
+      if (selectedAssetIds.length) dto.selectedAssetIds = selectedAssetIds;
 
       return getAssetsUseCase.execute(dto);
     },
     staleTime: 5 * 60 * 1000,
+    enabled: options?.enabled ?? true,
   });
 };

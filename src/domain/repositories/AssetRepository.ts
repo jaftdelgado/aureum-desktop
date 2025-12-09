@@ -1,9 +1,11 @@
 // src/domain/repositories/AssetRepository.ts
-
 import type { Asset } from "@domain/entities/Asset";
 
 export interface AssetRepository {
-  getAssets(query: Record<string, unknown>): Promise<{
+  getAssets(
+    query: Record<string, unknown>,
+    selectedAssetIds?: string[]
+  ): Promise<{
     data: Asset[];
     meta: {
       totalItems: number;
@@ -14,5 +16,5 @@ export interface AssetRepository {
     };
   }>;
 
-  getAssetById(id: number): Promise<Asset>;
+  getAssetById(id: number, selectedAssetIds?: string[]): Promise<Asset>;
 }
