@@ -1,5 +1,5 @@
 export interface MarketAsset {
-  id: number;
+  id: string;       
   symbol: string;
   name: string;
   price: number;

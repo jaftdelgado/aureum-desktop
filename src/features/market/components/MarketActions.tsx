@@ -5,32 +5,40 @@ import { Button } from "@core/ui/Button";
 interface MarketActionsProps {
   onBuy?: () => void;
   onSell?: () => void;
+  loadingBuy?: boolean;
+  loadingSell?: boolean;
 }
 
 export const MarketActions: React.FC<MarketActionsProps> = ({
   onBuy,
   onSell,
+  loadingBuy = false,
+  loadingSell = false,
 }) => {
   const { t } = useTranslation("market");
 
   return (
     <div className="col-start-4 row-start-5 flex items-stretch gap-4">
+
       <Button
         className="h-12 flex-1"
-        iconLeft="hugeicons:shopping-bag-01"
+        iconLeft={!loadingBuy ? "hugeicons:shopping-bag-01" : undefined}
         onClick={onBuy}
+        disabled={loadingBuy || loadingSell} 
       >
-        {t("actions.buy")}
+        {loadingBuy ? t("actions.loading") : t("actions.buy")}
       </Button>
 
       <Button
         className="h-12 flex-1"
         variant="secondary"
-        iconLeft="hugeicons:wallet-03"
+        iconLeft={!loadingSell ? "hugeicons:wallet-03" : undefined}
         onClick={onSell}
+        disabled={loadingSell || loadingBuy} 
       >
-        {t("actions.sell")}
+        {loadingSell ? t("actions.loading") : t("actions.sell")}
       </Button>
+
     </div>
   );
 };

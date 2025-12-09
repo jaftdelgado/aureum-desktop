@@ -9,6 +9,7 @@ import { AssetHistoryChart } from "../components/AssetHistoryChart";
 import { AssetsTable } from "../components/AssetsTable";
 import { MarketActions } from "../components/MarketActions";
 import { useSelectedTeam } from "@app/hooks/useSelectedTeam";
+import { useMarketTrading } from "../hooks/useMarketTrading";
 
 const MarketPage: React.FC = () => {
   const { t } = useTranslation("market");
@@ -16,6 +17,11 @@ const MarketPage: React.FC = () => {
   const courseId = selectedTeam?.publicId || "";
   const { assets, selectedAsset, selectedAssetId, selectAsset, isLoading } =
     useMarketPage(courseId);
+
+  const { buy, sell, loadingBuy, loadingSell } = useMarketTrading(
+    selectedAsset
+  );
+
 
   if (isLoading) {
     return (
@@ -77,7 +83,12 @@ const MarketPage: React.FC = () => {
             onSelectAsset={selectAsset}
           />
 
-          <MarketActions />
+          <MarketActions
+            onBuy={() => buy(1)}
+            onSell={() => sell(1)}
+            loadingBuy={loadingBuy}
+            loadingSell={loadingSell}
+          />
         </div>
       </div>
     </div>
