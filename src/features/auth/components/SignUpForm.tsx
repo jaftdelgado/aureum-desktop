@@ -117,7 +117,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onShowLogin, isGoogleFlow = fal
                   <Input 
                     {...field} 
                     label={t("signup.username", "Nombre de Usuario")} 
-                    placeholder="@usuario" 
+                    placeholder="usuario" 
                     error={errors.username?.message}
                     autoComplete="username"
                   />

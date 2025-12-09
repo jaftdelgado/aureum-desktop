@@ -10,31 +10,30 @@ const TeamSettingsLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const tabs: TabItem[] = [
-    { label: t("settings.teamInfo"), value: "teamInfo" },
-    { label: t("settings.members"), value: "members" },
+  const tabs: TabItem[] = [ 
     { label: t("settings.simulator"), value: "simulator" },
+    { label: t("settings.members"), value: "members" },
   ];
 
   const getCurrentTab = () => {
-    if (location.pathname.endsWith("/settings/members")) return "members";
     if (location.pathname.endsWith("/settings/simulator")) return "simulator";
-    return "teamInfo";
+    return "members";
   };
 
   const [selectedTab, setSelectedTab] = useState(getCurrentTab());
 
   useEffect(() => {
+    if (location.pathname.endsWith("/settings") || location.pathname.endsWith("/settings/")) {
+      navigate(`members`, { replace: true });
+    }
+    
     setSelectedTab(getCurrentTab());
-  }, [location.pathname]);
+  }, [location.pathname, navigate]);
 
   const handleTabChange = (value: string) => {
     setSelectedTab(value);
 
     switch (value) {
-      case "teamInfo":
-        navigate(`/teams/${teamId}/settings`);
-        break;
       case "members":
         navigate(`/teams/${teamId}/settings/members`);
         break;

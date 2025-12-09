@@ -54,27 +54,35 @@ export class TeamsApiRepository implements TeamsRepository {
   }
 
   async getTeamStudents(teamId: string): Promise<TeamMember[]> {
-    const memberships = await client.get<TeamMembershipDto[]>(
-      `/api/courses/${teamId}/students`
-    );
-    const students = await Promise.all(
-      memberships.map(async (membership): Promise<TeamMember | null> => {
-        try {
-          const profile = await this.profileRepo.getPublicProfile(membership.userid);
+    try {
+        const memberships = await client.get<TeamMembershipDto[]>(
+          `/api/courses/${teamId}/students`
+        );
 
-          if (!profile) return null;
-          return {
-            ...profile,
-            id: membership.userid, 
-          };
-        } catch (error) {
-          console.warn(`No se pudo cargar perfil para ${membership.userid}`);
-          return null;
-        }
-      })
-    );
+        const students = await Promise.all(
+          memberships.map(async (membership): Promise<TeamMember | null> => {
+            try {
+              const profile = await this.profileRepo.getPublicProfile(membership.userid);
+              
+              if (!profile) return null; 
 
-    return students.filter((s): s is TeamMember => s !== null);
+              return {
+                ...profile,
+                id: membership.userid, 
+              };
+            } catch (innerError) {
+              console.warn(`Fallo al procesar estudiante ${membership.userid}:`, innerError);
+              return null;
+            }
+          })
+        );
+
+        return students.filter((s): s is TeamMember => s !== null);
+
+    } catch (error) {
+        console.error("Error cargando estudiantes del equipo:", error);
+        return [];  
+    }
   }
 
   async removeMember(teamId: string, userId: string): Promise<void> {
