@@ -11,7 +11,8 @@
     "cancel": "Cancelar",
     "join": "Unirse",
     "joining": "Uniéndose...",
-    "success": "¡Te has unido al curso exitosamente!"
+    "success": "¡Te has unido al curso exitosamente!",
+    "successDesc": "Ahora tienes acceso a los contenidos del curso."
   },
   "errors": {
     "generic": "Ocurrió un error inesperado.",

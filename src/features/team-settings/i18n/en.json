@@ -1,6 +1,8 @@
 {
   "common": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "copied": "Copied",
+    "copy": "Copy"
   },
   "title": "Settings",
   "description": "Manage selected team preferences, update its information, manage members, and configure the simulator.",
@@ -27,7 +29,10 @@
     "loading": "Loading...",
     "adminNotFound": "Admin not found",
     "noClassmates": "There are no other classmates in this team.",
-    "removeAria": "Remove {{name}}"
+    "removeAria": "Remove {{name}}",
+    "removeSuccess": "Member removed",
+    "removeSuccessDesc": "The student has been successfully removed from the team.",
+    "removeFailed": "Could not remove member. Please try again."
   },
   "roles": {
     "professor": "Professor",
