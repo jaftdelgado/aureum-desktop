@@ -1,4 +1,4 @@
-import type { TeamsRepository } from "@domain/repositories/TeamsRepository";
+import type { CreateTeamParams, TeamsRepository } from "@domain/repositories/TeamsRepository";
 import type { Team } from "@domain/entities/Team";
 import type { TeamMember } from "@domain/entities/TeamMember"; 
 import { client } from "@infra/api/http/client"; 
@@ -79,5 +79,18 @@ export class TeamsApiRepository implements TeamsRepository {
 
   async removeMember(teamId: string, userId: string): Promise<void> {
     await client.delete(`/api/courses/${teamId}/members/${userId}`);
+  }
+
+  async createTeam(params: CreateTeamParams): Promise<void> {
+    const formData = new FormData();
+    formData.append("professor_id", params.professorId);
+    formData.append("name", params.name);
+    formData.append("description", params.description);
+    
+    if (params.image) {
+      formData.append("file", params.image);
+    }
+
+    await client.post("/api/courses", formData);
   }
 }

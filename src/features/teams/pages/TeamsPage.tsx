@@ -9,6 +9,7 @@ import { useTeamsPage } from "../hooks/useTeamsPage";
 import type { Team } from "@domain/entities/Team";
 import { JoinTeamModal } from "../components/JoinTeamModal";
 import { useSelectedTeam } from "@app/hooks/useSelectedTeam";
+import { CreateTeamDialog} from "../components/CreateTeamDialog";
 
 const TeamsPage: React.FC = () => {
   const { t } = useTranslation("teams");
@@ -28,6 +29,9 @@ const TeamsPage: React.FC = () => {
     handleOpenModal,
     handleCloseModal,
     handleJoinCourse,
+    showCreateModal,
+    setShowCreateModal,
+    handleCreateCourse,
   } = useTeamsPage();
 
   const handleTeamClick = (team: Team) => {
@@ -57,7 +61,7 @@ const TeamsPage: React.FC = () => {
               <Button
                 variant="default"
                 icon="lucide:plus"
-                onClick={() => console.log("Crear curso")}
+                onClick={() => setShowCreateModal(true)}
               >
                 {t("createCourse")}
               </Button>
@@ -108,6 +112,12 @@ const TeamsPage: React.FC = () => {
         onClose={handleCloseModal}
         onJoin={handleJoinCourse}
         t={t}
+      />
+
+      <CreateTeamDialog
+        open={showCreateModal}
+        onOpenChange={setShowCreateModal}
+        onCreate={handleCreateCourse}
       />
     </div>
   );
