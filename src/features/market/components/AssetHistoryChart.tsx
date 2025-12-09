@@ -58,14 +58,24 @@ export const AssetHistoryChart: React.FC<AssetHistoryChartProps> = ({
               }
             />
             <Tooltip
+              separator=" "
               contentStyle={{
-                background: "rgba(10,10,20,0.95)",
-                borderRadius: 12,
-                border: "1px solid rgba(255,255,255,0.08)",
+                backgroundColor: "rgba(15,23,42,0.96)", 
+                borderRadius: 16,
+                border: "none",
+                padding: "8px 10px",
+                boxShadow: "0 10px 25px rgba(15,23,42,0.45)",
               }}
-              formatter={(value: any) =>
-                currencyFormatter.format(value as number)
-              }
+              labelStyle={{
+                color: "#E5E7EB",           
+                fontSize: 11,
+                marginBottom: 4,
+              }}
+              itemStyle={{
+                color: "#F9FAFB",           
+                fontSize: 12,
+                fontWeight: 500,
+              }}
             />
             <Line
               type="monotone"
