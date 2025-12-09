@@ -118,9 +118,9 @@ const MembersSettingsPage: React.FC = () => {
                 avatarUrl={adminMember.avatarUrl}
               />
             ) : (
-              <div className="p-2 text-sm text-secondaryText">
-                {t("members.adminNotFound", "Admin no encontrado")}
-              </div>
+              <div className="p-4 text-sm text-secondaryText text-center italic bg-card rounded-xl border border-outline">
+                  {t("members.adminNotFound", "Admin no encontrado")}
+                </div>
             )}
           </SettingsSection>
         ),
