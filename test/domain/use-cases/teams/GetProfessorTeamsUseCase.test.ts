@@ -6,8 +6,24 @@ import type { Team } from '@domain/entities/Team';
 describe('GetProfessorTeamsUseCase', () => {
   it('debe retornar la lista de equipos del profesor', async () => {
     const mockTeams: Team[] = [
-      { id: '1', publicId: 'pub-1', name: 'Curso A', professorId: 'prof-1', description: '', accessCode: 'ABC' },
-      { id: '2', publicId: 'pub-2', name: 'Curso B', professorId: 'prof-1', description: '', accessCode: 'XYZ' }
+      { 
+        publicId: 'pub-1', 
+        name: 'Curso A', 
+        professorId: 'prof-1', 
+        description: '', 
+        accessCode: 'ABC',
+        createdAt: new Date(), 
+        teamPic: null 
+      },
+      { 
+        publicId: 'pub-2', 
+        name: 'Curso B', 
+        professorId: 'prof-1', 
+        description: '', 
+        accessCode: 'XYZ',
+        createdAt: new Date(), 
+        teamPic: null
+      }
     ];
 
     const mockRepo = {
