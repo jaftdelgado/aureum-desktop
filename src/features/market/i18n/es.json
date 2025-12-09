@@ -25,6 +25,7 @@
   },
   "actions": {
     "buy": "Comprar",
-    "sell": "Vender"
+    "sell": "Vender",
+    "loading": "Cargando..."
   }
 }
