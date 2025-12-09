@@ -1,5 +1,5 @@
 export interface MarketAssetDTO {
-  Id: number;
+  Id: string;      
   Symbol: string;
   Name: string;
   Price: number;

@@ -15,7 +15,7 @@ const App: React.FC = () => {
       <QueryProvider>
         <SelectedTeamProvider>
           <AppRouter />
-          <Toaster position="bottom-right" />
+          <Toaster position="top-right" />
         </SelectedTeamProvider>
       </QueryProvider>
     </AuthProvider>

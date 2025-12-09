@@ -6,6 +6,10 @@ export interface StreamRequestOptions extends RequestInit {
   params?: Record<string, string>;
 }
 
+export interface JsonRequestOptions extends RequestInit {
+  params?: Record<string, string>;
+}
+
 export interface JsonStreamHandlers<T> {
   onMessage: (data: T) => void;
   onError?: (error: Error) => void;
@@ -19,6 +23,7 @@ export class MarketClient {
     this.baseUrl = baseUrl.replace(/\/$/, "");
   }
 
+  // 🔐 Solo se encarga de la autenticación
   private async getAuthHeaders(): Promise<HeadersInit> {
     const { data } = await supabase.auth.getSession();
     const token = data.session?.access_token;
@@ -28,11 +33,10 @@ export class MarketClient {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    headers["Accept"] = "text/event-stream";
-
     return headers;
   }
 
+  // 📡 STREAM SSE (CheckMarket)
   streamJsonLines<T>(
     endpoint: string,
     handlers: JsonStreamHandlers<T>,
@@ -60,6 +64,7 @@ export class MarketClient {
           method: options.method ?? "GET",
           headers: {
             ...authHeaders,
+            Accept: "text/event-stream", // 👈 aquí forzamos SSE
             ...options.headers,
           },
           signal: controller.signal,
@@ -77,7 +82,7 @@ export class MarketClient {
         const decoder = new TextDecoder();
         let buffer = "";
 
-        while (!cancelled) {
+        while (true) {
           const { done, value } = await reader.read();
           if (done) break;
 
@@ -88,7 +93,7 @@ export class MarketClient {
             const line = buffer.slice(0, newlineIndex).trim();
             buffer = buffer.slice(newlineIndex + 1);
 
-            if (!line) continue; 
+            if (!line) continue;
 
             if (line.startsWith("data:")) {
               const jsonPart = line.slice("data:".length).trim();
@@ -101,7 +106,6 @@ export class MarketClient {
                 console.error("[MarketClient] JSON parse error", err, line);
                 handlers.onError?.(err as Error);
               }
-            } else {
             }
           }
         }
@@ -121,6 +125,62 @@ export class MarketClient {
       cancelled = true;
       controller.abort();
     };
+  }
+
+  // 🔁 Helper genérico para JSON (GET/POST/etc)
+  private async requestJson<T>(
+    endpoint: string,
+    options: JsonRequestOptions = {}
+  ): Promise<T> {
+    const cleanEndpoint = endpoint.startsWith("/")
+      ? endpoint
+      : `/${endpoint}`;
+
+    let url = `${this.baseUrl}${cleanEndpoint}`;
+    if (options.params) {
+      const query = new URLSearchParams(options.params).toString();
+      url += `?${query}`;
+    }
+
+    const authHeaders = await this.getAuthHeaders();
+
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...authHeaders,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      throw new HttpError(response.status, response.statusText);
+    }
+
+    if (response.status === 204) {
+      // no content
+      return undefined as T;
+    }
+
+    const data = (await response.json()) as T;
+    return data;
+  }
+
+  // 🧾 POST JSON (para /api/market/buy y /api/market/sell)
+  postJson<T>(
+    endpoint: string,
+    body: unknown,
+    options: JsonRequestOptions = {}
+  ): Promise<T> {
+    const { params, ...rest } = options;
+
+    return this.requestJson<T>(endpoint, {
+      ...rest,
+      params,
+      method: "POST",
+      body: JSON.stringify(body),
+    });
   }
 }
 

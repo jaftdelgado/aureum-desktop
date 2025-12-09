@@ -43,7 +43,7 @@ const addSnapshotToState = (
   const next: AssetsState = { ...prev };
 
   snapshot.assets.forEach((asset) => {
-    const id = asset.symbol; 
+    const id = asset.id; 
     const prevAsset = prev[id];
 
     const historyPoint: AssetHistoryPoint = {
