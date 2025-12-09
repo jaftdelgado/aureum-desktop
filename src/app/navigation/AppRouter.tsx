@@ -5,7 +5,7 @@ import { PrivateRoute } from "./PrivateRoute";
 import { DashboardLayout } from "@features/dashboard/layout/DashboardLayout";
 import { RequireProfile } from "./RequireProfile";
 import AuthPage from "@features/auth/pages/AuthPage";
-// Lazy pages
+
 const HomePage = lazy(() => import("@features/home/pages/HomePage"));
 const TeamsPage = lazy(() => import("@features/teams/pages/TeamsPage"));
 const LessonsPage = lazy(

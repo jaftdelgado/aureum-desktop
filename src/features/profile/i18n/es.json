@@ -33,7 +33,13 @@
     "cancel": "Cancelar",
     "deleting": "Eliminando..."
   },
+  "toasts": {
+    "updateSuccess": "Perfil actualizado",
+    "updateSuccessDesc": "Tus cambios se han guardado correctamente."
+  },
   "errors": {
-    "saveFailed": "Hubo un error al guardar los cambios."
+    "saveFailed": "Error al guardar cambios",
+    "tryAgain": "No se pudieron guardar los cambios. Intenta nuevamente.",
+    "deleteFailed": "No se pudo eliminar la cuenta. Intenta más tarde."
   }
 }
