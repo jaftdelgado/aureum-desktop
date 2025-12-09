@@ -41,6 +41,8 @@
   "errors": {
     "saveFailed": "Error al guardar cambios",
     "tryAgain": "No se pudieron guardar los cambios. Intenta nuevamente.",
-    "deleteFailed": "No se pudo eliminar la cuenta. Intenta más tarde."
+    "deleteFailed": "No se pudo eliminar la cuenta. Intenta más tarde.",
+    "fileTooLarge": "El archivo es demasiado grande (Máx. 2MB).",
+    "invalidFileType": "Formato no soportado. Solo se permiten imágenes (JPG, PNG)."
   }
 }
