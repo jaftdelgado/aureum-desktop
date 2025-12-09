@@ -17,14 +17,9 @@ export const useTeamsPage = () => {
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [joinCode, setJoinCode] = useState("");
   const [isJoining, setIsJoining] = useState(false);
-  
-  const [joinError, setJoinError] = useState<string | null>(null);
-  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const handleOpenModal = () => {
     setJoinCode("");
-    setJoinError(null);
-    setSuccessMsg(null);
     setShowJoinModal(true);
   };
 
@@ -64,21 +59,19 @@ export const useTeamsPage = () => {
     if (!joinCode.trim() || !user?.id) return;
     
     setIsJoining(true);
-    setJoinError(null);
-    setSuccessMsg(null);
 
     try {
       const joinTeamUseCase = new JoinTeamUseCase(DI.teamsRepository);
       
       await joinTeamUseCase.execute(joinCode, user.id);
       
-      setSuccessMsg(t("joinModal.success"));
+      toast.success(t("joinModal.success"), {
+        description: t("joinModal.successDesc", "Ahora eres miembro del equipo."),
+      });
       
       await queryClient.invalidateQueries({ queryKey: ["teams", user.id] });
 
-      setTimeout(() => {
-        handleCloseModal();
-      }, 1500);
+      handleCloseModal();
 
     } catch (error: any) {
       
@@ -87,7 +80,9 @@ export const useTeamsPage = () => {
       if (error.message?.includes("404")) msgKey = "joinModal.errors.invalidCode";
       if (error.message?.includes("409")) msgKey = "joinModal.errors.alreadyMember";
       
-      setJoinError(t(msgKey));
+      toast.error(t("joinModal.title"), {
+        description: t(msgKey)
+      });
     } finally {
       setIsJoining(false);
     }
@@ -101,8 +96,6 @@ export const useTeamsPage = () => {
     showJoinModal,
     joinCode,
     isJoining,
-    joinError,
-    successMsg,
 
     setJoinCode,
     handleOpenModal,

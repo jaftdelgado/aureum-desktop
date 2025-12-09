@@ -4,6 +4,7 @@ import { useSelectedTeam } from "@app/hooks/useSelectedTeam";
 import { GetTeamMembersUseCase } from "@domain/use-cases/teams/GetTeamMembersUseCase";
 import { RemoveMemberUseCase } from "@domain/use-cases/teams/RemoveMemberUseCase";
 import { DI } from "@app/di/container";
+import { toast } from "sonner";
 
 export interface UIMember {
   id: string;
@@ -82,9 +83,16 @@ export const useMembersSettings = () => {
       await useCase.execute(selectedTeam.publicId, memberId);
       
       setMembers((prev) => prev.filter((m) => m.id !== memberId));
+
+      toast.success(t("members.removeSuccess"), {
+        description: t("members.removeSuccessDesc")
+      });
+
     } catch (error) {
       console.error("Error eliminando miembro:", error);
-      alert(t("errors.generic"));
+      toast.error(t("errors.generic"), {
+        description: t("members.removeFailed")
+      });
     } finally {
       setLoading(false);
     }
@@ -94,6 +102,7 @@ export const useMembersSettings = () => {
     if (selectedTeam?.accessCode) {
       navigator.clipboard.writeText(selectedTeam.accessCode);
       setCopied(true);
+      toast.success(t("common.copied"));
       setTimeout(() => setCopied(false), 2000);
     }
   };

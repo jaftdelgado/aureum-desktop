@@ -23,8 +23,6 @@ const TeamsPage: React.FC = () => {
     showJoinModal,
     joinCode,
     isJoining,
-    joinError,
-    successMsg,
     setJoinCode,
     handleOpenModal,
     handleCloseModal,
@@ -106,8 +104,6 @@ const TeamsPage: React.FC = () => {
         isOpen={showJoinModal}
         joinCode={joinCode}
         isJoining={isJoining}
-        joinError={joinError || undefined}
-        successMsg={successMsg || undefined}
         setJoinCode={setJoinCode}
         onClose={handleCloseModal}
         onJoin={handleJoinCourse}
