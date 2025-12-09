@@ -23,9 +23,6 @@ const TeamOverview = lazy(
 const TeamSettingsLayout = lazy(
   () => import("@features/team-settings/layout/TeamSettingsLayout")
 );
-const TeamSettingsPage = lazy(
-  () => import("@features/team-settings/pages/TeamSettingsPage")
-);
 const TeamMembersPage = lazy(
   () => import("@features/team-settings/pages/MembersSettingsPage")
 );
@@ -75,7 +72,6 @@ const routes: AppRoute[] = [
             path: "settings",
             element: <TeamSettingsLayout />,
             children: [
-              { index: true, element: <TeamSettingsPage /> },
               { path: "members", element: <TeamMembersPage /> },
               { path: "simulator", element: <SimulatorSettings /> },
             ],

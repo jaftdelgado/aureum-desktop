@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSelectedTeam } from "@app/hooks/useSelectedTeam";
 import { GetTeamMembersUseCase } from "@domain/use-cases/teams/GetTeamMembersUseCase";
 import { RemoveMemberUseCase } from "@domain/use-cases/teams/RemoveMemberUseCase";
@@ -16,16 +17,16 @@ export interface UIMember {
 export const useMembersSettings = () => {
   const { t } = useTranslation("teamSettings");
   const { selectedTeam } = useSelectedTeam();
-  const [loading, setLoading] = useState(false);
-  const [members, setMembers] = useState<UIMember[]>([]);
+  const queryClient = useQueryClient();
   const [copied, setCopied] = useState(false);
 
-  const fetchMembers = useCallback(async () => {
-    if (!selectedTeam?.publicId) return;
+  const { data: members = [], isLoading: loading } = useQuery({
+    queryKey: ["team-members", selectedTeam?.publicId],
+    enabled: !!selectedTeam?.publicId, 
+    staleTime: 5 * 60 * 1000,
+    queryFn: async () => {
+      if (!selectedTeam?.publicId) return [];
 
-    try {
-      setLoading(true);
-      
       const getMembersUseCase = new GetTeamMembersUseCase(DI.teamsRepository);
       const studentsDomain = await getMembersUseCase.execute(selectedTeam.publicId);
 
@@ -61,41 +62,32 @@ export const useMembersSettings = () => {
         }
       }
 
-      setMembers(adminMember ? [adminMember, ...mappedStudents] : mappedStudents);
+      return adminMember ? [adminMember, ...mappedStudents] : mappedStudents;
+    },
+  });
 
-    } catch (error) {
-      console.error("Error loading members:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [selectedTeam, t]);
-
-  useEffect(() => {
-    fetchMembers();
-  }, [fetchMembers]);
-
-  const removeMember = async (memberId: string) => {
-    if (!selectedTeam) return;
-
-    try {
-      setLoading(true);
+  const removeMutation = useMutation({
+    mutationFn: async (memberId: string) => {
+      if (!selectedTeam?.publicId) throw new Error("No team selected");
       const useCase = new RemoveMemberUseCase(DI.teamsRepository);
       await useCase.execute(selectedTeam.publicId, memberId);
-      
-      setMembers((prev) => prev.filter((m) => m.id !== memberId));
-
+    },
+    onSuccess: () => {
       toast.success(t("members.removeSuccess"), {
         description: t("members.removeSuccessDesc")
       });
-
-    } catch (error) {
-      console.error("Error eliminando miembro:", error);
+      queryClient.invalidateQueries({ queryKey: ["team-members", selectedTeam?.publicId] });
+    },
+    onError: (error) => {
+      console.error("Error eliminando:", error);
       toast.error(t("errors.generic"), {
         description: t("members.removeFailed")
       });
-    } finally {
-      setLoading(false);
     }
+  });
+
+  const removeMember = (memberId: string) => {
+    removeMutation.mutate(memberId);
   };
 
   const copyAccessCode = () => {
@@ -109,7 +101,7 @@ export const useMembersSettings = () => {
 
   return {
     members,
-    loading,
+    loading: loading || removeMutation.isPending,
     copied,
     actions: {
       removeMember,
