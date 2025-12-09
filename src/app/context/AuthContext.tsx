@@ -1,4 +1,3 @@
-// src/app/context/AuthContext.ts
 import { createContext } from "react";
 import type { LoggedInUser } from "@domain/entities/LoggedInUser";
 
