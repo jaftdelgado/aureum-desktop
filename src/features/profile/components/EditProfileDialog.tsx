@@ -4,6 +4,7 @@ import { Button } from "@core/ui/Button";
 import { Label } from "@core/ui/Label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@core/components/Dialog";
 import { Icon } from "@iconify/react";
+import { toast } from "sonner";
 
 interface EditProfileDialogProps {
   open: boolean;
@@ -12,6 +13,9 @@ interface EditProfileDialogProps {
   currentAvatarUrl?: string;
   onSave: (bio: string, file: File | null) => Promise<void>;
 }
+
+const MAX_FILE_SIZE = 2 * 1024 * 1024; 
+const ALLOWED_TYPES = ["image/jpeg", "image/png"];
 
 export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
   open,
@@ -30,6 +34,15 @@ export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        toast.error(t("errors.invalidFileType"));
+        return;
+      }
+
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error(t("errors.fileTooLarge"));
+        return;
+      }
       setSelectedFile(file);
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
@@ -37,9 +50,10 @@ export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
   };
 
   const handleSave = async () => {
+    const cleanBio = bio.trim();
     setIsSaving(true);
     try {
-      await onSave(bio, selectedFile);
+      await onSave(cleanBio, selectedFile);
       onOpenChange(false);
     } catch (error) {
       console.error("Error saving profile:", error);
@@ -80,7 +94,7 @@ export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
               type="file"
               ref={fileInputRef}
               className="hidden"
-              accept="image/*"
+              accept="image/png, image/jpeg"
               onChange={handleFileChange}
             />
           </div>
@@ -94,7 +108,7 @@ export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
               onChange={(e) => setBio(e.target.value)}
               maxLength={120}
             />
-            <div className="text-xs text-right text-secondaryText">
+            <div className={`text-xs text-right transition-colors ${bio.length >= 110 ? "text-orange-500" : "text-secondaryText"}`}>
               {bio?.length}/120
             </div>
           </div>

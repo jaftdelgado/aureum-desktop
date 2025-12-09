@@ -5,6 +5,7 @@ import { Input } from "@core/ui/Input";
 import { Textarea } from "@core/ui/TextArea";
 import { Label } from "@core/ui/Label";
 import { Icon } from "@iconify/react";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,9 @@ interface CreateTeamDialogProps {
   onOpenChange: (open: boolean) => void;
   onCreate: (data: { name: string; description: string; image: File | null }) => Promise<void>;
 }
+
+const MAX_COVER_SIZE = 5 * 1024 * 1024;
+const ALLOWED_TYPES = ["image/jpeg", "image/png"];
 
 export const CreateTeamDialog: React.FC<CreateTeamDialogProps> = ({
   open,
@@ -43,6 +47,15 @@ export const CreateTeamDialog: React.FC<CreateTeamDialogProps> = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        toast.error("createModal.errors.invalidFile");
+        return;
+      }
+
+      if (file.size > MAX_COVER_SIZE) {
+        toast.error(t("createModal.errors.fileTooLarge", "La imagen es muy pesada (Máx 5MB)"));
+        return;
+      }
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
@@ -50,10 +63,25 @@ export const CreateTeamDialog: React.FC<CreateTeamDialogProps> = ({
 
   const handleSubmit = async () => {
     if (!name.trim() || !description.trim()) return;
-    
+    const cleanName = name.trim();
+    const cleanDesc = description.trim();
+    if (!cleanName) {
+        toast.error(t("createModal.errors.nameRequired"));
+        return;
+    }
+
+    if (!cleanDesc) {
+        toast.error(t("createModal.errors.descRequired"));
+        return;
+    }
+
+    if (!selectedFile) {
+        toast.error(t("createModal.errors.imageRequired"));
+        return;
+    }
     setLoading(true);
     try {
-      await onCreate({ name, description, image: selectedFile });
+      await onCreate({ name: cleanName, description: cleanDesc, image: selectedFile });
       onOpenChange(false);
       resetForm();
     } catch (error) {
@@ -69,6 +97,8 @@ export const CreateTeamDialog: React.FC<CreateTeamDialogProps> = ({
       resetForm();
     }
   };
+
+  const isFormInvalid = !name.trim() || !description.trim() || !selectedFile;
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -100,7 +130,7 @@ export const CreateTeamDialog: React.FC<CreateTeamDialogProps> = ({
               type="file" 
               ref={fileInputRef} 
               className="hidden" 
-              accept="image/*" 
+              accept="image/png, image/jpeg" 
               onChange={handleFileChange}
             />
           </div>
@@ -109,6 +139,7 @@ export const CreateTeamDialog: React.FC<CreateTeamDialogProps> = ({
             label={t("createModal.nameLabel")}
             placeholder={t("createModal.namePlaceholder")}
             value={name}
+            maxLength={50}
             onChange={(e) => setName(e.target.value)}
             disabled={loading}
           />
@@ -123,7 +154,7 @@ export const CreateTeamDialog: React.FC<CreateTeamDialogProps> = ({
               maxLength={120}
               className="min-h-[80px]"
             />
-            <div className="text-xs text-right text-secondaryText">
+            <div className={`text-xs text-right transition-colors ${description.length >= 110 ? "text-orange-500" : "text-secondaryText"}`}>
               {description?.length}/120
             </div>
           </div>
@@ -135,7 +166,7 @@ export const CreateTeamDialog: React.FC<CreateTeamDialogProps> = ({
           </Button>
           <Button 
             onClick={handleSubmit} 
-            disabled={!name || !description || loading}
+            disabled={isFormInvalid || loading}
           >
             {loading ? t("createModal.creating") : t("createModal.create")}
           </Button>

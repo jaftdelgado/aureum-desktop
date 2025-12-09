@@ -38,6 +38,13 @@
     "create": "Crear Curso",
     "creating": "Creando...",
     "success": "Curso creado exitosamente",
-    "successDesc": "El curso \"{{name}}\" ha sido creado exitosamente, recuerda configurarlo!."
+    "successDesc": "El curso \"{{name}}\" ha sido creado exitosamente, recuerda configurarlo!.",
+    "errors": {
+      "fileTooLarge": "La imagen es muy pesada (Máx. 5MB).",
+      "nameRequired": "El nombre del curso es obligatorio.",
+      "descRequired": "La descripción es obligatoria.",
+      "imageRequired": "Debes subir una imagen de portada para el curso.",
+      "invalidFile": "Formato no soportado. Solo se permiten imágenes (JPG, PNG)."
+    }
   }
 }

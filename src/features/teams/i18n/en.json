@@ -38,6 +38,13 @@
     "create": "Create Course",
     "creating": "Creating...",
     "success": "Course created successfully",
-    "successDesc": "The course \"{{name}}\" has been created, remember select your preferences."
+    "successDesc": "The course \"{{name}}\" has been created, remember select your preferences.",
+    "errors": {
+      "fileTooLarge": "Image is too large (Max 5MB).",
+      "nameRequired": "Course name is required.",
+      "descRequired": "Description is required.",
+      "imageRequired": "You must upload a cover image for the course.",
+      "invalidFile": "Type of picture invalid (PNG, JPG)"
+    }
   }
 }

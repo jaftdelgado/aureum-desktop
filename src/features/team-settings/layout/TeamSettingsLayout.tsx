@@ -11,8 +11,8 @@ const TeamSettingsLayout: React.FC = () => {
   const navigate = useNavigate();
 
   const tabs: TabItem[] = [ 
-    { label: t("settings.simulator"), value: "simulator" },
     { label: t("settings.members"), value: "members" },
+    { label: t("settings.simulator"), value: "simulator" },
   ];
 
   const getCurrentTab = () => {
