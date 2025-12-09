@@ -6,6 +6,7 @@ import { Separator } from "@core/ui/Separator";
 import { useProfilePage } from "../hooks/useProfilePage";
 import { EditProfileDialog } from "../components/EditProfileDialog";
 import { DeleteAccountDialog } from "../components/DeleteAccountDialog";
+import { toast } from "sonner";
 
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation("profile");
@@ -26,9 +27,25 @@ const ProfilePage: React.FC = () => {
   const handleSaveChanges = async (newBio: string, newFile: File | null) => {
     try {
       await actions.updateProfile(newBio, newFile);
+      toast.success(t("toasts.updateSuccess"), {
+        description: t("toasts.updateSuccessDesc"),
+      });
       setIsEditOpen(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (error) {
-      alert(t("errors.saveFailed"));
+      toast.error(t("errors.saveFailed"), {
+        description: t("errors.tryAgain")
+      });
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await actions.deleteAccount();
+    } catch (error) {
+      toast.error(t("errors.deleteFailed", "No se pudo eliminar la cuenta."));
     }
   };
 
@@ -122,7 +139,7 @@ const ProfilePage: React.FC = () => {
       <DeleteAccountDialog
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
-        onConfirm={actions.deleteAccount} 
+        onConfirm={handleDeleteAccount} 
         isDeleting={loadingStates.isDeleting} 
       />
     </div>

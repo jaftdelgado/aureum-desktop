@@ -33,7 +33,13 @@
     "cancel": "Cancel",
     "deleting": "Deleting"
   },
+  "toasts": {
+    "updateSuccess": "Profile updated",
+    "updateSuccessDesc": "Your changes have been saved successfully."
+  },
   "errors": {
-    "saveFailed": "There was a mistake saving the changes."
+    "saveFailed": "Error saving changes",
+    "tryAgain": "Could not save changes. Please try again.",
+    "deleteFailed": "Could not delete account. Please try again later."
   }
 }

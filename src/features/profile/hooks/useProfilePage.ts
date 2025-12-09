@@ -22,7 +22,6 @@ export const useProfilePage = () => {
         newFile
       );
       
-      window.location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
       throw error; 
