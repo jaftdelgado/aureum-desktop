@@ -48,7 +48,7 @@ export const CreateTeamDialog: React.FC<CreateTeamDialogProps> = ({
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (!ALLOWED_TYPES.includes(file.type)) {
-        toast.error("createModal.errors.invalidFile");
+        toast.error(t("createModal.errors.invalidFile"));
         return;
       }
 
