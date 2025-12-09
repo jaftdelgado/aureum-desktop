@@ -143,6 +143,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
   }, []);
   
+  if (loading) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-surface">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primaryBtn border-t-transparent" />
+      </div>
+    );
+  }
+
   return (
     <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}

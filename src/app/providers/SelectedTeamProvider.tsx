@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
 import type { ReactNode } from "react";
 import type { Team } from "@domain/entities/Team";
 import { SelectedTeamContext } from "@app/context/SelectedTeamContext";
@@ -14,6 +14,13 @@ export const SelectedTeamProvider: React.FC<Props> = ({ children }) => {
   const [membershipId, setMembershipId] = useState<string | null>(null);
 
   const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!user) {
+      setSelectedTeamState(null);
+      setMembershipId(null);
+    }
+  }, [user]);
 
   const fetchMembership = useCallback(
     async (teamId: string, studentId: string) => {
