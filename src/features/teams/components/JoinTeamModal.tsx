@@ -7,8 +7,6 @@ interface JoinTeamModalProps {
   isOpen: boolean;
   joinCode: string;
   isJoining: boolean;
-  joinError?: string;
-  successMsg?: string;
   setJoinCode: Dispatch<SetStateAction<string>>;
   onClose: () => void;
   onJoin: () => void;
@@ -19,8 +17,6 @@ export const JoinTeamModal: React.FC<JoinTeamModalProps> = ({
   isOpen,
   joinCode,
   isJoining,
-  joinError,
-  successMsg,
   setJoinCode,
   onClose,
   onJoin,
@@ -38,17 +34,6 @@ export const JoinTeamModal: React.FC<JoinTeamModalProps> = ({
           {t("joinModal.message")}
         </p>
 
-        {joinError && (
-          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-500 text-xs font-medium">
-            {joinError}
-          </div>
-        )}
-        {successMsg && (
-          <div className="mb-4 p-3 bg-green-500/10 border border-green-500/20 rounded text-green-500 text-xs font-medium">
-            {successMsg}
-          </div>
-        )}
-
         <div className="flex flex-col gap-4 mb-6">
           <Input
             label={t("joinModal.codeLabel")}
@@ -56,7 +41,7 @@ export const JoinTeamModal: React.FC<JoinTeamModalProps> = ({
             value={joinCode}
             onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
             maxLength={8}
-            disabled={isJoining || !!successMsg}
+            disabled={isJoining}
           />
         </div>
 
@@ -67,7 +52,7 @@ export const JoinTeamModal: React.FC<JoinTeamModalProps> = ({
           <Button
             variant="default"
             onClick={onJoin}
-            disabled={!joinCode || isJoining || !!successMsg}
+            disabled={!joinCode || isJoining}
           >
             {isJoining ? "Uniéndose..." : t("joinModal.join")}
           </Button>
