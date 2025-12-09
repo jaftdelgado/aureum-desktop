@@ -55,7 +55,7 @@ export default function DataHeader<T>({
         </th>
       )}
 
-      {columns.map((col, colIndex) => (
+      {columns.map((col) => (
         <th
           key={String(col.key)}
           className={`px-3 ${denseClass} text-secondaryText font-medium whitespace-nowrap border-r border-outline ${

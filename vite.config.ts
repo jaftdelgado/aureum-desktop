@@ -1,9 +1,10 @@
+// vite.config.ts
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
-  base: "./", 
+  base: "./",
   plugins: [react()],
   resolve: {
     alias: {
@@ -13,8 +14,28 @@ export default defineConfig({
       "@features": path.resolve(__dirname, "src/features"),
       "@infra": path.resolve(__dirname, "src/infra"),
       "@resources": path.resolve(__dirname, "src/resources"),
-      '@auth': path.resolve(__dirname, './src/features/auth'),
-      '@ui': path.resolve(__dirname, './src/core/ui'),
+      "@auth": path.resolve(__dirname, "./src/features/auth"),
+      "@ui": path.resolve(__dirname, "./src/core/ui"),
+    },
+  },
+
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom"],
+          router: ["react-router", "react-router-dom"],
+          query: ["@tanstack/react-query"],
+          charts: [
+            "recharts",
+            "d3-interpolate",
+            "d3-scale",
+            "d3-shape",
+            "d3-time",
+            "d3-time-format",
+          ],
+        },
+      },
     },
   },
 });

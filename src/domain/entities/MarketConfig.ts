@@ -4,8 +4,8 @@ export type ThickSpeed = "High" | "Medium" | "Low";
 export type TransactionFee = "High" | "Medium" | "Low" | "Disabled";
 
 export interface MarketConfig {
-  publicId?: string;
-  teamId?: string;
+  publicId: string;
+  teamId: string;
   createdAt?: Date;
   updatedAt?: Date;
 
