@@ -1,4 +1,3 @@
-// src/infra/api/assets/AssetApiRepository.ts
 import { client } from "@infra/api/http/client";
 import type { AssetRepository } from "@domain/repositories/AssetRepository";
 import type {
@@ -7,27 +6,20 @@ import type {
   GetAssetsQueryDTO,
 } from "@infra/api/assets/asset.dto";
 import {
-  mapAssetDTOToEntity,
   mapPaginatedAssetsDTOToEntity,
-} from "@infra/api/assets/asset.mappers";
+  mapAssetDTOToEntity,
+} from "./asset.mappers";
 import type { Asset } from "@domain/entities/Asset";
 
 export class AssetApiRepository implements AssetRepository {
   async getAssets(
     query: GetAssetsQueryDTO,
     selectedAssetIds: string[] = []
-  ): Promise<{
-    data: Asset[];
-    meta: {
-      totalItems: number;
-      itemCount: number;
-      itemsPerPage: number;
-      totalPages: number;
-      currentPage: number;
-    };
-  }> {
+  ): Promise<{ data: Asset[]; meta: PaginatedResultDTO<AssetDTO>["meta"] }> {
     const params: Record<string, string | string[]> = Object.fromEntries(
-      Object.entries(query).filter(([_, v]) => v != null)
+      Object.entries(query)
+        .filter(([_, v]) => v != null)
+        .map(([k, v]) => [k, Array.isArray(v) ? v.map(String) : String(v)])
     );
 
     if (selectedAssetIds.length) params.selectedAssetIds = selectedAssetIds;
@@ -36,11 +28,12 @@ export class AssetApiRepository implements AssetRepository {
       "/api/assets",
       params
     );
+
     return mapPaginatedAssetsDTOToEntity(response, selectedAssetIds);
   }
 
   async getAssetById(
-    id: number,
+    id: string,
     selectedAssetIds: string[] = []
   ): Promise<Asset> {
     const response = await client.get<AssetDTO>(`/api/assets/${id}`);

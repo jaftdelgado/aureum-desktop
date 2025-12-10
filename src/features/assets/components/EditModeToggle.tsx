@@ -35,9 +35,7 @@ export const EditModeToggle: React.FC<EditModeToggleProps> = ({
           onClick={onSave}
           disabled={isSaving}
         >
-          {isSaving
-            ? t("assets:saving") || "Guardando..."
-            : t("assets:save") || "Guardar"}
+          {isSaving ? t("editModeToggle.saving") : t("editModeToggle.save")}
         </Button>
       </div>
     );
@@ -46,11 +44,11 @@ export const EditModeToggle: React.FC<EditModeToggleProps> = ({
   return (
     <Button
       variant="default"
-      icon="lucide:edit"
+      icon="hugeicons:pencil-edit-02"
       className="px-4 py-2"
       onClick={() => setIsEditMode(true)}
     >
-      {t("assets:editMode") || "Editar"}
+      {t("editModeToggle.editMode")}
     </Button>
   );
 };

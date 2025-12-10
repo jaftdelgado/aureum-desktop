@@ -1,6 +1,7 @@
 // src/features/assets/pages/AssetsPage.tsx
 import { useState, useEffect } from "react";
 import { PageHeader } from "@core/components/PageHeader";
+import { Container } from "@core/components/Container";
 import { useTranslation } from "react-i18next";
 
 import { useSelectedTeam } from "@app/hooks/useSelectedTeam";
@@ -12,12 +13,10 @@ import { useSelectedAssetIds } from "../hooks/useSelectedAssetIds";
 import { useEditingSelectedAssets } from "../store/useEditingSelectedAssets";
 import { useSearchAssets } from "../hooks/useSearchAssets";
 
-// Componentes
 import { EditModeToggle } from "../components/EditModeToggle";
 import { AssetsTable } from "../components/AssetsTable";
 import { TeamAssetsSidebar } from "../components/TeamAssetsSidebar";
 
-// Hook de sincronización
 import { useSyncTeamAssets } from "../hooks/useSyncTeamAssets";
 
 export default function AssetsPage() {
@@ -30,30 +29,23 @@ export default function AssetsPage() {
   const [input, setInput] = useState("");
   const debouncedInput = useDebounce(input, 400);
 
-  // Estado de carga al guardar cambios
   const [isSavingChanges, setIsSavingChanges] = useState(false);
 
-  // Team assets
   const teamAssetsQuery = useTeamAssets(teamPublicId);
   const { data: teamAssets, isLoading: isLoadingTeamAssets } = teamAssetsQuery;
 
-  // Selected Asset IDs
   const selectedAssetIds = useSelectedAssetIds(teamAssets);
 
-  // Lista completa de assets
   const assetsListQuery = useAssetsList(selectedAssetIds, {
     enabled: !!teamAssets && !isLoadingTeamAssets,
   });
   const { data, isLoading, error } = assetsListQuery;
 
-  // Assets en edición
   const { editingSelectedAssets, setEditingSelectedAssets } =
     useEditingSelectedAssets();
 
-  // Hook de sincronización
   const syncTeamAssetsMutation = useSyncTeamAssets();
 
-  // Inicializar selección al entrar en modo edición
   useEffect(() => {
     if (isEditMode && data?.data && editingSelectedAssets.length === 0) {
       const initial = data.data.filter((a) =>
@@ -69,7 +61,6 @@ export default function AssetsPage() {
     setEditingSelectedAssets,
   ]);
 
-  // Búsqueda con debounce
   useSearchAssets(debouncedInput, setSearch, setPage);
 
   const handleSetEditMode = (value: boolean) => {
@@ -79,36 +70,22 @@ export default function AssetsPage() {
 
   const handleSave = async () => {
     if (!selectedTeam) return;
-
     try {
-      // 1️⃣ Inicia animación de guardado
       setIsSavingChanges(true);
-
-      // 2️⃣ Guardar cambios en la API
       await syncTeamAssetsMutation.mutateAsync({
         teamId: selectedTeam.publicId,
         selectedAssetIds: editingSelectedAssets.map((a) => a.publicId!),
       });
-
-      // 3️⃣ Refrescar los TeamAssets
       const { data: freshTeamAssets } = await teamAssetsQuery.refetch();
-
-      // 4️⃣ Reconstruir el array de selectedAssetIds
       const newSelectedAssetIds =
         freshTeamAssets?.map((ta) => ta.assetId) ?? [];
-
-      // 5️⃣ Limpiar edición y actualizar selección
       setEditingSelectedAssets([]);
       selectedAssetIds.splice(
         0,
         selectedAssetIds.length,
         ...newSelectedAssetIds
       );
-
-      // 6️⃣ Refrescar los assets filtrados según la nueva selección
       await assetsListQuery.refetch();
-
-      // 7️⃣ Salir del modo edición
       setIsEditMode(false);
     } catch (err) {
       console.error("Error al guardar cambios:", err);
@@ -138,22 +115,24 @@ export default function AssetsPage() {
         </div>
       )}
 
-      <div className="flex flex-1 w-full flex-col md:flex-row min-h-0">
-        <div className="w-full md:w-[30%] border-r border-outline">
-          <TeamAssetsSidebar
-            teamId={teamPublicId}
-            isEditMode={isEditMode}
-            selectedAssets={isEditMode ? editingSelectedAssets : undefined}
-            isLoading={
-              isLoadingTeamAssets ||
-              syncTeamAssetsMutation.isPending ||
-              isSavingChanges
-            }
-          />
+      <div className="flex flex-1 w-full min-h-0 px-page-x py-page-y gap-3">
+        <div className="w-full md:w-[30%] flex flex-col">
+          <Container className="h-full">
+            <TeamAssetsSidebar
+              teamId={teamPublicId}
+              isEditMode={isEditMode}
+              selectedAssets={isEditMode ? editingSelectedAssets : undefined}
+              isLoading={
+                isLoadingTeamAssets ||
+                syncTeamAssetsMutation.isPending ||
+                isSavingChanges
+              }
+            />
+          </Container>
         </div>
 
-        <div className="w-full md:w-[70%] flex flex-col h-full min-h-0">
-          <div className="flex-1 overflow-x-hidden">
+        <div className="w-full md:w-[70%] flex flex-col">
+          <Container className="h-full flex flex-col">
             <AssetsTable
               data={data?.data}
               loading={
@@ -169,7 +148,7 @@ export default function AssetsPage() {
               onQueryChange={setInput}
               isEditMode={isEditMode}
             />
-          </div>
+          </Container>
         </div>
       </div>
     </div>

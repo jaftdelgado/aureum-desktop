@@ -1,6 +1,6 @@
-// src/core/components/table/DataPagination.tsx
 import React from "react";
 import { ButtonGroup } from "@core/components/ButtonGroup";
+import { Button } from "@core/ui/Button";
 
 interface DataPaginationProps {
   page: number;
@@ -27,9 +27,6 @@ export const DataPagination: React.FC<DataPaginationProps> = ({
     if (page < totalPages) onPageChange(page + 1);
   };
 
-  // -----------------------------
-  // Generate dynamic page buttons
-  // -----------------------------
   const generatePages = () => {
     const pages: (number | "...")[] = [];
 
@@ -37,10 +34,8 @@ export const DataPagination: React.FC<DataPaginationProps> = ({
     const half = Math.floor(maxVisible / 2);
 
     if (totalPages <= maxVisible + 2) {
-      // small set of pages → show all
       for (let i = 1; i <= totalPages; i++) pages.push(i);
     } else {
-      // always show 1
       pages.push(1);
 
       let start = Math.max(2, page - half);
@@ -50,7 +45,6 @@ export const DataPagination: React.FC<DataPaginationProps> = ({
       for (let i = start; i <= end; i++) pages.push(i);
       if (end < totalPages - 1) pages.push("...");
 
-      // always show last
       pages.push(totalPages);
     }
 
@@ -60,27 +54,20 @@ export const DataPagination: React.FC<DataPaginationProps> = ({
   const pageItems = generatePages();
 
   return (
-    <div className="flex justify-between items-center px-4 py-3 border-t border-outline bg-surface sticky bottom-0 z-10">
-      {/* LEFT: Prev / Next */}
+    <div className="flex justify-between items-center py-3 px-component-x border-outline bg-surface sticky bottom-0 z-10">
       <ButtonGroup>
-        <button
-          onClick={handlePrev}
-          disabled={page === 1}
-          className="px-3 py-1.5 bg-surface text-body border disabled:opacity-50"
-        >
+        <Button onClick={handlePrev} disabled={page === 1} variant="secondary">
           Prev
-        </button>
-
-        <button
+        </Button>
+        <Button
           onClick={handleNext}
           disabled={page === totalPages}
-          className="px-3 py-1.5 bg-surface text-body border disabled:opacity-50"
+          variant="secondary"
         >
           Next
-        </button>
+        </Button>
       </ButtonGroup>
 
-      {/* RIGHT: Page numbers */}
       <ButtonGroup>
         {pageItems.map((item, idx) =>
           item === "..." ? (
@@ -91,17 +78,16 @@ export const DataPagination: React.FC<DataPaginationProps> = ({
               …
             </div>
           ) : (
-            <button
+            <Button
               key={item}
               onClick={() => onPageChange(item)}
-              className={`px-3 py-1.5 border text-body ${
-                page === item
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-surface"
-              }`}
+              variant="secondary"
+              className={
+                page === item ? "bg-primary text-primary-foreground" : ""
+              }
             >
               {item}
-            </button>
+            </Button>
           )
         )}
       </ButtonGroup>

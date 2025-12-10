@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@core/utils/cn";
 
 const avatarVariants = cva(
-  "inline-block overflow-hidden bg-gray-100 flex items-center justify-center border border-black/10", // 👈 borde semitransparente agregado
+  "inline-block overflow-hidden border border-alphaOutline flex items-center justify-center flex-shrink-0",
   {
     variants: {
       size: {

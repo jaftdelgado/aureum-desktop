@@ -30,3 +30,12 @@ textarea {
 .no-drag {
   -webkit-app-region: no-drag;
 }
+
+.scroll-container {
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}

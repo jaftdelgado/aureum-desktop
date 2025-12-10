@@ -1,12 +1,10 @@
-// src/domain/entities/Asset.ts
 export interface AssetCategory {
   categoryId: number;
   name: string;
 }
 
 export interface Asset {
-  assetId: number;
-  publicId?: string;
+  publicId: string;
   assetName: string;
   assetSymbol: string;
   assetType: string;
@@ -20,10 +18,10 @@ export interface Asset {
   liquidity?: number | null;
   assetPicUrl?: string | null;
 
-  category: AssetCategory | null;
+  category?: AssetCategory | null;
 
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 
   isSelected?: boolean;
 }

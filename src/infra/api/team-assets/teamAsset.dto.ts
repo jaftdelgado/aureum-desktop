@@ -1,12 +1,11 @@
-// src/infra/api/team-assets/teamAsset.dto.ts
 export interface TeamAssetDTO {
   teamAssetId: number;
   publicId: string;
   teamId: string;
   assetId: string;
   currentPrice: number;
+  hasMovements: boolean;
   asset: {
-    assetId: number;
     publicId: string;
     assetSymbol: string;
     assetName: string;
@@ -18,7 +17,10 @@ export interface TeamAssetDTO {
     minPrice?: number | null;
     dividendYield?: number | null;
     liquidity?: number | null;
-    assetPicUrl?: string | null;
-    createdAt: string;
+    logoUrl?: string | null;
+    category?: {
+      categoryId: number;
+      categoryKey: string;
+    } | null;
   };
 }

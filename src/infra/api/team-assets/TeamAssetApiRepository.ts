@@ -1,4 +1,3 @@
-// src/infra/api/team-assets/TeamAssetApiRepository.ts
 import { client } from "@infra/api/http/client";
 import type { TeamAssetRepository } from "@domain/repositories/TeamAssetRepository";
 import type { TeamAsset } from "@domain/entities/TeamAsset";
@@ -7,7 +6,7 @@ import { mapTeamAssetDTOToEntity } from "@infra/api/team-assets/teamAsset.mapper
 
 export class TeamAssetApiRepository implements TeamAssetRepository {
   async findAllByTeamId(teamId: string): Promise<TeamAsset[]> {
-    const response = await client.get<TeamAssetDTO[]>(
+    const response: TeamAssetDTO[] = await client.get(
       `/api/team-assets/team/${teamId}`
     );
     return response.map(mapTeamAssetDTOToEntity);
@@ -17,9 +16,12 @@ export class TeamAssetApiRepository implements TeamAssetRepository {
     teamId: string,
     selectedAssetIds: string[]
   ): Promise<TeamAsset[]> {
-    const response = await client.post<TeamAssetDTO[]>(
+    const response: TeamAssetDTO[] = await client.post(
       `/api/team-assets/sync`,
-      { teamId, selectedAssetIds }
+      {
+        teamId,
+        selectedAssetIds,
+      }
     );
     return response.map(mapTeamAssetDTOToEntity);
   }

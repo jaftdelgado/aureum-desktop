@@ -1,4 +1,3 @@
-// src/domain/repositories/AssetRepository.ts
 import type { Asset } from "@domain/entities/Asset";
 
 export interface AssetRepository {
@@ -16,5 +15,5 @@ export interface AssetRepository {
     };
   }>;
 
-  getAssetById(id: number, selectedAssetIds?: string[]): Promise<Asset>;
+  getAssetById(id: string, selectedAssetIds?: string[]): Promise<Asset>;
 }

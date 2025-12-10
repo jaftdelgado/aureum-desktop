@@ -1,7 +1,4 @@
-// src/infra/api/assets/asset.dto.ts
-
 export interface AssetDTO {
-  assetId: number;
   publicId: string;
   assetSymbol: string;
   assetName: string;
@@ -13,13 +10,11 @@ export interface AssetDTO {
   minPrice?: number | null;
   dividendYield?: number | null;
   liquidity?: number | null;
-  assetPicUrl?: string | null;
+  logoUrl?: string | null;
   category?: {
     categoryId: number;
     categoryKey: string;
   } | null;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface PaginatedResultDTO<T> {

@@ -1,4 +1,3 @@
-// src/infra/api/assets/asset.mappers.ts
 import type { AssetDTO, PaginatedResultDTO } from "@infra/api/assets/asset.dto";
 import type { Asset } from "@domain/entities/Asset";
 
@@ -6,7 +5,6 @@ export const mapAssetDTOToEntity = (
   dto: AssetDTO,
   selectedAssetIds: string[] = []
 ): Asset => ({
-  assetId: dto.assetId,
   publicId: dto.publicId,
   assetName: dto.assetName,
   assetSymbol: dto.assetSymbol,
@@ -18,15 +16,13 @@ export const mapAssetDTOToEntity = (
   minPrice: dto.minPrice ?? null,
   dividendYield: dto.dividendYield ?? null,
   liquidity: dto.liquidity ?? null,
-  assetPicUrl: dto.assetPicUrl ?? null,
+  assetPicUrl: dto.logoUrl ?? null,
   category: dto.category
     ? {
         categoryId: dto.category.categoryId,
         name: dto.category.categoryKey,
       }
     : null,
-  createdAt: new Date(dto.createdAt),
-  updatedAt: new Date(dto.updatedAt),
   isSelected: selectedAssetIds.includes(dto.publicId),
 });
 

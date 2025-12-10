@@ -113,7 +113,7 @@ export default function DataTable<T extends object>({
   return (
     <div className={`w-full h-full flex flex-col min-h-0 ${className}`}>
       {search && onQueryChange && (
-        <div className="sticky top-0 z-30 bg-background border-b border-outline">
+        <div className="sticky top-0 z-30 border-b border-outline">
           <DataMenu
             query={localQuery}
             onQueryChange={handleQueryChange}
@@ -123,7 +123,7 @@ export default function DataTable<T extends object>({
         </div>
       )}
 
-      <div className="flex-1 min-h-0 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto scroll-container">
         <table className="w-full border-collapse table-fixed">
           <colgroup>
             {selectable && <col style={{ width: "48px" }} />}
@@ -132,7 +132,7 @@ export default function DataTable<T extends object>({
             ))}
           </colgroup>
 
-          <thead className="sticky top-0 z-20 bg-background">
+          <thead className="sticky top-0 z-20">
             <DataHeader
               columns={columns}
               selectable={selectable}
@@ -160,7 +160,7 @@ export default function DataTable<T extends object>({
                   )}
                   {columns.map((_, colIndex) => (
                     <td key={colIndex} className="px-4 py-2">
-                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-8" />
                     </td>
                   ))}
                 </tr>
@@ -203,7 +203,7 @@ export default function DataTable<T extends object>({
       </div>
 
       {pagination && onPageChange && total > perPage && (
-        <div className="sticky bottom-0 z-30 bg-background border-t border-outline">
+        <div className="sticky bottom-0 z-30 border-t border-outline">
           <DataPagination
             page={page}
             perPage={perPage}

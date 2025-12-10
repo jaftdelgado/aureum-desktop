@@ -14,7 +14,7 @@ interface AssetsTableProps {
   total: number;
   onPageChange: (page: number) => void;
   onQueryChange: (query: string) => void;
-  onRowClick?: (row: Asset) => void; // opcional para comportamiento adicional
+  onRowClick?: (row: Asset) => void;
   isEditMode?: boolean;
 }
 
@@ -33,7 +33,6 @@ export function AssetsTable({
   const { editingSelectedAssets, addAsset, removeAsset } =
     useEditingSelectedAssets();
 
-  // Toggle selección
   const toggleSelect = (asset: Asset) => {
     const exists = editingSelectedAssets.find(
       (a) => a.publicId === asset.publicId
@@ -45,19 +44,19 @@ export function AssetsTable({
   const columns: Column<Asset>[] = [
     {
       key: "assetName",
-      header: t("columns.assetName", "Activo"),
+      header: t("columns.assetName"),
       sortable: true,
       render: (_, row) => <AssetRow asset={row} />,
     },
     {
       key: "assetSymbol",
-      header: t("columns.assetSymbol", "Símbolo"),
+      header: t("columns.assetSymbol"),
       sortable: true,
       render: (_, row) => row.assetSymbol,
     },
     {
       key: "assetType",
-      header: t("columns.assetType", "Tipo / Categoría"),
+      header: t("columns.assetType"),
       sortable: false,
       render: (_, row) => (
         <div className="flex gap-2">

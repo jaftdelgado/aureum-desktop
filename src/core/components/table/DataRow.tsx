@@ -47,7 +47,7 @@ export default function DataRow<T>({
       {columns.map((col) => (
         <td
           key={String(col.key)}
-          className={`px-3 ${
+          className={`px-component-x ${
             isDense ? "py-0.5" : "py-1.5"
           } border-r border-outline`}
           style={{
@@ -56,7 +56,7 @@ export default function DataRow<T>({
             boxSizing: "border-box",
           }}
         >
-          <div className="truncate text-body text-primaryText overflow-hidden whitespace-nowrap">
+          <div className="truncate text-body text-secondaryText overflow-hidden whitespace-nowrap">
             {col.render
               ? col.render(row[col.key], row, 0)
               : String(row[col.key] ?? "-")}

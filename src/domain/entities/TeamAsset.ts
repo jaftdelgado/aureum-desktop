@@ -1,4 +1,3 @@
-// src/domain/entities/TeamAsset.ts
 import type { Asset } from "@domain/entities/Asset";
 
 export interface TeamAsset {
@@ -7,5 +6,6 @@ export interface TeamAsset {
   teamId: string;
   assetId: string;
   currentPrice: number;
+  hasMovements: boolean;
   asset: Asset;
 }
