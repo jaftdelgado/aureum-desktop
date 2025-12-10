@@ -5,8 +5,11 @@ import type {
 import type { TradeResult } from "@domain/entities/Trade";
 
 export class SellAssetUseCase {
-  constructor(private marketRepository: MarketRepository) {}
-
+  private marketRepository: MarketRepository;
+  
+  constructor(marketRepository: MarketRepository) {
+    this.marketRepository = marketRepository;
+  }
   execute(params: TradeParams): Promise<TradeResult> {
     return this.marketRepository.sellAsset(params);
   }

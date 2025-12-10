@@ -4,6 +4,11 @@ import { MarketApiRepository } from "@infra/api/market/MarketApiRepository";
 import { SubscribeToMarketUseCase } from "@domain/use-cases/market/SubscribeToMarketUseCase";
 import type { MarketSnapshot } from "@domain/entities/MarketSnapshot";
 
+import { useAuth } from "@app/hooks/useAuth";
+import {
+  PortfolioRepository,
+  type PortfolioAssetQuantity,
+} from "@infra/api/portfolio/PortfolioRepository";
 
 export type AssetHistoryPoint = {
   date: string;
@@ -80,6 +85,10 @@ export const useMarketPage = (courseId: string) => {
   const [assetsById, setAssetsById] = useState<AssetsState>({});
   const [selectedAssetId, setSelectedAssetId] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+  const [portfolioQuantities, setPortfolioQuantities] = useState<
+    Record<string, number>
+  >({});
 
   useEffect(() => {
     setIsLoading(true);
@@ -99,7 +108,40 @@ export const useMarketPage = (courseId: string) => {
     };
   }, [courseId]);
 
-  const assets = useMemo(() => Object.values(assetsById), [assetsById]);
+  const loadPortfolio = async () => {
+    try {
+      const items: PortfolioAssetQuantity[] =
+        await PortfolioRepository.getAssetQuantitiesByTeamAndUser(
+          courseId,
+          user?.id ?? ""
+        );
+
+      const map: Record<string, number> = {};
+      for (const item of items) {
+        map[item.assetId] = item.quantity;
+      }
+
+      setPortfolioQuantities(map);
+    } catch (error) {
+      console.error("[useMarketPage] error loading portfolio quantities:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!courseId || !user?.id) return;
+
+    void loadPortfolio();
+    
+  }, [courseId, user?.id]);
+
+   const assets = useMemo(
+    () =>
+      Object.values(assetsById).map((asset) => ({
+        ...asset,
+        allocation: portfolioQuantities[asset.id] ?? 0,
+      })),
+    [assetsById, portfolioQuantities]
+  );
 
   useEffect(() => {
     if (!selectedAssetId && assets.length > 0) {
@@ -122,5 +164,6 @@ export const useMarketPage = (courseId: string) => {
     selectedAssetId,
     selectAsset,
     isLoading,
+    reloadQuantities: loadPortfolio,
   };
 };

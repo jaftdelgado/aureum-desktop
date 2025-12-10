@@ -91,7 +91,7 @@ export const AssetsTable: React.FC<AssetsTableProps> = ({
                   </TableCell>
 
                   <TableCell className="text-right text-sm">
-                    {asset.allocation}%
+                    {asset.allocation}
                   </TableCell>
                 </TableRow>
               );
