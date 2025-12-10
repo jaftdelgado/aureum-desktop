@@ -6,7 +6,7 @@ import { VideoPlayerDialog } from "../components/VideoPlayerDialog";
 import { useLessonsPage } from "../hooks/useLessonsPage";
 
 const LessonsPage: React.FC = () => {
-  const { t } = useTranslation("lessons"); // Namespace 'lessons'
+  const { t } = useTranslation("lessons"); 
   
   const { 
     lessons, 
@@ -27,14 +27,14 @@ const LessonsPage: React.FC = () => {
           <div className="flex h-60 flex-col items-center justify-center gap-3">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-primaryBtn border-t-transparent" />
             <p className="text-sm text-secondaryText">
-               {t("loadingList")} {/* <--- TRADUCCIÓN APLICADA */}
+               {t("loadingList")} 
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-10">
             {lessons.length === 0 && (
               <div className="col-span-full py-10 text-center opacity-60">
-                <p>{t("emptyList")}</p> {/* <--- TRADUCCIÓN APLICADA */}
+                <p>{t("emptyList")}</p> 
               </div>
             )}
 

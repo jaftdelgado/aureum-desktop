@@ -8,11 +8,11 @@ export const usePortfolioData = (courseId: string | undefined, studentId: string
       if (!courseId) throw new Error("Course ID required");
       return PortfolioRepository.getByCourse(courseId);
     },
-    enabled: !!courseId, // Solo se ejecuta si hay courseId
-    staleTime: 1000 * 60, // Los datos se consideran frescos por 1 minuto (evita recargas constantes)
+    enabled: !!courseId, 
+    staleTime: 3000,       
+    refetchInterval: 3000, 
   });
 
-  // Query para obtener el Historial Completo
   const historyQuery = useQuery({
     queryKey: ["portfolioHistory", courseId, studentId],
     queryFn: () => {

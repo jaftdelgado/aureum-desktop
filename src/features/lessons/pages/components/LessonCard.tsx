@@ -19,7 +19,6 @@ export const LessonCard: React.FC<LessonCardProps> = ({
   const { t } = useTranslation("lessons");
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all hover:shadow-md">
-      {/* Zona de Imagen Clickable */}
       <div 
         className="relative aspect-video w-full cursor-pointer overflow-hidden bg-muted"
         onClick={onPlay}
@@ -34,7 +33,6 @@ export const LessonCard: React.FC<LessonCardProps> = ({
         </div>
       </div>
 
-      {/* Info */}
       <div className="flex flex-1 flex-col p-4">
         <h3 className="mb-1 line-clamp-1 text-lg font-semibold text-primaryText" title={title}>
           {title}
@@ -50,7 +48,7 @@ export const LessonCard: React.FC<LessonCardProps> = ({
             onClick={onPlay}
             iconLeft="mdi:play"
           >
-            {t("card.watch")} {/* 3. Usar la traducción */}
+            {t("card.watch")} 
           </Button>
         </div>
       </div>

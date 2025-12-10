@@ -16,7 +16,6 @@ export const AssetMovementsList: React.FC<Props> = ({ assetName, assetSymbol, mo
   const formatMoney = (value: number) => 
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 
-  // Nota: La fecha podrías también internacionalizarla dinámicamente según el idioma actual (i18n.language)
   const formatDate = (dateString: string) => 
     new Date(dateString).toLocaleDateString('es-MX', { 
       day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' 
@@ -25,11 +24,9 @@ export const AssetMovementsList: React.FC<Props> = ({ assetName, assetSymbol, mo
   return (
     <div className="mt-6 rounded-xl border border-outline bg-card p-4 animate-in fade-in slide-in-from-top-4 duration-300 shadow-sm">
       
-      {/* Header */}
       <div className="flex justify-between items-center mb-6 border-b border-outline pb-4">
         <div>
           <h3 className="text-xl font-bold flex items-center gap-2 text-primaryText">
-            {/* Interpolación: Reemplaza {{symbol}} por la variable */}
             {t("history.title", { symbol: assetSymbol })}
             <span className="text-xs font-normal px-2 py-0.5 rounded-full border border-outline bg-bg text-secondaryText">
               {assetName}
@@ -61,7 +58,6 @@ export const AssetMovementsList: React.FC<Props> = ({ assetName, assetSymbol, mo
                 key={mov.movementId} 
                 className="flex flex-col p-5 rounded-lg border border-outline bg-bg transition-all hover:border-secondaryText/30"
               >
-                {/* Badge Tipo y Fecha */}
                 <div className="flex justify-between items-start mb-4">
                   <span className={cn(
                     "text-xs font-bold px-2.5 py-1 rounded-md flex items-center gap-1 border",
@@ -76,7 +72,6 @@ export const AssetMovementsList: React.FC<Props> = ({ assetName, assetSymbol, mo
                   </span>
                 </div>
                 
-                {/* Datos Principales */}
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between items-baseline">
                     <span className="text-xs font-medium text-secondaryText">{t("history.price")}</span>
@@ -90,7 +85,6 @@ export const AssetMovementsList: React.FC<Props> = ({ assetName, assetSymbol, mo
 
                 <div className="h-px w-full mb-3 border-dashed border-outline"></div>
 
-                {/* Footer */}
                 <div className="space-y-3">
                     <div className="flex justify-between items-end">
                         <span className="text-xs font-medium text-secondaryText">{t("history.totalOperation")}</span>
