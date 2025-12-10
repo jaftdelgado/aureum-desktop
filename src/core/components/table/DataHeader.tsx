@@ -29,7 +29,7 @@ export default function DataHeader<T>({
   onToggleSelectAll,
   onSort,
 }: DataHeaderProps<T>) {
-  const denseClass = isDense ? "py-0.5 text-sm" : "py-1.5";
+  const denseClass = isDense ? "py-0.5 text-body" : "py-1.5";
 
   const allSelected =
     pageData.length > 0 &&

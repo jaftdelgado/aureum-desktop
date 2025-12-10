@@ -23,7 +23,7 @@ export default function DataRow<T>({
 }: DataRowProps<T>) {
   return (
     <tr
-      className="bg-transparent hover:bg-sidebarHoverBtn cursor-pointer transition-colors"
+      className="bg-transparent hover:bg-card cursor-pointer transition-colors"
       onClick={(e) => {
         const target = e.target as HTMLElement;
         if (target.tagName.toLowerCase() === "input" || target.closest("label"))

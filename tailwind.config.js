@@ -14,6 +14,7 @@ export default {
         destructive: "var(--destructive)",
         sidebarBg: "var(--sidebar-bg)",
         card: "var(--card)",
+        transparentHover: "var(--transparent-hover)",
         primaryBtn: "var(--primary-btn)",
         primaryHoverBtn: "var(--primary-hover-btn)",
         secondaryBtn: "var(--secondary-btn)",
@@ -35,6 +36,7 @@ export default {
       },
       spacing: {
         "page-x": "var(--page-padding-x)",
+        "section-x": "var(--sections-padding-x)",
         "page-y": "var(--page-padding-y)",
       },
     },
