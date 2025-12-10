@@ -7,22 +7,24 @@ import { DI } from "@app/di/container";
 
 export const useTeamsList = () => {
   const { user } = useAuth();
-  const role = user?.role;
+  const isProfessor = user?.role === "professor" ;
+  const isStudent = user?.role === "student";
 
   return useQuery<Team[], Error>({
-    queryKey: ["teams", user?.id],
-    enabled: !!user?.id,
+    queryKey: ["teams", user?.id, user?.role],
+    enabled: !!user && (isProfessor || isStudent),
     staleTime: 5 * 60 * 1000,
     queryFn: async () => {
       if (!user) return [];
 
-      if (role === "professor") {
-        const getProfessorTeams = new GetProfessorTeamsUseCase(DI.teamsRepository);
-        return getProfessorTeams.execute(user.id);
+      if (isProfessor) {
+        const useCase = new GetProfessorTeamsUseCase(DI.teamsRepository);
+        return await useCase.execute(user.id);
       }
-      if (role === "student") {
-        const getStudentTeams = new GetStudentTeamsUseCase(DI.teamsRepository);
-        return getStudentTeams.execute(user.id);
+      
+      if (isStudent) {
+        const useCase = new GetStudentTeamsUseCase(DI.teamsRepository);
+        return await useCase.execute(user.id);
       }
       return [];
     },

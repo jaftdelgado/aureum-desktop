@@ -6,12 +6,14 @@ import { GetSessionUseCase } from "@domain/use-cases/auth/GetSessionUseCase";
 import { LogoutUseCase } from "@domain/use-cases/auth/LogoutUseCase";
 import { CheckSessionAliveUseCase } from "@domain/use-cases/auth/CheckSessionAliveUseCase";
 import { DI } from "@app/di/container";
+import { useTranslation } from "react-i18next";
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const { t } = useTranslation("auth");
   const [user, setUser] = useState<LoggedInUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -54,7 +56,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       } else {
         setUser(null);
       }
-      setLoading(false);
     });
 
     return () => {
@@ -145,8 +146,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   
   if (loading) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-surface">
+      <div className="flex flex-col h-screen w-screen items-center justify-center bg-surface gap-3">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primaryBtn border-t-transparent" />
+        <p className="text-sm font-medium text-secondaryText animate-pulse">
+          {t("common.loading")}
+        </p>
       </div>
     );
   }
