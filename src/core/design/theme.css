@@ -23,8 +23,8 @@
 }
 
 .dark {
-  --dots: #dfe2e8;
-  --dotted-bg: #f4f4f7;
+  --dots: #222222;
+  --dotted-bg: #151515;
   --bg: #111111;
   --outline: #202020;
   --secondary-outline: #242424;

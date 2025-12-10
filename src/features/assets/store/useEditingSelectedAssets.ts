@@ -1,4 +1,3 @@
-// src/features/assets/store/useEditingSelectedAssets.ts
 import { create } from "zustand";
 import type { Asset } from "@domain/entities/Asset";
 

@@ -1,7 +1,9 @@
 const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const path = require("node:path");
+require("dotenv").config();
 
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
+const PROD_URL = process.env.VITE_PROD_URL || "https://aureum-desktop.vercel.app";
 const isDev = !!VITE_DEV_SERVER_URL;
 
 if (process.defaultApp) {
@@ -48,7 +50,7 @@ function createWindow() {
     mainWindow.loadURL(VITE_DEV_SERVER_URL);
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
+    mainWindow.loadURL(PROD_URL);
   }
 
   return mainWindow;
@@ -72,7 +74,7 @@ if (!gotTheLock) {
   });
 
   app.whenReady().then(() => {
-    const win = createWindow();
+    createWindow();
 
     ipcMain.on("window-action", (event, action) => {
       const senderWin = BrowserWindow.fromWebContents(event.sender);

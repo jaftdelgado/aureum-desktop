@@ -1,4 +1,3 @@
-// src/features/assets/pages/AssetsPage.tsx
 import { useState, useEffect } from "react";
 import { PageHeader } from "@core/components/PageHeader";
 import { Container } from "@core/components/Container";

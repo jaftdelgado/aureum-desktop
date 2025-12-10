@@ -1,4 +1,3 @@
-// src/features/assets/store/useSelectedAssets.ts
 import { create } from "zustand";
 
 interface SelectedAssetsState {
