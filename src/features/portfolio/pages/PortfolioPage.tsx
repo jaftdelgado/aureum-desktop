@@ -16,11 +16,9 @@ import { PortfolioPnLChart } from "../components/PortfolioPnLChart";
 import { AssetMovementsList } from "../components/AssetMovementsList";
 import { cn } from "@core/utils/cn";
 
-// IMPORTS NECESARIOS PARA EL TIEMPO REAL
 import { MarketApiRepository } from "@infra/api/market/MarketApiRepository";
 import { SubscribeToMarketUseCase } from "@domain/use-cases/market/SubscribeToMarketUseCase";
 
-// Instancias para conectar al stream
 const marketRepository = new MarketApiRepository();
 const subscribeToMarketUseCase = new SubscribeToMarketUseCase(marketRepository);
 
@@ -32,16 +30,13 @@ const PortfolioPage: React.FC = () => {
   const { portfolio, history, isLoading } = usePortfolioData(selectedTeam?.publicId, user?.id);
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
 
-  // ESTADO PARA PRECIOS EN VIVO
   const [livePrices, setLivePrices] = useState<Record<string, number>>({});
 
-  // EFECTO: Suscribirse al stream del mercado cuando entramos a esta página
   useEffect(() => {
     if (!selectedTeam?.publicId) return;
 
     const unsubscribe = subscribeToMarketUseCase.execute(selectedTeam.publicId, {
       onData: (snapshot) => {
-        // Actualizamos el diccionario de precios: { "guid-asset": 150.20, ... }
         setLivePrices((prev) => {
           const next = { ...prev };
           snapshot.assets.forEach((asset) => {
@@ -58,42 +53,36 @@ const PortfolioPage: React.FC = () => {
     };
   }, [selectedTeam?.publicId]);
 
-  // MEMO: Fusionar datos estáticos del portafolio con precios en vivo
   const myPortfolio = useMemo(() => {
     if (!user?.id || !portfolio) return [];
 
-    // 1. Filtramos los items del usuario actual
     const userItems = portfolio.filter(p => 
        String(p.userId).toLowerCase() === String(user.id).toLowerCase()
     );
 
-    // 2. Recalculamos PnL con el precio en vivo si existe
     return userItems.map(item => {
-      const livePrice = livePrices[item.assetId]; // Buscamos si hay precio nuevo
+      const livePrice = livePrices[item.assetId]; 
 
-      // Si no hay precio en vivo (todavía no llega el stream), usamos el de la BD (item.currentValue)
       const currentPrice = livePrice !== undefined ? livePrice : item.currentValue;
 
-      // Cálculos financieros
       const currentTotalValue = item.quantity * currentPrice;
       const investedTotal = item.quantity * item.avgPrice;
       const pnl = currentTotalValue - investedTotal;
       
-      // Evitar división por cero
       const pnlPercent = investedTotal !== 0 
         ? (pnl / investedTotal) * 100 
         : 0;
 
       return {
         ...item,
-        currentValue: currentPrice, // Actualizamos el precio unitario visual
-        currentTotalValue: currentTotalValue, // Actualizamos el total visual
+        currentValue: currentPrice, 
+        currentTotalValue: currentTotalValue, 
         profitOrLoss: pnl,
         profitOrLossPercentage: pnlPercent
       };
     });
 
-  }, [portfolio, user, livePrices]); // Se recalcula cada vez que 'livePrices' cambia
+  }, [portfolio, user, livePrices]); 
 
   const selectedAsset = useMemo(() => {
     return myPortfolio.find(p => 
@@ -117,7 +106,7 @@ const PortfolioPage: React.FC = () => {
         description={t("description")} 
       />
 
-      {/* Gráfica PnL (Ahora se moverá en tiempo real gracias a myPortfolio) */}
+      
       {!isLoading && myPortfolio.length > 0 && (
         <PortfolioPnLChart data={myPortfolio} />
       )}
@@ -166,7 +155,7 @@ const PortfolioPage: React.FC = () => {
                   <TableCell>{item.assetName}</TableCell>
                   <TableCell className="text-right font-mono">{item.quantity.toFixed(4)}</TableCell>
                   <TableCell className="text-right text-secondaryText">${item.avgPrice.toFixed(2)}</TableCell>
-                  {/* Aquí se mostrará el precio en vivo con un efecto de actualización */}
+                  
                   <TableCell className="text-right font-semibold animate-pulse-once">
                     ${item.currentValue.toFixed(2)}
                   </TableCell>
@@ -183,7 +172,6 @@ const PortfolioPage: React.FC = () => {
         </Table>
       </div>
 
-      {/* SECCIÓN DE DETALLE DE MOVIMIENTOS */}
       {selectedAssetId && (
         <div className="mt-4">
           {selectedAsset ? (

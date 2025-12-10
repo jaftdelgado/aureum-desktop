@@ -46,7 +46,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
   const [isMuted, setIsMuted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Manejo de pantalla completa
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -55,7 +54,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
-  // --- EFFECT: Carga segura del video con token ---
   useEffect(() => {
     let isActive = true;
     let currentBlobUrl: string | null = null;
@@ -65,18 +63,15 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
 
       try {
         setIsLoading(true);
-        setVideoSrc(null); // Reseteamos source anterior
+        setVideoSrc(null); 
 
-        // 1. URL del endpoint protegido
         const endpointUrl = LessonsRepository.getVideoUrl(lesson.id);
         
-        // 2. Descargar blob con token usando el cliente local
         const blobUrl = await lessonsClient.fetchVideoBlob(endpointUrl);
         
         if (isActive) {
           currentBlobUrl = blobUrl;
           setVideoSrc(blobUrl);
-          // Nota: isLoading pasará a false en onLoadedMetadata
         }
       } catch (error) {
         console.error("Error cargando el video:", error);
@@ -86,7 +81,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
 
     fetchVideoSecurely();
 
-    // Cleanup: Revocar URL para liberar memoria
     return () => {
       isActive = false;
       if (currentBlobUrl) {
@@ -95,7 +89,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
     };
   }, [lesson, isOpen]);
 
-  // --- HANDLERS ---
   const togglePlay = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
@@ -149,7 +142,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
     if (videoRef.current) {
       setDuration(videoRef.current.duration);
       setIsLoading(false);
-      // Intentar autoreproducir si estaba reproduciendo
       if (isPlaying) {
         videoRef.current.play().catch(() => setIsPlaying(false));
       }
@@ -166,7 +158,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
       >
         <div ref={containerRef} className="relative flex flex-col bg-black group w-full h-full">
           
-          {/* CABECERA */}
           {!isFullscreen && (
             <DialogHeader className="flex flex-row items-center justify-between border-b border-white/10 bg-zinc-900/90 p-4 backdrop-blur-md absolute top-0 w-full z-20">
               <div className="flex flex-col">
@@ -192,9 +183,7 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
             </DialogHeader>
           )}
 
-          {/* AREA DE VIDEO */}
           <div className="relative flex-1 flex items-center justify-center bg-black min-h-[300px]">
-              {/* Solo renderizamos el video si videoSrc existe */}
               {videoSrc && (
                 <video
                     ref={videoRef}
@@ -220,7 +209,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
                 </video>
               )}
 
-              {/* Spinner de Carga */}
               {(isLoading || !videoSrc) && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-30 pointer-events-none backdrop-blur-[1px]">
                    <div className="flex flex-col items-center gap-2">
@@ -232,7 +220,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
                 </div>
               )}
 
-              {/* Overlay Play/Pause */}
               {!isPlaying && !isLoading && videoSrc && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none">
                   <Icon icon="mdi:play-circle" className="text-white/80 w-20 h-20 drop-shadow-2xl opacity-80" />
@@ -240,10 +227,8 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
               )}
           </div>
 
-          {/* BARRA DE CONTROLES */}
           <div className="flex flex-col gap-2 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 pb-2 absolute bottom-0 w-full z-20 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
               
-              {/* Slider */}
               <div className="w-full flex items-center gap-3 cursor-pointer group/slider">
                  <span className="text-xs font-mono text-white/80 w-10 text-right">
                     {formatTime(currentTime)}
@@ -274,7 +259,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
                  </span>
               </div>
 
-              {/* Botones */}
               <div className="flex items-center justify-between mt-1">
                   <div className="flex items-center gap-4">
                       <button onClick={togglePlay} className="text-white hover:text-indigo-400 transition-colors">
@@ -301,7 +285,6 @@ export const VideoPlayerDialog: React.FC<VideoPlayerDialogProps> = ({
           </div>
         </div>
         
-        {/* Descripción */}
         {!isFullscreen && (
           <div className="max-h-32 overflow-y-auto bg-zinc-950 p-5 border-t border-white/5">
               <h4 className="flex items-center gap-2 text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">

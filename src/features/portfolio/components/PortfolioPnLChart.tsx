@@ -3,7 +3,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell
 } from 'recharts';
 import type { PortfolioItem } from '../hooks/types';
-import { useTranslation } from "react-i18next"; // 1. Importar hook
+import { useTranslation } from "react-i18next"; 
 
 interface Props {
   data: PortfolioItem[];
@@ -18,9 +18,8 @@ interface CustomTooltipProps {
 const formatCurrency = (value: number) => 
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 
-// Componente interno para el Tooltip
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
-  const { t } = useTranslation("portfolio"); // Usar hook aquí también
+  const { t } = useTranslation("portfolio"); 
 
   if (active && payload && payload.length) {
     const data = payload[0].payload;
@@ -62,7 +61,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 };
 
 export const PortfolioPnLChart: React.FC<Props> = ({ data }) => {
-  const { t } = useTranslation("portfolio"); // Usar hook
+  const { t } = useTranslation("portfolio"); 
 
   const chartData = useMemo(() => {
     return data
