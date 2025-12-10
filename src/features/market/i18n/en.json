@@ -7,7 +7,7 @@
     "label": "Selected asset",
     "currentPrice": "Current price",
     "change24h": "24h change",
-    "portfolioPercent": "Portfolio %"
+    "portfolioPercent": "Portfolio"
   },
   "chart": {
     "title": "Price history",
@@ -20,7 +20,7 @@
       "asset": "Asset",
       "price": "Price",
       "change24h": "24h",
-      "portfolioPercent": "Portfolio %"
+      "portfolioPercent": "Portfolio"
     }
   },
   "actions": {

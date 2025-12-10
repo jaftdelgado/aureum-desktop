@@ -12,7 +12,10 @@ const repo = new MarketApiRepository();
 const buyUseCase = new BuyAssetUseCase(repo);
 const sellUseCase = new SellAssetUseCase(repo);
 
-export const useMarketTrading = (selectedAsset: Asset | null) => {
+export const useMarketTrading = (selectedAsset: Asset | null,
+  reloadQuantities: () => void
+) => {
+
   const { user } = useAuth();
   const { selectedTeam } = useSelectedTeam();
   const [loadingBuy, setLoadingBuy] = useState(false);
@@ -44,8 +47,9 @@ export const useMarketTrading = (selectedAsset: Asset | null) => {
           2
         )} · Cantidad: ${result.quantity}`,
       });
-
+      
       handleNotifications(result.notifications);
+      reloadQuantities();
     } finally {
       setLoadingBuy(false);
     }
@@ -71,6 +75,7 @@ export const useMarketTrading = (selectedAsset: Asset | null) => {
       });
 
       handleNotifications(result.notifications);
+      reloadQuantities();
     } finally {
       setLoadingSell(false);
     }

@@ -57,7 +57,7 @@ export const SelectedAssetPanel: React.FC<SelectedAssetPanelProps> = ({
               {t("selectedAsset.portfolioPercent")}
             </span>
             <span className="text-sm font-semibold text-primaryText">
-              {asset.allocation}%
+              {asset.allocation}
             </span>
           </div>
         </div>
