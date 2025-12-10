@@ -44,6 +44,7 @@ export const AssetHistoryChart: React.FC<AssetHistoryChartProps> = ({
             />
             <XAxis
               dataKey="date"
+              tickFormatter={() => ""}   // <── elimina las horas del eje X
               tickLine={false}
               axisLine={false}
               tickMargin={8}

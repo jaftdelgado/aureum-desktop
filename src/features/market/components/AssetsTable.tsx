@@ -36,7 +36,8 @@ export const AssetsTable: React.FC<AssetsTableProps> = ({
         </span>
       </header>
 
-      <div className="flex-1 min-h-0">
+      {/* CONTENEDOR SCROLLABLE */}
+      <div className="flex-1 min-h-0 overflow-y-auto max-h-64 pr-2">
         <Table>
           <TableHeader>
             <TableRow>
@@ -100,5 +101,6 @@ export const AssetsTable: React.FC<AssetsTableProps> = ({
         </Table>
       </div>
     </section>
+
   );
 };
