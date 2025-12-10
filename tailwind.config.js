@@ -12,6 +12,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        dots: "var(--dots)",
+        dottedBg: "var(--dottedBg)",
         bg: "var(--bg)",
         outline: "var(--outline)",
         secondaryOutline: "var(--secondary-outline)",

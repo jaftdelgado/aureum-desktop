@@ -5,37 +5,44 @@ import { Button } from "@core/ui/Button";
 import { useSidebarMenu } from "../hooks/useSidebarMenu";
 import { useSidebarProfile } from "../hooks/useSidebarProfile";
 
-export const AppSidebar: React.FC = () => {
+interface AppSidebarProps {
+  className?: string; // <-- agregamos className
+}
+
+export const AppSidebar: React.FC<AppSidebarProps> = ({ className }) => {
   const navigate = useNavigate();
   const { items } = useSidebarMenu();
   const { profile, actions, state, t } = useSidebarProfile();
 
   const handleNavigate = (route: string) => navigate(route);
 
-  const profileProps = profile ? {
-    name: profile.name,
-    role: profile.role,
-    avatarUrl: profile.avatarUrl,
-    currentTheme: state.currentTheme,
-    currentLang: state.currentLang,
-    onProfileClick: actions.goToProfile,
-    onLogout: actions.openLogoutDialog,
-    onToggleTheme: actions.toggleTheme,
-    onToggleLanguage: actions.toggleLanguage,
-    texts: {
-      viewProfile: t("sidebar.viewProfile", "Ver perfil"),
-      changeLanguage: t("sidebar.changeLanguage", "Cambiar idioma"),
-      toggleTheme: t("sidebar.toggleTheme", "Cambiar tema"),
-      logout: t("logout.label", "Cerrar sesión")
-    }
-  } : undefined;
+  const profileProps = profile
+    ? {
+        name: profile.name,
+        role: profile.role,
+        avatarUrl: profile.avatarUrl,
+        currentTheme: state.currentTheme,
+        currentLang: state.currentLang,
+        onProfileClick: actions.goToProfile,
+        onLogout: actions.openLogoutDialog,
+        onToggleTheme: actions.toggleTheme,
+        onToggleLanguage: actions.toggleLanguage,
+        texts: {
+          viewProfile: t("sidebar.viewProfile", "Ver perfil"),
+          changeLanguage: t("sidebar.changeLanguage", "Cambiar idioma"),
+          toggleTheme: t("sidebar.toggleTheme", "Cambiar tema"),
+          logout: t("logout.label", "Cerrar sesión"),
+        },
+      }
+    : undefined;
 
   return (
     <>
-      <Sidebar 
-        items={items} 
-        onNavigate={handleNavigate} 
-        profile={profileProps} 
+      <Sidebar
+        items={items}
+        onNavigate={handleNavigate}
+        profile={profileProps}
+        className={className} // <-- pasamos className al Sidebar
       />
 
       {state.showLogoutDialog && (
@@ -62,7 +69,9 @@ export const AppSidebar: React.FC = () => {
                 onClick={actions.confirmLogout}
                 disabled={state.isLoggingOut}
               >
-                {state.isLoggingOut ? "Cerrando..." : t("common.confirm", "Confirmar")}
+                {state.isLoggingOut
+                  ? "Cerrando..."
+                  : t("common.confirm", "Confirmar")}
               </Button>
             </div>
           </div>

@@ -1,6 +1,9 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { SidebarFooter, type SidebarFooterProps } from "@features/dashboard/components/side-bar/SidebarFooter";
+import {
+  SidebarFooter,
+  type SidebarFooterProps,
+} from "@features/dashboard/components/side-bar/SidebarFooter";
 import { SidebarButton } from "@features/dashboard/components/side-bar/SidebarButton";
 import { SidebarHeader } from "@features/dashboard/components/side-bar/SidebarHeader";
 
@@ -22,7 +25,7 @@ interface SidebarProps {
   items: SidebarItem[];
   onNavigate?: (route: string) => void;
   className?: string;
-  profile?: SidebarFooterProps; 
+  profile?: SidebarFooterProps;
   bottomActions?: React.ReactNode;
 }
 

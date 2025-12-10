@@ -33,9 +33,7 @@ export default function DataRow<T>({
     >
       {selectable && (
         <td
-          className={`px-3 ${
-            isDense ? "py-0.5" : "py-1.5"
-          } border-r border-outline`}
+          className={`px-3 ${isDense ? "py-0.5" : "py-1.5"} `}
           style={{ width: "48px", minWidth: "48px" }}
         >
           <div className="flex items-center justify-center">

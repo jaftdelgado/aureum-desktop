@@ -94,6 +94,12 @@ export default function AssetsPage() {
     }
   };
 
+  const hasChanges =
+    editingSelectedAssets.length !== selectedAssetIds.length ||
+    editingSelectedAssets.some(
+      (asset) => !selectedAssetIds.includes(asset.publicId!)
+    );
+
   return (
     <div className="w-full h-full flex flex-col min-h-0">
       <PageHeader
@@ -105,6 +111,7 @@ export default function AssetsPage() {
             setIsEditMode={handleSetEditMode}
             onSave={handleSave}
             isSaving={syncTeamAssetsMutation.isPending || isSavingChanges}
+            disabled={!hasChanges}
           />
         }
       />

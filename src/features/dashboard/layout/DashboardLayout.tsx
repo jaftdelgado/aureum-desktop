@@ -4,6 +4,7 @@ import { AppSidebar } from "@features/dashboard/components/AppSidebar";
 import { useIsMobile } from "@app/hooks/useIsMobile";
 import { useAuth } from "@app/hooks/useAuth";
 import TopBar from "@app/components/TitleBar";
+import { DotPattern } from "@features/dashboard/components/DotPattern";
 
 export const DashboardLayout: React.FC = () => {
   const isMobile = useIsMobile();
@@ -23,13 +24,17 @@ export const DashboardLayout: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-full bg-bg overflow-hidden">
-      {!isMobile && <AppSidebar />}
+    <div className="flex h-screen w-full bg-bg overflow-hidden relative">
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <DotPattern className="w-full h-full opacity-70" />
+      </div>
 
-      <div className="flex flex-col flex-1 h-full w-full overflow-x-hidden">
+      {!isMobile && <AppSidebar className="relative z-10" />}
+
+      <div className="flex flex-col flex-1 h-full w-full overflow-x-hidden relative z-10">
         {!isMobile && <TopBar />}
 
-        <div className="flex-1 w-full box-border overflow-y-auto">
+        <div className="flex-1 w-full box-border overflow-y-auto relative z-10">
           <Outlet />
         </div>
       </div>

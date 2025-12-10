@@ -25,7 +25,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 }) => {
   return (
     <div className={cn("w-full flex flex-col", className)}>
-      <div className="flex justify-between items-end w-full py-page-y px-page-x border-b border-outline">
+      <div className="flex justify-between items-end w-full py-page-y px-page-x bg-bg border-b border-outline">
         <div className="flex flex-col">
           <motion.div
             initial={{ opacity: 0, x: -5 }}

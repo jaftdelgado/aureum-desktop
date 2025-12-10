@@ -1,1 +1,50 @@
-{}
+{
+  "title": "Financial Assets",
+  "description": "Manage your simulated market, add assets, and explore all available assets.",
+  "columns": {
+    "assetName": "Asset",
+    "assetSymbol": "Symbol",
+    "assetType": "Type / Category",
+    "basePrice": "Price"
+  },
+  "assetCategory": {
+    "Tech": "Technology",
+    "Healthcare": "Healthcare",
+    "Finance": "Finance",
+    "Energy": "Energy",
+    "Consumer-Discretionary": "Consumer Discretionary",
+    "Consumer-Staples": "Consumer Staples",
+    "Industrials": "Industrials",
+    "Materials": "Materials",
+    "Communications": "Communications",
+    "Real-Estate": "Real Estate",
+    "Utilities": "Utilities",
+    "Layer1": "Layer 1",
+    "Layer2": "Layer 2",
+    "DeFi": "Decentralized Finance",
+    "Stablecoin": "Stablecoin",
+    "Gaming": "Gaming",
+    "AI-BigData": "AI & Big Data",
+    "Infrastructure": "Infrastructure",
+    "Meme": "Meme",
+    "ETF-Index": "ETF Index",
+    "ETF-Sector": "ETF Sector",
+    "ETF-Bonds": "ETF Bonds",
+    "ETF-Commodities": "ETF Commodities",
+    "ETF-Thematic": "ETF Thematic",
+    "ETF-International": "ETF International"
+  },
+  "assetType": {
+    "Stock": "Stock",
+    "Crypto": "Crypto",
+    "ETF": "ETF"
+  },
+  "teamAssets": {
+    "title": "Selected Assets"
+  },
+  "editModeToggle": {
+    "editMode": "Edit Assets",
+    "save": "Save Changes",
+    "saving": "Saving..."
+  }
+}

@@ -1,4 +1,6 @@
 :root {
+  --dots: #d1d5db;
+  --dotted-bg: #f4f4f7;
   --bg: #fefefe;
   --outline: #e8e8e8;
   --secondary-outline: #eaecf0;
@@ -21,6 +23,8 @@
 }
 
 .dark {
+  --dots: #dfe2e8;
+  --dotted-bg: #f4f4f7;
   --bg: #111111;
   --outline: #202020;
   --secondary-outline: #242424;

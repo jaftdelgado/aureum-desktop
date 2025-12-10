@@ -1,16 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { PortfolioRepository } from "@infra/api/portfolio/PortfolioRepository";
 
-export const usePortfolioData = (courseId: string | undefined, studentId: string | undefined) => {
+export const usePortfolioData = (
+  courseId: string | undefined,
+  studentId: string | undefined
+) => {
   const portfolioQuery = useQuery({
     queryKey: ["portfolio", courseId],
     queryFn: () => {
       if (!courseId) throw new Error("Course ID required");
       return PortfolioRepository.getByCourse(courseId);
     },
-    enabled: !!courseId, 
-    staleTime: 3000,       
-    refetchInterval: 3000, 
+    enabled: !!courseId,
+    staleTime: 3000,
+    refetchInterval: 3000,
   });
 
   const historyQuery = useQuery({
@@ -31,6 +34,6 @@ export const usePortfolioData = (courseId: string | undefined, studentId: string
     refetch: () => {
       portfolioQuery.refetch();
       historyQuery.refetch();
-    }
+    },
   };
 };
