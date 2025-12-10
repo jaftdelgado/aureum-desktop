@@ -111,7 +111,7 @@ export const AppRouter: React.FC = () => {
       <Suspense
         fallback={
           <div className="h-screen w-full flex items-center justify-center">
-            Cargando aplicación...
+            
           </div>
         }
       >
