@@ -16,11 +16,7 @@ import { PortfolioPnLChart } from "../components/PortfolioPnLChart";
 import { AssetMovementsList } from "../components/AssetMovementsList";
 import { cn } from "@core/utils/cn";
 
-import { MarketApiRepository } from "@infra/api/market/MarketApiRepository";
-import { SubscribeToMarketUseCase } from "@domain/use-cases/market/SubscribeToMarketUseCase";
-
-const marketRepository = new MarketApiRepository();
-const subscribeToMarketUseCase = new SubscribeToMarketUseCase(marketRepository);
+import { useMarketPage } from "@features/market/hooks/useMarketPage"; 
 
 const PortfolioPage: React.FC = () => {
   const { t } = useTranslation("portfolio");
@@ -30,28 +26,21 @@ const PortfolioPage: React.FC = () => {
   const { portfolio, history, isLoading } = usePortfolioData(selectedTeam?.publicId, user?.id);
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
 
-  const [livePrices, setLivePrices] = useState<Record<string, number>>({});
+  const { assets: marketAssets } = useMarketPage(selectedTeam?.publicId || "");
+  const [staticPrices, setStaticPrices] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    if (!selectedTeam?.publicId) return;
+    if (Object.keys(staticPrices).length > 0) return;
 
-    const unsubscribe = subscribeToMarketUseCase.execute(selectedTeam.publicId, {
-      onData: (snapshot) => {
-        setLivePrices((prev) => {
-          const next = { ...prev };
-          snapshot.assets.forEach((asset) => {
-            next[asset.id] = asset.price;
-          });
-          return next;
-        });
-      },
-      onError: (err) => console.error("Error en stream de portafolio", err),
-    });
+    if (marketAssets && marketAssets.length > 0) {
+      const snapshot: Record<string, number> = {};
+      marketAssets.forEach((asset) => {
+        snapshot[asset.id] = asset.currentPrice; 
+      });
+      setStaticPrices(snapshot);
+    }
+  }, [marketAssets, staticPrices]);
 
-    return () => {
-      unsubscribe();
-    };
-  }, [selectedTeam?.publicId]);
 
   const myPortfolio = useMemo(() => {
     if (!user?.id || !portfolio) return [];
@@ -61,11 +50,11 @@ const PortfolioPage: React.FC = () => {
     );
 
     return userItems.map(item => {
-      const livePrice = livePrices[item.assetId]; 
+      const frozenPrice = staticPrices[item.assetId]; 
 
-      const currentPrice = livePrice !== undefined ? livePrice : item.currentValue;
+      const priceDisplay = frozenPrice !== undefined ? frozenPrice : item.currentValue;
 
-      const currentTotalValue = item.quantity * currentPrice;
+      const currentTotalValue = item.quantity * priceDisplay;
       const investedTotal = item.quantity * item.avgPrice;
       const pnl = currentTotalValue - investedTotal;
       
@@ -75,14 +64,14 @@ const PortfolioPage: React.FC = () => {
 
       return {
         ...item,
-        currentValue: currentPrice, 
+        currentValue: priceDisplay, 
         currentTotalValue: currentTotalValue, 
         profitOrLoss: pnl,
         profitOrLossPercentage: pnlPercent
       };
     });
 
-  }, [portfolio, user, livePrices]); 
+  }, [portfolio, user, staticPrices]); 
 
   const selectedAsset = useMemo(() => {
     return myPortfolio.find(p => 
@@ -106,7 +95,6 @@ const PortfolioPage: React.FC = () => {
         description={t("description")} 
       />
 
-      
       {!isLoading && myPortfolio.length > 0 && (
         <PortfolioPnLChart data={myPortfolio} />
       )}
@@ -156,7 +144,8 @@ const PortfolioPage: React.FC = () => {
                   <TableCell className="text-right font-mono">{item.quantity.toFixed(4)}</TableCell>
                   <TableCell className="text-right text-secondaryText">${item.avgPrice.toFixed(2)}</TableCell>
                   
-                  <TableCell className="text-right font-semibold animate-pulse-once">
+                  {/* SIN ANIMACIÓN DE PULSO, PARA QUE SE VEA ESTÁTICO */}
+                  <TableCell className="text-right font-semibold">
                     ${item.currentValue.toFixed(2)}
                   </TableCell>
                   <TableCell className={`text-right font-medium ${item.profitOrLoss >= 0 ? 'text-green-500' : 'text-destructive'}`}>
