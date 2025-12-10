@@ -1,4 +1,5 @@
-import React from "react";
+// src/core/components/table/DataTable.tsx
+import React, { useEffect, useState } from "react";
 import DataHeader from "@core/components/table/DataHeader";
 import DataRow from "@core/components/table/DataRow";
 import { DataMenu } from "@core/components/table/DataMenu";
@@ -35,6 +36,8 @@ export interface DataTableProps<T> {
   page?: number;
   perPage?: number;
   onPageChange?: (page: number) => void;
+  onRowSelectToggle?: (row: T) => void;
+  initialSelectedIds?: string[];
 }
 
 function defaultGetRowId<T extends object>(row: T, index: number) {
@@ -62,8 +65,38 @@ export default function DataTable<T extends object>({
   page = 1,
   perPage = 20,
   onPageChange,
+  onRowSelectToggle,
+  initialSelectedIds,
 }: DataTableProps<T>) {
-  const [localQuery, setLocalQuery] = React.useState("");
+  const [localQuery, setLocalQuery] = useState("");
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!initialSelectedIds) return;
+    setSelectedIds((prev) => {
+      const next = new Set(initialSelectedIds);
+      let changed = false;
+      if (prev.size !== next.size) changed = true;
+      else {
+        for (const id of next) if (!prev.has(id)) changed = true;
+      }
+      return changed ? next : prev;
+    });
+  }, [initialSelectedIds]);
+
+  const toggleSelect = (id: string, _row: T) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+
+      onSelectionChange?.(
+        (data ?? []).filter((item, idx) => next.has(getRowId(item, idx)))
+      );
+
+      return next;
+    });
+  };
 
   const handleQueryChange = (value: string) => {
     setLocalQuery(value);
@@ -79,7 +112,6 @@ export default function DataTable<T extends object>({
 
   return (
     <div className={`w-full h-full flex flex-col min-h-0 ${className}`}>
-      {/* MENU STICKY */}
       {search && onQueryChange && (
         <div className="sticky top-0 z-30 bg-background border-b border-outline">
           <DataMenu
@@ -91,7 +123,6 @@ export default function DataTable<T extends object>({
         </div>
       )}
 
-      {/* TABLE CONTAINER */}
       <div className="flex-1 min-h-0 overflow-y-auto">
         <table className="w-full border-collapse table-fixed">
           <colgroup>
@@ -101,7 +132,6 @@ export default function DataTable<T extends object>({
             ))}
           </colgroup>
 
-          {/* HEADER REAL (1 solo thead) */}
           <thead className="sticky top-0 z-20 bg-background">
             <DataHeader
               columns={columns}
@@ -119,7 +149,6 @@ export default function DataTable<T extends object>({
             />
           </thead>
 
-          {/* BODY */}
           <tbody className="divide-y divide-outline">
             {loading ? (
               pageData.map((_, rowIndex) => (
@@ -145,10 +174,16 @@ export default function DataTable<T extends object>({
                     id={id}
                     row={row}
                     columns={columns}
-                    checked={false}
+                    checked={selectedIds.has(id)}
                     isDense={dense}
                     selectable={selectable}
-                    onToggleSelect={() => onSelectionChange?.([row])}
+                    onToggleSelect={(): void => {
+                      if (onRowSelectToggle) {
+                        onRowSelectToggle(row);
+                      } else {
+                        toggleSelect(id, row);
+                      }
+                    }}
                     onRowClick={() => onRowClick?.(row)}
                   />
                 );
@@ -167,7 +202,6 @@ export default function DataTable<T extends object>({
         </table>
       </div>
 
-      {/* PAGINATION */}
       {pagination && onPageChange && total > perPage && (
         <div className="sticky bottom-0 z-30 bg-background border-t border-outline">
           <DataPagination

@@ -17,9 +17,9 @@ export class TeamAssetApiRepository implements TeamAssetRepository {
     teamId: string,
     selectedAssetIds: string[]
   ): Promise<TeamAsset[]> {
-    const response = await client.put<TeamAssetDTO[]>(
-      `/api/team-assets/team/${teamId}/sync`,
-      { selectedAssetIds }
+    const response = await client.post<TeamAssetDTO[]>(
+      `/api/team-assets/sync`,
+      { teamId, selectedAssetIds }
     );
     return response.map(mapTeamAssetDTOToEntity);
   }

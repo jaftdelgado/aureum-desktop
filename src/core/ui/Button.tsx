@@ -87,7 +87,6 @@ export const Button: React.FC<ButtonProps> = ({
   iconRightNode,
   ...props
 }) => {
-  // Fallback seguros si alguna prop viene undefined
   const finalSize = size || "md";
   const finalVariant = variant || "default";
   const finalAlign = alignText || "left";
@@ -112,12 +111,10 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button className={classes} {...props}>
-      {/* Icono solo */}
       {isIconOnly && iconOnly && (
         <Icon icon={iconOnly} width={iw} height={ih} />
       )}
 
-      {/* Icono izquierdo */}
       {!isIconOnly && (iconLeft || iconLeftNode) && (
         <>
           {iconLeft && <Icon icon={iconLeft} width={iw} height={ih} />}
@@ -135,13 +132,12 @@ export const Button: React.FC<ButtonProps> = ({
       )}
 
       {!isIconOnly && children && isTextChild && (
-        <span className="truncate overflow-hidden whitespace-nowrap">
+        <span className="truncate overflow-hidden whitespace-nowrap text-body">
           {children}
         </span>
       )}
       {!isIconOnly && children && !isTextChild && <>{children}</>}
 
-      {/* Icono derecho */}
       {!isIconOnly && (iconRight || iconRightNode) && (
         <>
           {iconRight && <Icon icon={iconRight} width={iw} height={ih} />}

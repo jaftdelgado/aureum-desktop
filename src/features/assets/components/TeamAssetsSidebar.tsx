@@ -1,31 +1,42 @@
-// src/features/assets/components/TeamAssetsSidebar.tsx
-import React from "react";
 import { useTranslation } from "react-i18next";
-import { useTeamAssets } from "../hooks/useTeamAssets";
-import { useSelectedAssets } from "../store/useSelectedAssets";
-import { TeamAssetCard } from "./TeamAssetCard";
+import { useSyncSelectedAssets } from "@features/assets/hooks/useSyncSelectedAssets";
+import { useTeamAssets } from "@features/assets/hooks/useTeamAssets";
+import { useShowAssets } from "@features/assets/hooks/useShowAssets";
+import { TeamAssetCard } from "@features/assets/components/TeamAssetCard";
+import { Label } from "@core/ui/Label";
+
+import type { Asset } from "@domain/entities/Asset";
 
 interface TeamAssetsSidebarProps {
   teamId: string;
+  isEditMode?: boolean;
+  selectedAssets?: Asset[];
+  isLoading?: boolean; // <-- agregar
 }
 
-export function TeamAssetsSidebar({ teamId }: TeamAssetsSidebarProps) {
+export function TeamAssetsSidebar({
+  teamId,
+  isEditMode,
+  selectedAssets,
+  isLoading: propIsLoading,
+}: TeamAssetsSidebarProps) {
   const { t } = useTranslation("assets");
-  const { setSelectedAssetIds } = useSelectedAssets();
-  const { data: teamAssets, isLoading, error } = useTeamAssets(teamId);
+  const {
+    data: teamAssets,
+    isLoading: queryIsLoading,
+    error,
+  } = useTeamAssets(teamId);
 
-  React.useEffect(() => {
-    if (teamAssets?.length) {
-      const ids = teamAssets.map((ta) => ta.assetId).filter(Boolean);
-      setSelectedAssetIds(ids as string[]);
-    }
-  }, [teamAssets, setSelectedAssetIds]);
+  useSyncSelectedAssets(teamAssets, isEditMode);
+  const assetsToShow = useShowAssets(teamAssets, selectedAssets, isEditMode);
+
+  const isLoading = propIsLoading ?? queryIsLoading; // prop tiene prioridad
 
   return (
     <div className="w-full flex flex-col overflow-y-auto">
-      <h3 className="text-lg font-semibold mb-2">
-        {t("assets:teamAssets") || "Team Assets"}
-      </h3>
+      <Label variant="subtitle" color="primary" className="ml-page-x">
+        {t("teamAssets.title")}
+      </Label>
 
       {error && (
         <div className="text-red-500 mb-2">
@@ -37,18 +48,25 @@ export function TeamAssetsSidebar({ teamId }: TeamAssetsSidebarProps) {
       <div className="flex flex-col shadow-sm rounded-xl">
         {isLoading
           ? [1, 2, 3].map((i) => <TeamAssetCard key={i} isLoading />)
-          : teamAssets?.map((asset, index) => (
-              <TeamAssetCard
-                key={asset.teamAssetId}
-                asset={asset}
-                onClick={(a) => console.log("Asset clickeado:", a)}
-                isFirst={index === 0}
-                isLast={index === (teamAssets?.length ?? 1) - 1}
-              />
-            ))}
+          : assetsToShow.map((asset, index) => {
+              const key =
+                "teamAssetId" in asset
+                  ? asset.teamAssetId
+                  : asset.publicId ?? asset.assetId;
+
+              return (
+                <TeamAssetCard
+                  key={key}
+                  asset={asset}
+                  onClick={() => console.log("Asset clickeado:", asset)}
+                  isFirst={index === 0}
+                  isLast={index === assetsToShow.length - 1}
+                />
+              );
+            })}
       </div>
 
-      {!isLoading && teamAssets?.length === 0 && (
+      {!isLoading && assetsToShow.length === 0 && (
         <div className="mt-2">
           {t("assets:noTeamAssets") || "No hay assets asignados"}
         </div>

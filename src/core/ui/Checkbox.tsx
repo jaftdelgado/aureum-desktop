@@ -11,7 +11,7 @@ export interface CheckboxProps {
 }
 
 const sizeClasses = {
-  sm: "w-4 h-4",
+  sm: "w-[17px] h-[17px]",
   md: "w-5 h-5",
   lg: "w-6 h-6",
 };
@@ -33,7 +33,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       <span
         className={`relative flex items-center justify-center border transition-colors duration-150
           ${sizeClasses[size]}
-          rounded-[3px]
+          rounded-[6px]
           ${
             checked
               ? "bg-primaryBtn border-primaryBtn"
@@ -50,7 +50,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         />
 
         <span
-          className={`absolute inset-0 flex items-center justify-center rounded-[3px] transition-all duration-200
+          className={`absolute inset-0 flex items-center justify-center rounded-[6px] transition-all duration-200
             ${checked ? "bg-primaryBtn" : "bg-transparent"}
           `}
         >
@@ -74,9 +74,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       </span>
 
       {label && (
-        <span className="text-body text-secondaryText select-none">
-          {label}
-        </span>
+        <span className="text-xs text-secondaryText select-none">{label}</span>
       )}
     </label>
   );

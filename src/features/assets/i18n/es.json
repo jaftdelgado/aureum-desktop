@@ -1,6 +1,12 @@
 {
   "title": "Activos Financieros",
   "description": "Gestiona tu mercado simulado, añade activos y explora todos los activos disponibles.",
+  "columns": {
+    "assetName": "Activo",
+    "assetSymbol": "Símbolo",
+    "assetType": "Tipo / Categoría",
+    "basePrice": "Precio"
+  },
   "assetCategory": {
     "Tech": "Tecnología",
     "Healthcare": "Salud",
@@ -32,5 +38,8 @@
     "Stock": "Acción",
     "Crypto": "Cripto",
     "ETF": "ETF"
+  },
+  "teamAssets": {
+    "title": "Activos seleccionados"
   }
 }
