@@ -56,7 +56,7 @@ describe('usePortfolioData Hook', () => {
 
     expect(result.current.portfolio).toEqual(mockPortfolio);
     expect(result.current.history).toEqual(mockHistory);
-    expect(PortfolioRepository.getByCourse).toHaveBeenCalledWith('course-123');
+    expect(PortfolioRepository.getByCourse).toHaveBeenCalledWith('course-123', 'student-123');
   });
 
   it('debe manejar errores si una de las peticiones falla', async () => {

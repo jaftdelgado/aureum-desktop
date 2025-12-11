@@ -7,8 +7,9 @@ export interface PortfolioAssetQuantity {
 }
 
 export const PortfolioRepository = {
-  getByCourse: async (courseId: string): Promise<PortfolioItem[]> => {
-    return await client.get<PortfolioItem[]>(`api/Portfolio/course/${courseId}`);
+  getByCourse: async (courseId: string, userId: string): Promise<PortfolioItem[]> => {
+    return await client.get<PortfolioItem[]>(`api/Portfolio/course/${courseId}?userId=${userId}`);
+      
   },
 
   getHistory: async (courseId: string, studentId: string): Promise<HistoryItem[]> => {
