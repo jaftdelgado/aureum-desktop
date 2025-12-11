@@ -11,7 +11,12 @@ export const TitleBar: React.FC = () => {
     <div
       className="
         w-full h-14 flex items-center
+<<<<<<< HEAD
         bg-bg z-10
+=======
+        bg-bg/95 backdrop-blur supports-[backdrop-filter]:bg-bg/60
+        select-none z-10
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
       "
       onDoubleClick={() => action("maximize")}
     >

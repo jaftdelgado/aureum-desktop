@@ -7,7 +7,10 @@ interface MarketActionsProps {
   onSell?: () => void;
   loadingBuy?: boolean;
   loadingSell?: boolean;
+<<<<<<< HEAD
   quantity: number; 
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 }
 
 export const MarketActions: React.FC<MarketActionsProps> = ({
@@ -15,7 +18,10 @@ export const MarketActions: React.FC<MarketActionsProps> = ({
   onSell,
   loadingBuy = false,
   loadingSell = false,
+<<<<<<< HEAD
   quantity,
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 }) => {
   const { t } = useTranslation("market");
 
@@ -26,7 +32,11 @@ export const MarketActions: React.FC<MarketActionsProps> = ({
         className="h-12 flex-1"
         iconLeft={!loadingBuy ? "hugeicons:shopping-bag-01" : undefined}
         onClick={onBuy}
+<<<<<<< HEAD
         disabled={loadingBuy || loadingSell}
+=======
+        disabled={loadingBuy || loadingSell} 
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
       >
         {loadingBuy ? t("actions.loading") : t("actions.buy")}
       </Button>
@@ -36,7 +46,11 @@ export const MarketActions: React.FC<MarketActionsProps> = ({
         variant="secondary"
         iconLeft={!loadingSell ? "hugeicons:wallet-03" : undefined}
         onClick={onSell}
+<<<<<<< HEAD
         disabled={loadingSell || loadingBuy || quantity == 0}  
+=======
+        disabled={loadingSell || loadingBuy} 
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
       >
         {loadingSell ? t("actions.loading") : t("actions.sell")}
       </Button>

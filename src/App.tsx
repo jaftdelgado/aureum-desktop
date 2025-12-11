@@ -8,7 +8,10 @@ import "@core/design/theme.css";
 import "@core/design/text-sizes.css";
 import "@core/design/design-tokens.css";
 import { Toaster } from "@core/ui/Toaster";
+<<<<<<< HEAD
 import { SpeedInsights } from "@vercel/speed-insights/react";
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 
 const App: React.FC = () => {
   return (
@@ -17,7 +20,10 @@ const App: React.FC = () => {
         <SelectedTeamProvider>
           <AppRouter />
           <Toaster position="top-right" />
+<<<<<<< HEAD
           <SpeedInsights />
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
         </SelectedTeamProvider>
       </QueryProvider>
     </AuthProvider>

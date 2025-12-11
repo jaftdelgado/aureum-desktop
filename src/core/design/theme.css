@@ -8,10 +8,14 @@
 
   --primary-text: #101010;
   --secondary-text: #86868a;
+<<<<<<< HEAD
   --destructive-bg: #ffe0dd;
   --destructive: #df1642;
   --success-bg: #d6fae2;
   --success: #168c63;
+=======
+  --destructive: #d93025;
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 
   --sidebar-bg: #fafafb;
   --card: #f5f5f8;
@@ -23,6 +27,7 @@
 }
 
 .dark {
+<<<<<<< HEAD
   --dots: #222222;
   --dotted-bg: #151515;
   --bg: #111111;
@@ -36,6 +41,14 @@
   --destructive: #e43259;
   --success-bg: #232d2b;
   --success: #3dae86;
+=======
+  --bg: #111111;
+  --outline: #202020;
+
+  --primary-text: #ededed;
+  --secondary-text: #626265;
+  --destructive: #d93025;
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 
   --sidebar-bg: #1a1a1a;
   --card: #141414;

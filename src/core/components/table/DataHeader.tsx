@@ -58,7 +58,11 @@ export default function DataHeader<T>({
       {columns.map((col) => (
         <th
           key={String(col.key)}
+<<<<<<< HEAD
           className={`px-component-x ${denseClass} text-secondaryText font-medium whitespace-nowrap border-r border-outline ${
+=======
+          className={`px-3 ${denseClass} text-secondaryText font-medium whitespace-nowrap border-r border-outline ${
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
             col.sortable ? "cursor-pointer select-none" : ""
           }`}
           style={{

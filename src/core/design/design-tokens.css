@@ -1,10 +1,14 @@
 :root {
   --page-padding-x: 2.5rem;
   --sections-padding-x: 1.25rem;
+<<<<<<< HEAD
   --page-padding-y: 1.5rem;
   --sections-padding-y: 0.5rem;
   --component-padding-x: 1rem;
   --component-padding-y: 1rem;
+=======
+  --page-padding-y: 1rem;
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 }
 
 @media (max-width: 640px) { 

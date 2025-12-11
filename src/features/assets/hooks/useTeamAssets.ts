@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// src/features/team-assets/hooks/useTeamAssets.ts
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 import { useQuery } from "@tanstack/react-query";
 import { TeamAssetApiRepository } from "@infra/api/team-assets/TeamAssetApiRepository";
 import { GetTeamAssetsUseCase } from "@domain/use-cases/team-assets/GetTeamAssetsUseCase";

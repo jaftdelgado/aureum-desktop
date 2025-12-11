@@ -20,10 +20,14 @@ export default {
         alphaOutline: "var(--alpha-outline)",
         primaryText: "var(--primary-text)",
         secondaryText: "var(--secondary-text)",
+<<<<<<< HEAD
         destructiveBg: "var(--destructive-bg)",
         destructive: "var(--destructive)",
         successBg: "var(--success-bg)",
         success: "var(--success)",
+=======
+        destructive: "var(--destructive)",
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
         sidebarBg: "var(--sidebar-bg)",
         card: "var(--card)",
         transparentHover: "var(--transparent-hover)",
@@ -49,6 +53,7 @@ export default {
       },
       spacing: {
         "page-x": "var(--page-padding-x)",
+        "section-x": "var(--sections-padding-x)",
         "page-y": "var(--page-padding-y)",
         "section-x": "var(--sections-padding-x)",
         "section-y": "var(--sections-padding-y)",

@@ -33,7 +33,13 @@ export default function DataRow<T>({
     >
       {selectable && (
         <td
+<<<<<<< HEAD
           className={`px-3 ${isDense ? "py-0.5" : "py-1.5"} `}
+=======
+          className={`px-3 ${
+            isDense ? "py-0.5" : "py-1.5"
+          } border-r border-outline`}
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
           style={{ width: "48px", minWidth: "48px" }}
         >
           <div className="flex items-center justify-center">
@@ -45,7 +51,11 @@ export default function DataRow<T>({
       {columns.map((col) => (
         <td
           key={String(col.key)}
+<<<<<<< HEAD
           className={`px-component-x ${
+=======
+          className={`px-3 ${
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
             isDense ? "py-0.5" : "py-1.5"
           } border-r border-outline`}
           style={{
@@ -54,7 +64,11 @@ export default function DataRow<T>({
             boxSizing: "border-box",
           }}
         >
+<<<<<<< HEAD
           <div className="truncate text-body text-secondaryText overflow-hidden whitespace-nowrap">
+=======
+          <div className="truncate text-body text-primaryText overflow-hidden whitespace-nowrap">
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
             {col.render
               ? col.render(row[col.key], row, 0)
               : String(row[col.key] ?? "-")}

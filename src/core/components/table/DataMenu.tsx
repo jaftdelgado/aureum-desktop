@@ -24,7 +24,11 @@ export const DataMenu: React.FC<DataMenuProps> = ({
   if (!search) return null;
 
   return (
+<<<<<<< HEAD
     <div className="px-component-x py-component-y flex items-center justify-between gap-4">
+=======
+    <div className="pt-2 mb-3 mr-page-x ml-section-x flex items-center justify-between gap-4">
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
       <div className="w-2/5 min-w-[260px]">
         <InputGroup>
           <InputGroupAddon align="inline-start">

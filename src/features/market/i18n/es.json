@@ -7,7 +7,11 @@
     "label": "Activo seleccionado",
     "currentPrice": "Precio actual",
     "change24h": "Cambio 24h",
+<<<<<<< HEAD
     "portfolioPercent": "portafolio"
+=======
+    "portfolioPercent": "% en portafolio"
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   },
   "chart": {
     "title": "Historial de precios",
@@ -20,7 +24,11 @@
       "asset": "Activo",
       "price": "Precio",
       "change24h": "24h",
+<<<<<<< HEAD
       "portfolioPercent": "Portafolio"
+=======
+      "portfolioPercent": "% Portafolio"
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
     }
   },
   "actions": {

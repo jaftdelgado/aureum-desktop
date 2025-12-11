@@ -5,17 +5,22 @@ import { Button } from "@core/ui/Button";
 import { useSidebarMenu } from "../hooks/useSidebarMenu";
 import { useSidebarProfile } from "../hooks/useSidebarProfile";
 
+<<<<<<< HEAD
 interface AppSidebarProps {
   className?: string; // <-- agregamos className
 }
 
 export const AppSidebar: React.FC<AppSidebarProps> = ({ className }) => {
+=======
+export const AppSidebar: React.FC = () => {
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   const navigate = useNavigate();
   const { items } = useSidebarMenu();
   const { profile, actions, state, t } = useSidebarProfile();
 
   const handleNavigate = (route: string) => navigate(route);
 
+<<<<<<< HEAD
   const profileProps = profile
     ? {
         name: profile.name,
@@ -43,6 +48,32 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ className }) => {
         onNavigate={handleNavigate}
         profile={profileProps}
         className={className} // <-- pasamos className al Sidebar
+=======
+  const profileProps = profile ? {
+    name: profile.name,
+    role: profile.role,
+    avatarUrl: profile.avatarUrl,
+    currentTheme: state.currentTheme,
+    currentLang: state.currentLang,
+    onProfileClick: actions.goToProfile,
+    onLogout: actions.openLogoutDialog,
+    onToggleTheme: actions.toggleTheme,
+    onToggleLanguage: actions.toggleLanguage,
+    texts: {
+      viewProfile: t("sidebar.viewProfile", "Ver perfil"),
+      changeLanguage: t("sidebar.changeLanguage", "Cambiar idioma"),
+      toggleTheme: t("sidebar.toggleTheme", "Cambiar tema"),
+      logout: t("logout.label", "Cerrar sesión")
+    }
+  } : undefined;
+
+  return (
+    <>
+      <Sidebar 
+        items={items} 
+        onNavigate={handleNavigate} 
+        profile={profileProps} 
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
       />
 
       {state.showLogoutDialog && (
@@ -69,9 +100,13 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ className }) => {
                 onClick={actions.confirmLogout}
                 disabled={state.isLoggingOut}
               >
+<<<<<<< HEAD
                 {state.isLoggingOut
                   ? "Cerrando..."
                   : t("common.confirm", "Confirmar")}
+=======
+                {state.isLoggingOut ? "Cerrando..." : t("common.confirm", "Confirmar")}
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
               </Button>
             </div>
           </div>
@@ -79,4 +114,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ className }) => {
       )}
     </>
   );
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d

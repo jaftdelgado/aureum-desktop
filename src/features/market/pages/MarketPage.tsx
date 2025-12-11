@@ -15,11 +15,19 @@ const MarketPage: React.FC = () => {
   const { t } = useTranslation("market");
   const { selectedTeam } = useSelectedTeam();
   const courseId = selectedTeam?.publicId || "";
+<<<<<<< HEAD
   const { assets, selectedAsset, selectedAssetId, selectAsset, isLoading, reloadQuantities  } =
     useMarketPage(courseId);
 
   const { buy, sell, loadingBuy, loadingSell, } = useMarketTrading(
     selectedAsset, reloadQuantities
+=======
+  const { assets, selectedAsset, selectedAssetId, selectAsset, isLoading } =
+    useMarketPage(courseId);
+
+  const { buy, sell, loadingBuy, loadingSell } = useMarketTrading(
+    selectedAsset
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   );
 
 
@@ -76,7 +84,10 @@ const MarketPage: React.FC = () => {
             onSell={() => sell(1)}
             loadingBuy={loadingBuy}
             loadingSell={loadingSell}
+<<<<<<< HEAD
             quantity={selectedAsset?.allocation ?? 0}
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
           />
         </div>
       </div>

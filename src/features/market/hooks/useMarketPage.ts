@@ -4,11 +4,14 @@ import { MarketApiRepository } from "@infra/api/market/MarketApiRepository";
 import { SubscribeToMarketUseCase } from "@domain/use-cases/market/SubscribeToMarketUseCase";
 import type { MarketSnapshot } from "@domain/entities/MarketSnapshot";
 
+<<<<<<< HEAD
 import { useAuth } from "@app/hooks/useAuth";
 import {
   PortfolioRepository,
   type PortfolioAssetQuantity,
 } from "@infra/api/portfolio/PortfolioRepository";
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 
 export type AssetHistoryPoint = {
   date: string;
@@ -85,10 +88,13 @@ export const useMarketPage = (courseId: string) => {
   const [assetsById, setAssetsById] = useState<AssetsState>({});
   const [selectedAssetId, setSelectedAssetId] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+<<<<<<< HEAD
   const { user } = useAuth();
   const [portfolioQuantities, setPortfolioQuantities] = useState<
     Record<string, number>
   >({});
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 
   useEffect(() => {
     setIsLoading(true);
@@ -108,6 +114,7 @@ export const useMarketPage = (courseId: string) => {
     };
   }, [courseId]);
 
+<<<<<<< HEAD
   const loadPortfolio = async () => {
     try {
       const items: PortfolioAssetQuantity[] =
@@ -142,6 +149,9 @@ export const useMarketPage = (courseId: string) => {
       })),
     [assetsById, portfolioQuantities]
   );
+=======
+  const assets = useMemo(() => Object.values(assetsById), [assetsById]);
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 
   useEffect(() => {
     if (!selectedAssetId && assets.length > 0) {
@@ -164,6 +174,9 @@ export const useMarketPage = (courseId: string) => {
     selectedAssetId,
     selectAsset,
     isLoading,
+<<<<<<< HEAD
     reloadQuantities: loadPortfolio,
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   };
 };

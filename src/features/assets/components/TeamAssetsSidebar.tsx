@@ -11,7 +11,11 @@ interface TeamAssetsSidebarProps {
   teamId: string;
   isEditMode?: boolean;
   selectedAssets?: Asset[];
+<<<<<<< HEAD
   isLoading?: boolean;
+=======
+  isLoading?: boolean; // <-- agregar
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 }
 
 export function TeamAssetsSidebar({
@@ -30,6 +34,7 @@ export function TeamAssetsSidebar({
   useSyncSelectedAssets(teamAssets, isEditMode);
   const assetsToShow = useShowAssets(teamAssets, selectedAssets, isEditMode);
 
+<<<<<<< HEAD
   const isLoading = propIsLoading || queryIsLoading;
 
   return (
@@ -56,6 +61,32 @@ export function TeamAssetsSidebar({
           : assetsToShow.map((asset, index) => {
               const key =
                 "teamAssetId" in asset ? asset.teamAssetId : asset.publicId;
+=======
+  const isLoading = propIsLoading ?? queryIsLoading; // prop tiene prioridad
+
+  return (
+    <div className="w-full flex flex-col overflow-y-auto">
+      <Label variant="subtitle" color="primary" className="ml-page-x">
+        {t("teamAssets.title")}
+      </Label>
+
+      {error && (
+        <div className="text-red-500 mb-2">
+          {t("assets:errorLoadingTeamAssets") ||
+            "Error al cargar assets del equipo"}
+        </div>
+      )}
+
+      <div className="flex flex-col shadow-sm rounded-xl">
+        {isLoading
+          ? [1, 2, 3].map((i) => <TeamAssetCard key={i} isLoading />)
+          : assetsToShow.map((asset, index) => {
+              const key =
+                "teamAssetId" in asset
+                  ? asset.teamAssetId
+                  : asset.publicId ?? asset.assetId;
+
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
               return (
                 <TeamAssetCard
                   key={key}
@@ -66,11 +97,21 @@ export function TeamAssetsSidebar({
                 />
               );
             })}
+<<<<<<< HEAD
 
         {!isLoading && assetsToShow.length === 0 && (
           <div>{t("assets:noTeamAssets")}</div>
         )}
       </div>
+=======
+      </div>
+
+      {!isLoading && assetsToShow.length === 0 && (
+        <div className="mt-2">
+          {t("assets:noTeamAssets") || "No hay assets asignados"}
+        </div>
+      )}
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
     </div>
   );
 }

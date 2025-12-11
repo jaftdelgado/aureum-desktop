@@ -36,8 +36,12 @@ export const AssetsTable: React.FC<AssetsTableProps> = ({
         </span>
       </header>
 
+<<<<<<< HEAD
       {/* CONTENEDOR SCROLLABLE */}
       <div className="flex-1 min-h-0 overflow-y-auto max-h-64 pr-2">
+=======
+      <div className="flex-1 min-h-0">
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
         <Table>
           <TableHeader>
             <TableRow>
@@ -92,7 +96,11 @@ export const AssetsTable: React.FC<AssetsTableProps> = ({
                   </TableCell>
 
                   <TableCell className="text-right text-sm">
+<<<<<<< HEAD
                     {asset.allocation}
+=======
+                    {asset.allocation}%
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
                   </TableCell>
                 </TableRow>
               );
@@ -101,6 +109,9 @@ export const AssetsTable: React.FC<AssetsTableProps> = ({
         </Table>
       </div>
     </section>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   );
 };

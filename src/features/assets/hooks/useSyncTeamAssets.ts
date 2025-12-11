@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// src/features/assets/hooks/useSyncTeamAssets.ts
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TeamAssetApiRepository } from "@infra/api/team-assets/TeamAssetApiRepository";
 import { SyncTeamAssetsUseCase } from "@domain/use-cases/team-assets/SyncTeamAssetsUseCase";

@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 export interface AssetDTO {
+=======
+// src/infra/api/assets/asset.dto.ts
+
+export interface AssetDTO {
+  assetId: number;
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   publicId: string;
   assetSymbol: string;
   assetName: string;
@@ -10,11 +17,20 @@ export interface AssetDTO {
   minPrice?: number | null;
   dividendYield?: number | null;
   liquidity?: number | null;
+<<<<<<< HEAD
   logoUrl?: string | null;
+=======
+  assetPicUrl?: string | null;
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   category?: {
     categoryId: number;
     categoryKey: string;
   } | null;
+<<<<<<< HEAD
+=======
+  createdAt: string;
+  updatedAt: string;
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 }
 
 export interface PaginatedResultDTO<T> {

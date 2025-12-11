@@ -41,10 +41,13 @@
   },
   "teamAssets": {
     "title": "Activos seleccionados"
+<<<<<<< HEAD
   },
   "editModeToggle": {
     "editMode": "Editar activos",
     "save": "Guardar cambios",
     "saving": "Guardando..."
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   }
 }

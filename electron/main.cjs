@@ -3,7 +3,10 @@ const path = require("node:path");
 require("dotenv").config();
 
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
+<<<<<<< HEAD
 const PROD_URL = process.env.VITE_PROD_URL || "https://aureum-desktop.vercel.app";
+=======
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 const isDev = !!VITE_DEV_SERVER_URL;
 
 if (process.defaultApp) {
@@ -50,7 +53,11 @@ function createWindow() {
     mainWindow.loadURL(VITE_DEV_SERVER_URL);
     mainWindow.webContents.openDevTools();
   } else {
+<<<<<<< HEAD
     mainWindow.loadURL(PROD_URL);
+=======
+    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   }
 
   return mainWindow;
@@ -74,7 +81,11 @@ if (!gotTheLock) {
   });
 
   app.whenReady().then(() => {
+<<<<<<< HEAD
     createWindow();
+=======
+    const win = createWindow();
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
 
     ipcMain.on("window-action", (event, action) => {
       const senderWin = BrowserWindow.fromWebContents(event.sender);

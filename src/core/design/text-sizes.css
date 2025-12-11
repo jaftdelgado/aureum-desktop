@@ -1,6 +1,10 @@
 :root {
   --font-h1: 1.5rem;
+<<<<<<< HEAD
   --font-subtitle: 1.1rem;
+=======
+  --font-subtitle: 1.15rem;
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   --font-headline: 0.9rem;
   --font-body: 0.825rem;
   --font-small: 0.725rem;

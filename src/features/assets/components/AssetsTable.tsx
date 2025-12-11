@@ -14,7 +14,11 @@ interface AssetsTableProps {
   total: number;
   onPageChange: (page: number) => void;
   onQueryChange: (query: string) => void;
+<<<<<<< HEAD
   onRowClick?: (row: Asset) => void;
+=======
+  onRowClick?: (row: Asset) => void; // opcional para comportamiento adicional
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   isEditMode?: boolean;
 }
 
@@ -33,6 +37,10 @@ export function AssetsTable({
   const { editingSelectedAssets, addAsset, removeAsset } =
     useEditingSelectedAssets();
 
+<<<<<<< HEAD
+=======
+  // Toggle selección
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
   const toggleSelect = (asset: Asset) => {
     const exists = editingSelectedAssets.find(
       (a) => a.publicId === asset.publicId
@@ -44,19 +52,31 @@ export function AssetsTable({
   const columns: Column<Asset>[] = [
     {
       key: "assetName",
+<<<<<<< HEAD
       header: t("columns.assetName"),
+=======
+      header: t("columns.assetName", "Activo"),
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
       sortable: true,
       render: (_, row) => <AssetRow asset={row} />,
     },
     {
       key: "assetSymbol",
+<<<<<<< HEAD
       header: t("columns.assetSymbol"),
+=======
+      header: t("columns.assetSymbol", "Símbolo"),
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
       sortable: true,
       render: (_, row) => row.assetSymbol,
     },
     {
       key: "assetType",
+<<<<<<< HEAD
       header: t("columns.assetType"),
+=======
+      header: t("columns.assetType", "Tipo / Categoría"),
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
       sortable: false,
       render: (_, row) => (
         <div className="flex gap-2">

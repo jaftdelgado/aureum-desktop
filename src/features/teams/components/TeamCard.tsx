@@ -20,7 +20,11 @@ const TeamCard: React.FC<TeamCardProps> = ({
 }) => {
   return (
     <div
+<<<<<<< HEAD
       className="bg-bg rounded-xl overflow-hidden border border-outline transition-shadow cursor-pointer max-w-xs"
+=======
+      className="bg-card rounded-xl overflow-hidden border border-outline transition-shadow cursor-pointer max-w-xs"
+>>>>>>> 02cb14a44c4011f6bf4f1af076bac03a97d08a8d
       onClick={loading ? undefined : onClick}
     >
       <div className="relative aspect-[4/3] w-full">
