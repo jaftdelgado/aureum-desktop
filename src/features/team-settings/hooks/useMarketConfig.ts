@@ -10,18 +10,25 @@ const getMarketConfigUseCase = new GetMarketConfigUseCase(
 );
 
 export const useMarketConfig = (teamPublicId: string) => {
+  if (!teamPublicId) {
+    return {
+      data: defaultMarketConfig,
+      isSuccess: true,
+      isFetching: false,
+      isError: false,
+    } as const;
+  }
+
   return useQuery<MarketConfig, Error>({
     queryKey: ["market-config", teamPublicId],
     queryFn: async () => {
-      if (!teamPublicId) return defaultMarketConfig;
-
       try {
-        const config = await getMarketConfigUseCase.execute(teamPublicId);
-        return config;
-      } catch (err: any) {
+        return await getMarketConfigUseCase.execute(teamPublicId);
+      } catch {
         return defaultMarketConfig;
       }
     },
     staleTime: 1000 * 60 * 5,
+    enabled: !!teamPublicId,
   });
 };

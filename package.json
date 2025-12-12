@@ -5,15 +5,17 @@
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
-    "dev:web": "vite",
-    "dev:desktop": "concurrently -k \"npm:dev:web\" \"npm:electron\"",
-    "electron": "wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron ./electron/main.cjs",
-    "build": "tsc -b && vite build",
-    "start:desktop": "cross-env NODE_ENV=production electron ./electron/main.cjs",
-    "lint": "eslint .",
-    "test": "vitest",
-    "preview": "vite preview"
-  },
+  "dev:web": "vite",
+  "dev:desktop": "concurrently -k \"npm:dev:web\" \"npm:electron\"",
+  "electron": "wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron ./electron/main.cjs",
+  "build": "tsc -b && vite build",
+  "build:desktop": "npm run build && electron-builder",
+  "start:desktop": "cross-env NODE_ENV=production electron ./electron/main.cjs",
+  "lint": "eslint .",
+  "test": "vitest",
+  "preview": "vite preview"
+},
+
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@iconify/react": "^6.0.2",
@@ -57,6 +59,7 @@
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "electron": "^39.2.4",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
@@ -70,5 +73,22 @@
     "vite": "^7.2.2",
     "vitest": "^4.0.15",
     "wait-on": "^9.0.3"
+  },
+  "build": {
+    "appId": "com.aureum.desktop",
+    "productName": "Aureum Desktop",
+    "directories": {
+      "buildResources": "electron/assets",
+      "output": "dist_electron"
+    },
+    "files": [
+      "dist/**",
+      "electron/**",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "electron/assets/icon.ico"
+    }
   }
 }

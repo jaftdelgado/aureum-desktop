@@ -9,17 +9,9 @@ const getTeamAssetsUseCase = new GetTeamAssetsUseCase(teamAssetRepository);
 export const useTeamAssets = (teamId: string) => {
   return useQuery<TeamAsset[], Error>({
     queryKey: ["team-assets", teamId],
-    queryFn: async () => {
-      if (!teamId) return [];
-
-      try {
-        const assets = await getTeamAssetsUseCase.execute(teamId);
-        return assets;
-      } catch (err: any) {
-        console.error("Error fetching team assets:", err);
-        return [];
-      }
-    },
+    queryFn: async () => getTeamAssetsUseCase.execute(teamId),
+    enabled: !!teamId,
     staleTime: 1000 * 60 * 5,
+    retry: false,
   });
 };

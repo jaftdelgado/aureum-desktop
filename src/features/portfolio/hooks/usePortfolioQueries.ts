@@ -6,12 +6,13 @@ export const usePortfolioData = (
   studentId: string | undefined
 ) => {
   const portfolioQuery = useQuery({
-    queryKey: ["portfolio", courseId],
+    queryKey: ["portfolio", courseId, studentId],
     queryFn: () => {
-      if (!courseId) throw new Error("Course ID required");
-      return PortfolioRepository.getByCourse(courseId);
+      if (!courseId || !studentId)
+        throw new Error("Course ID and User ID required");
+      return PortfolioRepository.getByCourse(courseId, studentId);
     },
-    enabled: !!courseId,
+    enabled: !!courseId && !!studentId,
     staleTime: 3000,
     refetchInterval: 3000,
   });

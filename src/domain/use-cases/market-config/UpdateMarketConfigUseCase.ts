@@ -1,4 +1,3 @@
-// src/domain/use-cases/market-config/UpdateMarketConfigUseCase.ts
 import type { MarketConfigRepository } from "@domain/repositories/MarketConfigRepository";
 import type { MarketConfig } from "@domain/entities/MarketConfig";
 

@@ -1,4 +1,3 @@
-// src/domain/use-cases/assets/GetAssetsUseCase.ts
 import type { AssetRepository } from "@domain/repositories/AssetRepository";
 import type { Asset } from "@domain/entities/Asset";
 
