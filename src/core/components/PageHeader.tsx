@@ -1,6 +1,5 @@
 import React, { type ReactNode } from "react";
 import { Label } from "@core/ui/Label";
-import { Tabs, type TabItem } from "@core/components/Tabs";
 import { cn } from "@core/utils/cn";
 import { motion } from "framer-motion";
 
@@ -8,9 +7,6 @@ interface PageHeaderProps {
   title: ReactNode;
   description?: ReactNode;
   actions?: ReactNode;
-  tabs?: TabItem[];
-  selectedTab?: string;
-  onTabChange?: (value: string) => void;
   className?: string;
 }
 
@@ -18,9 +14,6 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   description,
   actions,
-  tabs,
-  selectedTab,
-  onTabChange,
   className = "",
 }) => {
   return (
@@ -54,12 +47,6 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 
         {actions && <div className="ml-2">{actions}</div>}
       </div>
-
-      {tabs && selectedTab !== undefined && onTabChange && (
-        <div className="w-full px-page-x border-b border-outline">
-          <Tabs tabs={tabs} value={selectedTab} onChange={onTabChange} />
-        </div>
-      )}
     </div>
   );
 };

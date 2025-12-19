@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { PageHeader } from "@core/components/PageHeader";
+import { PageTabs } from "@core/components/PageTabs";
+import { Container } from "@core/components/Container";
 import { useTranslation } from "react-i18next";
 import { type TabItem } from "@core/components/Tabs";
 
@@ -10,7 +12,7 @@ const TeamSettingsLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const tabs: TabItem[] = [ 
+  const tabs: TabItem[] = [
     { label: t("settings.members"), value: "members" },
     { label: t("settings.simulator"), value: "simulator" },
   ];
@@ -23,10 +25,13 @@ const TeamSettingsLayout: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState(getCurrentTab());
 
   useEffect(() => {
-    if (location.pathname.endsWith("/settings") || location.pathname.endsWith("/settings/")) {
-      navigate(`members`, { replace: true });
+    if (
+      location.pathname.endsWith("/settings") ||
+      location.pathname.endsWith("/settings/")
+    ) {
+      navigate("members", { replace: true });
     }
-    
+
     setSelectedTab(getCurrentTab());
   }, [location.pathname, navigate]);
 
@@ -44,18 +49,23 @@ const TeamSettingsLayout: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col overflow-hidden">
       <div id="page-top-sentinel" className="h-px w-full" />
-      <PageHeader
-        title={t("title")}
-        description={t("description")}
-        tabs={tabs}
-        selectedTab={selectedTab}
-        onTabChange={handleTabChange}
-      />
 
-      <div className="p-page-x py-page-y h-full w-full">
-        <Outlet />
+      <PageHeader title={t("title")} description={t("description")} />
+
+      <div className="px-page-x py-page-y flex-1 min-h-0">
+        <Container className="w-full h-full flex flex-col min-h-0">
+          <PageTabs
+            tabs={tabs}
+            value={selectedTab}
+            onChange={handleTabChange}
+          />
+
+          <div className="flex-1 min-h-0 overflow-y-auto px-page-x py-component-y">
+            <Outlet />
+          </div>
+        </Container>
       </div>
     </div>
   );
