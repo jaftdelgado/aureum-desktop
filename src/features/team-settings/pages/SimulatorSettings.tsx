@@ -36,7 +36,7 @@ const SimulatorSettings: React.FC = () => {
   const { selectedTeam } = useSelectedTeam();
 
   const teamPublicId = selectedTeam?.publicId ?? "";
-  const { data: config, isLoading } = useMarketConfig(teamPublicId);
+  const { data: config, isFetching: isLoading } = useMarketConfig(teamPublicId);
 
   const { formState, setField } = useConfigFormState(
     config ?? defaultMarketConfig

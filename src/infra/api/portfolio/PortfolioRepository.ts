@@ -11,28 +11,29 @@ export interface PortfolioAssetQuantity {
 
 export const PortfolioRepository = {
   getByCourse: async (
-    _courseId: string,
-    _userId: string
+    courseId: string,
+    userId: string
   ): Promise<PortfolioItem[]> => {
     return await client.get<PortfolioItem[]>(
-      "api/Portfolio/course/${courseId}?userId=${userId}"
+      `api/Portfolio/course/${courseId}?userId=${userId}`
     );
   },
 
   getHistory: async (
-    _courseId: string,
-    _studentId: string
+    courseId: string,
+    studentId: string
   ): Promise<HistoryItem[]> => {
     return await client.get<HistoryItem[]>(
-      "api/Portfolio/history/course/${courseId}/student/${studentId}"
+      `api/Portfolio/history/course/${courseId}/student/${studentId}`
     );
   },
 
-  getAssetQuantitiesByTeamAndUser: async (): Promise<
-    PortfolioAssetQuantity[]
-  > => {
+  getAssetQuantitiesByTeamAndUser: async (
+    teamId: string,
+    userId: string
+  ): Promise<PortfolioAssetQuantity[]> => {
     return client.get<PortfolioAssetQuantity[]>(
-      "api/portfolio/assets/team/${teamId}/user/${userId}"
+      `api/portfolio/assets/team/${teamId}/user/${userId}`
     );
   },
 };
